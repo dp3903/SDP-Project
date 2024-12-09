@@ -1,0 +1,37 @@
+/* Navigation Bar Styling */
+.nav-bar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.nav-items {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  position: relative;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 20px;
+  color: #333;
+}
+
+/* Highlight Effect */
+.nav-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: #007bff;
+  border-radius: 4px;
+  transition: all 0.3s ease; /* Smooth transition */
+  width: 0; /* Will be dynamically set */
+}
