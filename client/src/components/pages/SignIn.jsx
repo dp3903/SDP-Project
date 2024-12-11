@@ -3,12 +3,17 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
  
-export function SignIn() {
+export function SignIn(props) {
 
   function onSubmit(values) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+  }
+
+  const signUpClick = (e) => {
+    e.preventDefault();
+    props.signUpClick(e)
   }
 
   return (
@@ -23,7 +28,7 @@ export function SignIn() {
         </form>
         <div className='w-full  mt-2 border-2 px-3 py-2 rounded-md'>
             Don't have an account?
-            <a className='text-blue-800' href="#">Signup</a>
+            <a className='text-blue-800 cursor-pointer' onClick={signUpClick}>Signup</a>
         </div>
     </div>
   );
