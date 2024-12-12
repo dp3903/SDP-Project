@@ -8,9 +8,9 @@ function App() {
     <>
       {/* <LoginSignup></LoginSignup> */}
       
-      <div className='flex flex-row flex-nowrap justify-center'>
+      {/* <div className='flex flex-row flex-nowrap justify-center'>
         <UserReview></UserReview>
-      </div>
+      </div> */}
     </>
   )
 }

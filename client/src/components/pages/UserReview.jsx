@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import BlurFade from '../ui/blur-fade'
 import { Button } from '../ui/button';
@@ -17,27 +17,40 @@ import { Form , FormField , FormItem , FormLabel , FormControl , FormDescription
 
 function UserReview() {
 
+    const [dummy,setDummy] = useState();
+
     const form = useForm({
         defaultValues: {
             experience: '',
-            field: '',
+            fields: [],
         },
     });
 
     const levels = ['Beginner','Intermediate','Advance'];
-    const fields = ['Frontend Development','Backend Development','Fullstack Development','Datastructures','Algorithms','Database','Networking']
+    const fields = ['Frontend Development','Backend Development','Fullstack Development','Datastructures and Algorithms','Database','Networking','Machine Learning','Data Science','None of the above']
 
     function onSubmit(data) {
         if(data.experience == ''){
             form.setError("experience", { type: "focus", message:"Please select experience" }, { shouldFocus: true });
             return;
         }
-        if(data.field == ''){
-            form.setError("field", { type: "focus", message:"Please select a field" }, { shouldFocus: true });
+        if(data.fields.length == 0){
+            form.setError("fields", { type: "focus", message:"Please select a field" }, { shouldFocus: true });
             return;
         }
         console.log(data);
     }
+
+    const toggleOption = (option) => {
+        let arr = form.getValues('fields');
+        if(arr.includes(option)){
+            form.setValue('fields',arr.filter(item => item != option));
+        }
+        else{
+            form.setValue('fields',[...arr , option]);
+        }
+        setDummy(!dummy);
+    };
 
 
   return (
@@ -62,12 +75,11 @@ function UserReview() {
                     <form  onSubmit={form.handleSubmit(onSubmit)}  className="space-y-4">
                     
                         <FormField
-                            required
                             control={form.control}
                             name="experience"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Select your skill Level</FormLabel>
+                                    <FormLabel className="text-lg font-semibold text-gray-800 mb-4">Select your skill Level</FormLabel>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
@@ -87,29 +99,39 @@ function UserReview() {
                                 </FormItem>
                             )}
                         />
-                        
+
                         <FormField
                             control={form.control}
-                            name="field"
+                            name="fields"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Select the field you are interested in</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a field" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {fields.map((item)=>{
-                                                return <SelectItem key={item} value={item}>{item}</SelectItem>
-                                            })}
-                                        </SelectContent>
-                                    </Select>
-                                <FormMessage />
-                                </FormItem>
+                                <div className="container mx-auto max-w-lg p-4">
+                                    <h2 className="text-lg font-semibold text-gray-800">
+                                        Select Your Interests
+                                    </h2>
+                                    <FormDescription className="mb-4">
+                                        You can select 'None of the above' if you are new
+                                    </FormDescription>
+                                    <div className="grid grid-cols-2 gap-4 mb-4">
+                                        {fields.map((option) => (
+                                        <div
+                                            key={option}
+                                            onClick={() => toggleOption(option)}
+                                            className={`cursor-pointer min-w-fit p-4 rounded-lg border ${
+                                            form.getValues('fields').includes(option)
+                                                ? "bg-blue-500 text-white border-blue-500"
+                                                : "bg-gray-100 hover:bg-blue-200 text-gray-800 border-gray-300"
+                                            } hover:shadow-lg transition`}
+                                        >
+                                            {option}
+                                        </div>
+                                        ))}
+                                    </div>
+                                    <FormMessage />
+                                </div>
                             )}
                         />
+                        
+                        
 
                         <Button type="submit" className="w-full text-white">
                             Get Recommendations
