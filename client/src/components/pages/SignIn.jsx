@@ -18,8 +18,8 @@ export function SignIn(props) {
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
-        <h1 className='w-full text-5xl w-full '>Sign In</h1>
-        <form className='w-full mt-10 text-left w-full '>
+        <h1 className='text-5xl w-full '>Sign In</h1>
+        <form className='w-full mt-10 text-left '>
             <Input placeholder="Enter username" type="text"></Input>
 
             <Input placeholder="Enter password" className="mt-2" type="password"></Input>
