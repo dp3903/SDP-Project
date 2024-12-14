@@ -6,7 +6,18 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+	fontFamily: {
+		'sans': ['ui-sans-serif', 'system-ui'],
+		'serif': ['ui-serif', 'Georgia'],
+		'mono': ['ui-monospace', 'SFMono-Regular'],
+		'display': ['Bebas Neue'],
+		'body': ['"Open Sans"'],
+	},
   	extend: {
+		backgroundImage: {
+			'landing-bg': "url('./src/assets/bg-1.png')",
+			'bg-2': "url('./src/assets/bg-2.webp')",
+		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

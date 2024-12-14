@@ -26,7 +26,7 @@ export function SignIn(props) {
 
             <Button className="w-full  mt-2">Submit</Button>
         </form>
-        <div className='w-full  mt-2 border-2 px-3 py-2 rounded-md'>
+        <div className='w-full  mt-2 px-3 py-2 rounded-md'>
             Don't have an account?
             <a className='text-blue-800 cursor-pointer' onClick={signUpClick}>Signup</a>
         </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { SignIn } from './SignIn'
 import { SignUp } from './SignUp'
+import { Link } from 'react-router-dom'
 
 function LoginSignup() {
 
@@ -42,9 +43,27 @@ function LoginSignup() {
   
     return (
       <>
-        <div className='w-full flex flex-col items-center'>
+        <div className='w-[100vw] h-[100vh] flex flex-col items-center bg-bg-2 bg-no-repeat bg-cover'>
+          <div className="absolute text-xl font-semibold py-8 top-0 w-[100vw] flex flex-row flex-nowrap justify-around backdrop-blur backdrop-contrast-50">
+            <h1>
+              <Link to='/'>
+                Welcome To Hermes
+              </Link>
+            </h1>
+            <ul className='flex flex-row flex-nowrap justify-around gap-10'>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+              <li>
+                <Link to="/contact">Contact</Link>
+              </li>
+            </ul>
+          </div>
   
-          <div className="relative flex justify-center items-center w-1/4">
+          <div className="relative mt-24 flex justify-center items-center w-1/4">
             <ul className="nav-items m-0 p-0 flex list-none gap-10">
               
                 <li
@@ -75,7 +94,7 @@ function LoginSignup() {
           </div>
   
           <div className='flex flex-row w-full mt-2 justify-center overflow-x-hidden flex-nowrap'>
-            <div className='w-1/4  relative flex flex-row overflow-x-hidden flex-nowrap'>
+            <div className='w-1/4 p-10 relative flex flex-row overflow-x-hidden flex-nowrap backdrop-blur bg-[rgba(255,255,255,.25)] rounded-md shadow-lg'>
   
               <div className='overflow-hidden relative left-0'
                 style={{
