@@ -30,6 +30,7 @@ export default {
   		backgroundImage: {
   			'landing-bg': 'url("./src/assets/bg-1.png")',
   			'bg-2': 'url("./src/assets/bg-2.webp")',
+  			'bg-3': 'url("./src/assets/image.webp")',
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

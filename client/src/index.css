@@ -29,7 +29,7 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem
   ;
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
@@ -78,5 +78,24 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar {
+
+    /* For WebKit-based browsers */
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 8px;
+      margin-left: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #6b7280; /* Thumb color */
+      border-radius: 9999px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent; /* Track color */
+    }
   }
 }

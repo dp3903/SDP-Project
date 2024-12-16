@@ -1,5 +1,5 @@
 import React from 'react'
-import { Calendar, UserPen, Home as HomeIcon, LogOut } from "lucide-react"
+import { Calendar, UserPen, Home as HomeIcon, LogOut, TrendingUp } from "lucide-react"
 import { useNavigate } from "react-router-dom";
  
 import {
@@ -19,23 +19,29 @@ import {
 } from "../ui/sidebar"
 import { Link, Outlet } from 'react-router-dom';
 import { Button } from '../ui/button';
+import ResourceDetails from './ResourceDetails';
 
 
 const items = [
     {
       title: "Home",
-      url: "/home",
+      url: "",
       icon: HomeIcon,
     },
     {
       title: "Profile",
-      url: "home/profile",
+      url: "profile",
       icon: UserPen,
     },
     {
       title: "Roadmaps",
-      url: "home/roadmaps",
+      url: "roadmaps",
       icon: Calendar,
+    },
+    {
+      title: "Treanding",
+      url: "treanding",
+      icon: TrendingUp,
     },
 ];
 
@@ -55,7 +61,7 @@ function Home() {
 
   return (
         <>
-            <Sidebar variant="sidebar" collapsible="icon" onClick={()=>setOpen(true)}>
+            <Sidebar variant="floating" collapsible="icon" onClick={()=>setOpen(true)}>
                 <SidebarContent>
                     <SidebarGroup>
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -67,7 +73,7 @@ function Home() {
                                     <Link to={item.url}>
                                         
                                         <item.icon />
-                                        <span className='text-md'>{item.title}</span>
+                                        <span className='text-md text-black font-semibold'>{item.title}</span>
                                     </Link>
                                 </SidebarMenuButton>
                                 <SidebarMenuAction className="peer-data-[active=true]/menu-button:opacity-100" />
@@ -78,7 +84,7 @@ function Home() {
                                 <SidebarMenuButton asChild>
                                     <button onClick={handleSignOut}>
                                         <LogOut />
-                                        <span className='text-md'>Sign-out</span>
+                                        <span className='text-md text-black font-semibold'>Sign-out</span>
                                     </button>
                                 </SidebarMenuButton>
                                 <SidebarMenuAction className="peer-data-[active=true]/menu-button:opacity-100" />
@@ -91,7 +97,11 @@ function Home() {
             </Sidebar>
 
             <main onClick={()=>setOpen(false)} className='w-full'>
-                <Outlet/>
+
+                <Outlet className="" />
+
+                {/* <ResourceDetails/> */}
+
             </main>
         </>
   )
