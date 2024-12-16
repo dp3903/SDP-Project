@@ -59,6 +59,7 @@ class ResourceModel(BaseModel):
 	platform : str # youtube , coursera , offical docs , author name if the book 
 	tags : List[str] # list of keyword assoiciated with Resources
 	averageRating : float
+	no_of_reviews : float = Field(0,ge=0)
 
 class InteractionModel(BaseModel):
 	id : Optional[str] = Field(None,alias="_id")
@@ -70,7 +71,17 @@ class InteractionModel(BaseModel):
 class ReviewModel(BaseModel):
 	id : Optional[str] = Field(None,alias="_id")
 	userId : str
+	username : str
 	resourceId : str 
 	rating : float =Field(ge=0,le=5)
 	comment : str 
 	timestamp : datetime
+
+class RoadmapModel(BaseModel):
+	id : Optional[str] = Field(None,alias="_id")
+	title : str 
+	userId : str 
+	resourceList : List[ResourceModel]
+	createdAt : datetime 
+	progress : float = Field(ge=0,le=100) 
+	

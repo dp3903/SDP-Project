@@ -5,7 +5,7 @@ from typing import List
 import uuid
 resourceRouter = APIRouter()
 
-@resourceRouter.post("/",response_model=ResorceModel)
+@resourceRouter.post("/",response_model=ResourceModel)
 async def create_resource(resource : ResourceModel):
 	resource.id = str(uuid.uuid4())[:8]
 	result = await db.resources.insert_one(resource.dict(by_alias=True))
@@ -14,7 +14,7 @@ async def create_resource(resource : ResourceModel):
 
 @resourceRouter.get("/{resourceId}",response_model=ResourceModel)
 async def get_resource(resourceId : str):
-	resource = awair db.resources.find_one({"_id":resourceId})
+	resource = await db.resources.find_one({"_id":resourceId})
 	if not resource:
 		raise HTTPException(status_code=404,detail="Resource not found")
 	return resource
