@@ -13,14 +13,14 @@ async def create_interacction(interaction : InteractionModel):
 	new_interaction = await db.interactions.find_one({"_id":result.inserted_id})
 	return new_interaction
 
-@interactionRouter.get("/{userId}",response_model=List[InteractionModel])
+@interactionRouter.get("/users/{userId}",response_model=List[InteractionModel])
 async def get_interaction_by_user(userId : str):
 	interactions = await db.interactions.find({"userId":userId}).to_list(None)
 	if not interactions :
 		raise HTTPException(status_code=404,detail="no interactions found by this user")
 	return interactions 
 
-@interactionRouter.get("/{resourceId}",response_model=List[InteractionModel])
+@interactionRouter.get("/resources/{resourceId}",response_model=List[InteractionModel])
 async def get_interaction_by_resource(resourceId : str):
 	interactions = await db.interactions.find({"resourceId":resourceId}).to_list(None)
 	if not interactions :
@@ -29,7 +29,7 @@ async def get_interaction_by_resource(resourceId : str):
 
 @interactionRouter.delete("/{interactionId}")
 async def delete_interaction_by_id(interactionId : str):
-	result = await db.users.delete_one({"_id":interactionId})
+	result = await db.interactions.delete_one({"_id":interactionId})
 	if result.deleted_count == 0:
 		raise HTTPException(status_code=404,detail="interaction not Found")
 	return {"message":"interaction deleted succesfully"}

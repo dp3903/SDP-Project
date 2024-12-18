@@ -21,7 +21,7 @@ async def create_roadmap(roadmap:RoadmapModel):
 	new_roadmap = await db.roadmaps.find_one({"_id":result.inserted_id})
 	return new_roadmap
 
-@roadmapRouter.put("/{roadmapId}",response_model=RoadmapModel)
+@roadmapRouter.put("/{roadmapId}")
 async def update_roadmap_by_id(roadmapId:str,roadmap:RoadmapModel):
 	roadmap_dict = roadmap.dict(by_alias=True)
 	roadmap_dict.pop('_id',None)
