@@ -83,7 +83,7 @@ function Trending() {
   return (
     <div className="w-full flex flex-row gap-2 pt-20 flex-wrap">
         <div className="w-full min-w-fit">
-            <h1 className='text-center text-3xl font-display border-b-2 border-b-gray-400 py-2'>
+            <h1 className='text-center text-3xl font-display border-b-2 border-b-black mx-4 py-2'>
                 Trending
             </h1>
             <div className="flex flex-row justify-center flex-wrap gap-2 mt-2 p-4">
@@ -95,7 +95,7 @@ function Trending() {
                             <CardDescription>Available on {item.platform}</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            {item.url}
+                            <a href={item.url} className="text-blue-500 hover:underline mb-4 block">{item.url}</a>
 
                             
                         </CardContent>

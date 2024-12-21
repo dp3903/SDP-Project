@@ -32,6 +32,17 @@ export function SignUp(props) {
             Already have an account?
             <a className='text-blue-800 cursor-pointer' onClick={signInClick}>Signin</a>
         </div>
+        <b>
+          Or
+        </b>
+        <div className='w-full rounded-md'>
+            <button className="w-full bg-black text-white rounded-md p-2 flex flex-row flex-nowrap justify-center gap-0">
+              <div className="font-semibold h-[30px]">
+                Sign in with Google
+              </div>
+              <div className="bg-google bg-contain bg-no-repeat h-[30px] w-[30px]"></div>
+            </button>
+        </div>
     </div>
   );
 }

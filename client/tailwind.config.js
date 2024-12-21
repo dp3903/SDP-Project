@@ -7,10 +7,8 @@ export default {
   ],
   theme: {
   	fontFamily: {
-  		sans: [
-  			'ui-sans-serif',
-  			'system-ui'
-  		],
+		sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'],
+
   		serif: [
   			'ui-serif',
   			'Georgia'
@@ -22,15 +20,15 @@ export default {
   		display: [
   			'Bebas Neue'
   		],
-  		body: [
-  			'Open Sans"'
-  		]
+  		body: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'],
   	},
   	extend: {
   		backgroundImage: {
   			'landing-bg': 'url("./src/assets/bg-1.png")',
   			'bg-2': 'url("./src/assets/bg-2.webp")',
   			'bg-3': 'url("./src/assets/image.webp")',
+  			'bg-4': 'url("./src/assets/bg-4.webp")',
+  			'google': 'url("./src/assets/google_icon.png")',
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

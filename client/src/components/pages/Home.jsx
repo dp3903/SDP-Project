@@ -1,5 +1,5 @@
-import React from 'react'
-import { Calendar, UserPen, Home as HomeIcon, LogOut, TrendingUp } from "lucide-react"
+import React, { useState } from 'react'
+import { Calendar, UserPen, Home as HomeIcon, LogOut, TrendingUp, Route } from "lucide-react"
 import { useNavigate } from "react-router-dom";
  
 import {
@@ -36,7 +36,7 @@ const items = [
     {
       title: "Roadmaps",
       url: "roadmaps",
-      icon: Calendar,
+      icon: Route,
     },
     {
       title: "Treanding",
@@ -49,6 +49,7 @@ const items = [
 function Home() {
 
     const navigate = useNavigate();
+    const [active,setActive] = useState('Home');
 
     const handleSignOut = (e) => {
         console.log("signing out.");
@@ -69,7 +70,7 @@ function Home() {
                         <SidebarMenu>
                         {items.map((item) => (
                             <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild>
+                                <SidebarMenuButton asChild isActive={item.title==active} onClick={(e)=>setActive(item.title)}>
                                     <Link to={item.url}>
                                         
                                         <item.icon />

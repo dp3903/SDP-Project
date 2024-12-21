@@ -2,7 +2,7 @@ import React from 'react'
 import ReactStars from "react-rating-stars-component"
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { Check, ChevronsUpDown, ThumbsUp, MessageSquareText } from "lucide-react"
+import { Check, ChevronsUpDown,  } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
     Command,
@@ -192,8 +192,7 @@ function Dashboard() {
                                 <CardDescription>Available on {item.platform}</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                {item.url}
-
+                                <a href={item.url} className="text-blue-500 hover:underline mb-4 block">{item.url}</a>
                                 
                             </CardContent>
                             <CardFooter className="flex justify-between gap-1">

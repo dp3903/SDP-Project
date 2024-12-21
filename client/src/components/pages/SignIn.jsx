@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useNavigate } from 'react-router-dom'
+import GoogleButton from 'react-google-button'
 
  
 export function SignIn(props) {
@@ -37,6 +38,17 @@ export function SignIn(props) {
         <div className='w-full  mt-2 px-3 py-2 rounded-md'>
             Don't have an account?
             <a className='text-blue-800 cursor-pointer' onClick={signUpClick}>Signup</a>
+        </div>
+        <b>
+          Or
+        </b>
+        <div className='w-full rounded-md'>
+            <button className="w-full bg-black text-white rounded-md p-2 flex flex-row flex-nowrap justify-center gap-0">
+              <div className="font-semibold h-[30px]">
+                Sign in with Google
+              </div>
+              <div className="bg-google bg-contain bg-no-repeat h-[30px] w-[30px]"></div>
+            </button>
         </div>
     </div>
   );

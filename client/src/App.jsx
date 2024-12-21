@@ -8,6 +8,8 @@ import { SidebarProvider } from './components/ui/sidebar'
 import Dashboard from './components/pages/Dashboard'
 import ResourceDetails from './components/pages/ResourceDetails'
 import Trending from './components/pages/Trending'
+import ProfilePage from './components/pages/Profile'
+import Roadmaps from './components/pages/Roadmaps'
 
 function App() {
 
@@ -19,7 +21,7 @@ function App() {
           <Route
             path="home"
             element={
-              <div className="bg-bg-3 bg-cover bg-no-repeat min-h-screen">
+              <div className="bg-bg-3 bg-cover bg-no-repeat min-h-screen z-10 relative">
                 <SidebarProvider defaultOpen={false}>
                   <Home />
                 </SidebarProvider>
@@ -27,8 +29,8 @@ function App() {
             }
           >
             <Route index element={<Dashboard/>} />
-            <Route path="roadmaps" element={<div>Roadmaps</div>} />
-            <Route path="profile" element={<div>Profile</div>} />
+            <Route path="roadmaps" element={<Roadmaps/>} />
+            <Route path="profile" element={<ProfilePage />} />
             <Route path="treanding" element={<Trending/>} />
             <Route path="details" element={<ResourceDetails /> } />
             <Route path="signout" element={<div>Signout</div>} />

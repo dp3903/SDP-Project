@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from '../ui/button';
-import { MessageSquareText, ChevronLeft } from 'lucide-react'
+import { ThumbsUp, MessageSquareText, ChevronLeft, Pin, Route } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom';
 
 
@@ -100,7 +100,11 @@ function ResourceDetails(props) {
     }
 
     const handleBack = () => {
-        navigate('/home')
+        navigate(-1)
+    }
+
+    const handleLike = () => {
+        console.log("liked")
     }
 
 
@@ -133,7 +137,9 @@ function ResourceDetails(props) {
                 <div className="text-lg mt-10">
                     Platform: {resource.platform}
                     <br/>
-                    Link: {resource.url}
+                    <span>
+                        Link: <a href={resource.url} className="text-blue-500 inline hover:underline mb-4">{resource.url}</a>
+                    </span>
                     <br/>
                     Type: {resource.type}
                 </div>
@@ -144,12 +150,15 @@ function ResourceDetails(props) {
                     )}
                 </div>
 
-                <div className="text-md mt-10">
+                <div className="text-md mt-10 max-w-sm flex flex-row flex-wrap gap-2">
                     <Button onClick={handleBack} ><ChevronLeft/>Back</Button>
+                    <Button onClick={handleLike} variant="outline" className="border-2 border-black" >Like <ThumbsUp/></Button>
+                    <Button onClick={handleLike} variant="outline" className="border-2 border-black" >Save <Pin/></Button>
+                    <Button onClick={handleLike} variant="outline" className="border-2 border-black" >Add to roadmaps <Route/></Button>
                     
                     <Drawer open={open} onOpenChange={setOpen}>
                         <DrawerTrigger asChild>
-                            <Button variant="outline" className="border-2 border-black ml-2">Comment<MessageSquareText/></Button>
+                            <Button variant="outline" className="border-2 border-black">Comment<MessageSquareText/></Button>
                         </DrawerTrigger>
                         <DrawerContent>
                             <DrawerHeader className="text-left">
