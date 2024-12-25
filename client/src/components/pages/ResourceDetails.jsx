@@ -138,7 +138,7 @@ function ResourceDetails(props) {
                     Platform: {resource.platform}
                     <br/>
                     <span>
-                        Link: <a href={resource.url} className="text-blue-500 inline hover:underline mb-4">{resource.url}</a>
+                        Link: <a href={resource.url} className="text-blue-500 font-bold inline hover:underline mb-4">{resource.url}</a>
                     </span>
                     <br/>
                     Type: {resource.type}
@@ -208,7 +208,7 @@ function ResourceDetails(props) {
             <div className="text-2xl">Comments</div>
             <div className="flex flex-col border-t-2 p-2 shadow-lg border-t-gray-600 overflow-y-auto custom-scrollbar gap-4">
                 {reviews.map(review => 
-                    <Card key={review._id} className="w-full bg-[rgba(255,255,255,.3)] backdrop-blur-lg border-none shadow-lg hover:bg-[rgba(255,255,255,0.5)]">
+                    <Card key={review._id} className="w-full bg-[rgba(255,255,255,.3)] backdrop-blur-lg border-none hover:shadow-lg hover:bg-[rgba(255,255,255,0.5)]">
                         <CardHeader>
                             <CardTitle>{review.userName}</CardTitle>
                             <CardDescription>

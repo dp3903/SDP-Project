@@ -39,7 +39,7 @@ const items = [
       icon: Route,
     },
     {
-      title: "Treanding",
+      title: "Trending",
       url: "treanding",
       icon: TrendingUp,
     },

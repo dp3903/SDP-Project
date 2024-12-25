@@ -10,6 +10,7 @@ import ResourceDetails from './components/pages/ResourceDetails'
 import Trending from './components/pages/Trending'
 import ProfilePage from './components/pages/Profile'
 import Roadmaps from './components/pages/Roadmaps'
+import Test from './components/pages/Test'
 
 function App() {
 
@@ -21,7 +22,7 @@ function App() {
           <Route
             path="home"
             element={
-              <div className="bg-bg-3 bg-cover bg-no-repeat min-h-screen z-10 relative">
+              <div className="bg-[#b8b8ff] min-h-screen z-10 relative">
                 <SidebarProvider defaultOpen={false}>
                   <Home />
                 </SidebarProvider>

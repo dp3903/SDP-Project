@@ -207,7 +207,7 @@ const Sidebar = React.forwardRef((
         {...props}>
         <div
           data-sidebar="sidebar"
-          className="flex h-full w-full flex-col bg-[rgba(55,55,55,.1)] group-data-[variant=floating]:rounded-lg shadow-[0 0 10px black] border-none group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow">
+          className="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg shadow-[0 0 10px black] border-none group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow">
           {children}
         </div>
       </div>
