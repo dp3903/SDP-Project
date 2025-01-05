@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 
 function Landing() {
   return (
-    <div className='w-[100vw] h-[100vh] flex justify-stretch bg-bg-2 bg-no-repeat bg-cover'>
+    <div className='w-[100vw] h-[100vh] flex justify-stretch bg-gradient-to-br from-cyan-500 to-fuchsia-500 bg-no-repeat bg-cover'>
 
-      <div className="absolute text-xl font-semibold py-8 top-0 w-[100vw] flex flex-row flex-nowrap justify-around backdrop-blur backdrop-contrast-50">
+      <div className="absolute text-xl font-semibold py-8 top-0 w-[100vw] flex flex-row flex-nowrap justify-around backdrop-blur ">
           <h1>
             <Link to='/'>
               Welcome To Hermes

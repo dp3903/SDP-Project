@@ -12,7 +12,7 @@ import {
 
 function CustomCard({ item, onClick }) {
   return (
-    <Card key={item.id} onClick={onClick} className="w-[250px] bg-[rgba(248,247,255,1)] transition-all border-none hover:shadow-lg hover:bg-white hover:scale-[1.03]">
+    <Card key={item.id} onClick={onClick} className="w-[250px] bg-[rgba(248,247,255,.8)] transition-all border-none hover:shadow-lg hover:bg-white hover:scale-[1.03]">
         <CardHeader>
             <CardTitle>{item.title}</CardTitle>
             <CardDescription>{item.type}</CardDescription>

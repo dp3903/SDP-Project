@@ -108,7 +108,7 @@ function Roadmap(props){
           >
             
             {cards.map((card) => (
-              <Card key={card.id} id={card.id} title={card.title}></Card>
+              card!=null ? <Card key={card.id} id={card.id} title={card.title}></Card> : null
             ))}
           </div>
         </SortableContext>
@@ -125,6 +125,7 @@ function Roadmap(props){
       const id = String(unique);
       const itemWithColumnId = columns.flatMap((c) => {
         const columnId = c.id;
+        c.cards = c.cards.filter(i => i != null)
         return c.cards.map((i) => ({ itemId: i.id, columnId: columnId }));
       });
       const columnId = itemWithColumnId.find((i) => i.itemId === id)?.columnId;
@@ -135,8 +136,10 @@ function Roadmap(props){
       const { active, over, delta } = event;
       const activeId = String(active.id);
       const overId = over ? String(over.id) : null;
+      console.log(overId,activeId);
       const activeColumn = findColumn(activeId);
       const overColumn = findColumn(overId);
+      console.log(overColumn,activeColumn);
       if (!activeColumn || !overColumn || activeColumn === overColumn) {
         return null;
       }

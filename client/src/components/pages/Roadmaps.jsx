@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import Roadmap from './Roadmap';
-import { Plus } from 'lucide-react';
+import { Plus, CircleHelp } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
@@ -97,27 +97,73 @@ function Roadmaps() {
 
   return (
     <div className="w-full h-full">
-        <Tabs className="w-full h-full flex flex-row flex-nowrap justify-start">
-          <TabsList className="h-[95%] max-w-96 bg-[#f8f7ff] my-4 overflow-y-auto flex-col justify-start border-none shadow-lg">
-            <h1 className='text-black font-bold text-lg'>Your Roadmaps</h1>
-            <TabsTrigger value="__create__" className="my-2 border-2 text-gray-700 text-wrap">
+        <Tabs defaultValue='__default__' className="w-full h-full flex flex-row flex-nowrap justify-start">
+          <TabsList
+            className="h-[97%] max-w-96 bg-[#f8f7ff] my-2 p-4 overflow-y-auto flex flex-col justify-start border-none shadow-lg"
+          >
+            <h1 className="text-black font-bold text-lg">Your Roadmaps</h1>
+            <TabsTrigger
+              value="__create__"
+              className="my-2 border-2 text-gray-700 text-wrap hover:bg-[#b8b8ff]"
+            >
               Add roadmap
-              <Plus/>
+              <Plus />
             </TabsTrigger>
-            {roadmaps.map(roadmap => 
-              <TabsTrigger key={roadmap.id} value={roadmap.id} className="hover:bg-[#b8b8ff] active:bg-[#b8b8ff] mt-1 border-b-2 rounded-none hover:rounded-md">
+            {roadmaps.map((roadmap) => (
+              <TabsTrigger
+                key={roadmap.id}
+                value={roadmap.id}
+                className="hover:bg-[#b8b8ff] mt-1 border-b-2 rounded-none hover:rounded-md"
+              >
                 {roadmap.title}
               </TabsTrigger>
-            )}
+            ))}
+            <TabsTrigger
+              value='__default__'
+              className="mt-auto w-full data-[state=active]:bg-[rgb(246,245,255)] data-[state=active]:shadow-none border-t-2 "
+            >
+              <div className="">
+                <button className="text-sm text-gray-500 hover:text-gray-700 p-2 w-full">
+                  <CircleHelp className='inline' />
+                </button>
+              </div>              
+            </TabsTrigger>
+            
           </TabsList>
 
           <div className='w-5/6'>
+            <TabsContent value="__default__">
+              <div className='flex flex-col justify-start items-center mt-8 gap-8'>
+                <h1 className='font-display text-6xl'>Roadmaps</h1>
+                <h1 className='font-display text-2xl'>Setting roadmaps helps you manage multiple coarses</h1>
+                <ul className='list-decimal text-md max-w-xl font-bold list-inside flex flex-col gap-4'>
+                  <li>
+                    If you are new start by creating your first roadmap.
+                  </li>
+                  <li>
+                    Click on the 'Add roadmap' on the roadmaps' sidebar to add a roadmap.
+                  </li>
+                  <li>
+                    Your roadmaps will be visible in the roadmaps sidebar. Click on any of them to open them.
+                  </li>
+                  <li>
+                    To add items, go to the details page of the coarse you want to add, and use the 'Add to roadmap' option provided.
+                  </li>
+                  <li>
+                    Each item in a roadmap can be re-arranged and placed in any of the appropriate catagories <i>( 'Remaining', 'On-Going' and 'Completed' )</i> using drag and drop features.
+                  </li>
+                  <li>
+                    You can access this help page by clicking on the help icon given below on the roadmap sidebar anytime.
+                  </li>
+                </ul>
+              </div>
+            </TabsContent>
             <TabsContent value="__create__">
               <div className='flex flex-col justify-start items-center mt-8 gap-8'>
                 <h1 className='font-display text-6xl'>Create a New Roadmap</h1>
                 <form onSubmit={handleNewRoadmap} className='w-2/3'>
                   <Input placeholder="Roadmap name..."></Input>
-                  <Button className="w-full mt-2">Submit</Button>
+                  <Button className="w-full mt-2">Create Roadmap</Button>
                 </form>
               </div>
             </TabsContent>

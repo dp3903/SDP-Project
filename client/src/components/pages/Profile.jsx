@@ -91,13 +91,13 @@ export default function ProfilePage() {
         {/* Tabs Section */}
         <Tabs defaultValue="liked" className="w-full">
           <TabsList className="w-full max-w-md mx-auto mb-8 bg-transparent border-[1px]">
-            <TabsTrigger value="liked" className="flex-1">
+            <TabsTrigger value="liked" className="flex-1 data-[state=active]:bg-[rgb(246,245,255)]">
               Liked
             </TabsTrigger>
-            <TabsTrigger value="commented" className="flex-1">
+            <TabsTrigger value="commented" className="flex-1 data-[state=active]:bg-[rgb(246,245,255)]">
               Commented
             </TabsTrigger>
-            <TabsTrigger value="saved" className="flex-1">
+            <TabsTrigger value="saved" className="flex-1 data-[state=active]:bg-[rgb(246,245,255)]">
               Saved
             </TabsTrigger>
           </TabsList>

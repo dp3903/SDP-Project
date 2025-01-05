@@ -22,7 +22,7 @@ function App() {
           <Route
             path="home"
             element={
-              <div className="bg-[#b8b8ff] min-h-screen z-10 relative">
+              <div className="bg-gradient-to-br from-cyan-500 to-fuchsia-500 min-h-screen z-10 relative">
                 <SidebarProvider defaultOpen={false}>
                   <Home />
                 </SidebarProvider>

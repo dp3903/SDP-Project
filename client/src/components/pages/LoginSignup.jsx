@@ -11,8 +11,8 @@ function LoginSignup() {
     const signUpref = useRef();
   
     const [highlightStyle, setHighlightStyle] = useState({ width: 0, left: 0 });
-    const [highlightSignIn, setHighlightSignIn] = useState({ width: 100 });
-    const [highlightSignUp, setHighlightSignUp] = useState({ width: 0 });
+    const [highlightSignIn, setHighlightSignIn] = useState({ width: '100%' });
+    const [highlightSignUp, setHighlightSignUp] = useState({ width: '0%' });
   
     const signInClick = (e)=>{
   
@@ -20,9 +20,9 @@ function LoginSignup() {
       setHighlightStyle({ width: offsetWidth, left: offsetLeft });
   
       setTimeout(()=>{
-        setHighlightSignIn({ width: 100 })
-      },400);
-      setHighlightSignUp({ width: 0 })
+        setHighlightSignIn({ width: '100%' })
+      },300);
+      setHighlightSignUp({ width: '0%' })
     };
   
     const signUpClick = (e)=>{
@@ -30,10 +30,10 @@ function LoginSignup() {
       const { offsetLeft, offsetWidth } = signUpref.current;
       setHighlightStyle({ width: offsetWidth, left: offsetLeft });
   
-      setHighlightSignIn({ width: 0 })
+      setHighlightSignIn({ width: '0%' })
       setTimeout(()=>{
-        setHighlightSignUp({ width: 100 })
-      },400);
+        setHighlightSignUp({ width: '100%' })
+      },300);
     }
   
     useEffect(()=>{
@@ -43,8 +43,8 @@ function LoginSignup() {
   
     return (
       <>
-        <div className='w-[100vw] h-[100vh] flex flex-col items-center bg-bg-2 bg-no-repeat bg-cover'>
-          <div className="absolute text-xl font-semibold py-8 top-0 w-[100vw] flex flex-row flex-nowrap justify-around backdrop-blur backdrop-contrast-50">
+        <div className='w-[100vw] h-[100vh] flex flex-col items-center bg-gradient-to-br from-cyan-500 to-fuchsia-500 bg-no-repeat bg-cover'>
+          <div className="absolute text-xl font-semibold py-8 top-0 w-[100vw] flex flex-row flex-nowrap justify-around backdrop-blur shadow-lg">
             <h1>
               <Link to='/'>
                 Welcome To Hermes
@@ -84,7 +84,7 @@ function LoginSignup() {
   
             </ul>
             <div
-              className="nav-highlight absolute bottom-0 left-0 h-[4px] bg-blue-600 rounded-md"
+              className="nav-highlight absolute bottom-0 left-0 h-[4px] bg-black rounded-md"
               style={{
                 width: `${highlightStyle.width}px`,
                 left: `${highlightStyle.left}px`,
@@ -94,11 +94,11 @@ function LoginSignup() {
           </div>
   
           <div className='flex flex-row w-full mt-2 justify-center overflow-x-hidden flex-nowrap'>
-            <div className='w-1/4 p-10 relative flex flex-row overflow-x-hidden flex-nowrap backdrop-blur bg-[rgba(255,255,255,.25)] rounded-md shadow-lg'>
+            <div className='w-1/4 p-10 relative flex flex-row overflow-x-hidden flex-nowrap backdrop-blur bg-[rgba(55,55,55,0.1)] rounded-md shadow-xl mb-8'>
   
               <div className='overflow-hidden relative left-0'
                 style={{
-                  width: `${highlightSignIn.width}%`,
+                  width: `${highlightSignIn.width}`,
                   transition: "all .3s ease",
                   whiteSpace: "nowrap"
                 }}
@@ -109,7 +109,7 @@ function LoginSignup() {
             
               <div className='overflow-hidden relative right-0'
                 style={{
-                  width: `${highlightSignUp.width}%`,
+                  width: `${highlightSignUp.width}`,
                   transition: "all .3s ease",
                   whiteSpace: "nowrap"
                 }}

@@ -30,7 +30,7 @@ export function SignUp(props) {
         </form>
         <div className='w-full  mt-2 px-3 py-2 rounded-md'>
             Already have an account?
-            <a className='text-blue-800 cursor-pointer' onClick={signInClick}>Signin</a>
+            <a className='font-bold cursor-pointer' onClick={signInClick}> Signin</a>
         </div>
         <b>
           Or

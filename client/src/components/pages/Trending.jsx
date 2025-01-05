@@ -9,6 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import ReactStars from "react-rating-stars-component"
+import CustomCard from './CustomCard';
 
 
 
@@ -88,36 +89,8 @@ function Trending() {
             </h1>
             <div className="flex flex-row justify-center flex-wrap gap-2 mt-2 p-4">
                 {resources.map(item => 
-                    <Card key={item.id} onClick={()=>handleResourceClick(item)} className="w-[250px] bg-[rgba(255,255,255,.3)] backdrop-blur-lg border-none shadow-lg hover:bg-[rgba(55,55,55,0.1)]">
-                        <CardHeader>
-                            <CardTitle>{item.title}</CardTitle>
-                            <CardDescription>{item.type}</CardDescription>
-                            <CardDescription>Available on {item.platform}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <a href={item.url} className="text-blue-500 hover:underline mb-4 block">{item.url}</a>
-
-                            
-                        </CardContent>
-                        <CardFooter className="flex justify-between gap-1">
-                            
-                        <CardDescription>
-                                <ReactStars
-                                    edit={false}
-                                    count={5}
-                                    value={item.averageRating}
-                                    size={24}
-                                    isHalf={true}
-                                    emptyIcon={<i className="far fa-star"></i>}
-                                    halfIcon={<i className="fa fa-star-half-alt"></i>}
-                                    fullIcon={<i className="fa fa-star"></i>}
-                                    // activeColor="rgba(96, 165, 250,1)"
-                                    color={"rgba(255,255,255,.5)"}
-                                />
-                                <span>{item.averageRating} / 5 ({item.numberOfRatings})</span>
-                            </CardDescription>
-                        </CardFooter>
-                    </Card>
+                    <CustomCard key={item.id} item={item} onClick={()=>handleResourceClick(item)} />
+                        
                 )}
                 
             </div>
