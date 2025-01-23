@@ -76,12 +76,15 @@ class ReviewModel(BaseModel):
 	rating : float =Field(ge=0,le=5)
 	comment : str 
 	timestamp : datetime
+	sentimentLabel : Optional[str] =Field(None)
 
 class RoadmapModel(BaseModel):
 	id : Optional[str] = Field(None,alias="_id")
 	title : str 
 	userId : str 
-	resourceList : List[ResourceModel]
+	completed : List[ResourceModel] # contains index of the completed resources 
+	remaining : List[ResourceModel]
+	ongoing : List[ResourceModel]	
 	createdAt : datetime 
 	progress : float = Field(ge=0,le=100) 
 	

@@ -5,12 +5,17 @@ from bson import ObjectId
 from app.database import db
 from app.models import UserModel
 from pymongo import ReturnDocument
+from passlib.context import CryptContext
 import uuid 
 userRouter = APIRouter()
-
+pswd_context = CryptContext(schemas=["bcrypt"],deprecated="auto")
 @userRouter.post("/",response_model=UserModel)
 async def create_user(user : UserModel):
-	user.id = str(uuid.uuid4())[:8] #generates new str id every time new user is created 
+	already_username = await db.users.find_one({"name":user.name})
+	if already_username :
+		raise HTTPException(status_code=409,detail="Username already exists")
+	user.id = str(uuid.uuid4())[:8] #generates new str id every time new user is created
+	user.password = pswd_context.hash(user.password)
 	result = await db.users.insert_one(user.dict(by_alias=True))
 	new_user = await db.users.find_one({ "_id" : result.inserted_id})
 	return new_user
