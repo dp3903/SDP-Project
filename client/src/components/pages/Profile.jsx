@@ -1,26 +1,109 @@
 import {
     Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card"
-import ReactStars from "react-rating-stars-component"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 import { Star } from 'lucide-react'
 import { useNavigate } from "react-router-dom"
 import CustomCard from "./CustomCard"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
+function EditProfile() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Edit Profile</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle className='text-2xl'>Edit Profile</DialogTitle>
+          <DialogDescription>
+            Make changes to your profile here. Click save when you're done. Click anywhere outside to exit.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          
+          <div>
+            <Label htmlFor="username" className="text-right text-nowrap">
+              Username
+            </Label>
+            <Input
+              id="username"
+              defaultValue="John Doe"
+              className="col-span-3"
+            />
+          </div>
+          <div>
+            <Label htmlFor="email" className="text-right text-nowrap">
+              Email
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              defaultValue="John_Doe@gmail.com"
+              className="col-span-3"
+            />
+          </div>
+          <div>
+            <Label htmlFor="oldPassword" className="text-right text-nowrap">
+              Old Password
+            </Label>
+            <Input
+              id="oldPassword"
+              type="password"
+              className="col-span-3"
+            />
+          </div>
+          <div>
+            <Label htmlFor="password" className="text-right text-nowrap">
+              New Password
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              className="col-span-3"
+            />
+          </div>
+          <div>
+            <Label htmlFor="confirmPassword" className="text-right text-nowrap">
+              Confirm New Password
+            </Label>
+            <Input
+              id="confirmPassword"
+              type="password"
+              className="col-span-3"
+            />
+          </div>
+
+        </div>
+        <DialogFooter>
+          <Button type="submit">Save changes</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 export default function ProfilePage() {
 
     const navigate = useNavigate();
 
   const userStats = {
-    recommendations: 156,
-    averageRating: 4.7
+    averageRating: 4.7,
+    resourcesLiked: 10,
+    roadmapsCompleted: 2,
+    roadmapsOngoing: 1,
   }
 
   const recommendedResources = [
@@ -58,7 +141,7 @@ export default function ProfilePage() {
     <div className="min-h-screen font-sans">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Profile Header */}
-        <Card className="p-6 mb-8 bg-[rgba(255,255,255,.2)] border-none shadow-lg backdrop-blur-sm">
+        <Card className="p-6 mb-8 bg-[rgba(255,255,255,.4)] border-none shadow-lg backdrop-blur-sm">
           <div className="flex flex-col md:flex-row items-center gap-6">
             <Avatar className="w-24 h-24">
               <AvatarImage src="/placeholder.svg" />
@@ -68,9 +151,20 @@ export default function ProfilePage() {
               <h1 className="text-3xl font-semibold mb-2">John Doe</h1>
               <p className="text-gray-600 mb-4">Resource Curator & Tech Enthusiast</p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
+
                 <div className="text-center">
-                  <div className="font-semibold">{userStats.recommendations}</div>
-                  <div className="text-sm text-gray-600">Recommendations</div>
+                  <div className="font-semibold">{userStats.resourcesLiked}</div>
+                  <div className="text-sm text-gray-600">Resources Liked</div>
+                </div>
+                
+                <div className="text-center">
+                  <div className="font-semibold">{userStats.roadmapsCompleted}</div>
+                  <div className="text-sm text-gray-600">Roadmaps Completed</div>
+                </div>
+                
+                <div className="text-center">
+                  <div className="font-semibold">{userStats.roadmapsOngoing}</div>
+                  <div className="text-sm text-gray-600">Ongoing Roadmaps</div>
                 </div>
                 
                 <div className="text-center">
@@ -82,22 +176,21 @@ export default function ProfilePage() {
                 </div>
               </div>
             </div>
-            <Button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-              Edit Profile
-            </Button>
+            
+            <EditProfile/>
           </div>
         </Card>
 
         {/* Tabs Section */}
         <Tabs defaultValue="liked" className="w-full">
           <TabsList className="w-full max-w-md mx-auto mb-8 bg-transparent border-[1px]">
-            <TabsTrigger value="liked" className="flex-1 data-[state=active]:bg-[rgb(246,245,255)]">
+            <TabsTrigger value="liked" className="flex-1 data-[state=active]:bg-[rgb(246,245,255)] text-black">
               Liked
             </TabsTrigger>
-            <TabsTrigger value="commented" className="flex-1 data-[state=active]:bg-[rgb(246,245,255)]">
+            <TabsTrigger value="commented" className="flex-1 data-[state=active]:bg-[rgb(246,245,255)] text-black">
               Commented
             </TabsTrigger>
-            <TabsTrigger value="saved" className="flex-1 data-[state=active]:bg-[rgb(246,245,255)]">
+            <TabsTrigger value="saved" className="flex-1 data-[state=active]:bg-[rgb(246,245,255)] text-black">
               Saved
             </TabsTrigger>
           </TabsList>

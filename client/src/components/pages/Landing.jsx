@@ -39,7 +39,7 @@ function Landing() {
           </p>
         </BlurFade>
         <BlurFade delay={0.25 * 3} inView>
-          <Button className='p-4 m-4 w-fit'>Get started</Button>
+          <Button className='p-4 mt-4 w-40'>Get started</Button>
         </BlurFade>
       </div>
 

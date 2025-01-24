@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Card,
     CardContent,
@@ -24,7 +24,25 @@ import { Label } from "@/components/ui/label"
 import { Button } from '../ui/button';
 import { ThumbsUp, MessageSquareText, ChevronLeft, Pin, Route } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 
 const reviews = [
@@ -74,6 +92,89 @@ const reviews = [
       timestamp: "2024-12-05T12:30:20Z",
     },
 ];
+const roadmaps = [
+    {
+        id: 'roadmap-1',
+        title: 'roadmap-1'
+    },
+    {
+        id: 'roadmap-2',
+        title: 'roadmap-2'
+    },
+    {
+        id: 'roadmap-3',
+        title: 'roadmap-3'
+    },
+    {
+        id: 'roadmap-4',
+        title: 'roadmap-4'
+    },
+];
+
+
+function AddToRoadmap(props) {
+
+    const [roadmap,setRoadmap] = useState('');
+    const { roadmaps } = props;
+
+    const handleConfirm = (event) => {
+        console.log(roadmap);
+    }
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="outline" className="border-2 border-black" >Add to roadmaps <Route/></Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Add to your roadmaps.</DialogTitle>
+                    <DialogDescription>
+                        You can add this resource to any of your selected roadmap. If the resource already exists within the roadmap, it won't be affected.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col items-center justify-center gap-2">
+
+                    {roadmap != '' && 
+                        <div>
+                            {roadmap}
+                        </div>
+                    }
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">Select Roadmap</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56">
+                            <DropdownMenuLabel>Your Roadmaps</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuRadioGroup value={roadmap} onValueChange={setRoadmap}>
+                            {roadmaps.map(item => 
+                                <DropdownMenuRadioItem key={item.id} value={item.id}>{item.title}</DropdownMenuRadioItem>
+                            )}
+                            
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                
+                </div>
+                <DialogFooter className="flex flex-row sm:justify-between">
+                    <DialogClose asChild>
+                        <Button type="button" variant="secondary">
+                        Close
+                        </Button>
+                    </DialogClose>
+                    <DialogClose asChild disabled={roadmap==''}>
+                        <Button type="button"  onClick={handleConfirm}>
+                        Confirm
+                        </Button>
+                    </DialogClose>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+}
   
 
 function ResourceDetails(props) {
@@ -138,7 +239,7 @@ function ResourceDetails(props) {
                     Platform: {resource.platform}
                     <br/>
                     <span>
-                        Link: <a href={resource.url} className="text-blue-500 font-bold inline hover:underline mb-4">{resource.url}</a>
+                        Link: <a href={resource.url} className="underline italic font-bold inline hover:underline mb-4">{resource.url}</a>
                     </span>
                     <br/>
                     Type: {resource.type}
@@ -154,7 +255,8 @@ function ResourceDetails(props) {
                     <Button onClick={handleBack} ><ChevronLeft/>Back</Button>
                     <Button onClick={handleLike} variant="outline" className="border-2 border-black" >Like <ThumbsUp/></Button>
                     <Button onClick={handleLike} variant="outline" className="border-2 border-black" >Save <Pin/></Button>
-                    <Button onClick={handleLike} variant="outline" className="border-2 border-black" >Add to roadmaps <Route/></Button>
+
+                    <AddToRoadmap roadmaps={roadmaps} />
                     
                     <Drawer open={open} onOpenChange={setOpen}>
                         <DrawerTrigger asChild>

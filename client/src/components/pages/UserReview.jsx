@@ -14,20 +14,47 @@ import {
 import { Input } from '../ui/input';
 import { useForm } from 'react-hook-form';
 import { Form , FormField , FormItem , FormLabel , FormControl , FormDescription , FormMessage } from '../ui/form';
+import { useNavigate } from 'react-router-dom';
 
 function UserReview() {
 
+    const navigate = useNavigate();
     const [dummy,setDummy] = useState();
 
     const form = useForm({
         defaultValues: {
-            experience: '',
+            experience: 'beginner',
             fields: [],
+            platforms: ['video','blog','pdf'],
         },
     });
 
-    const levels = ['Beginner','Intermediate','Advance'];
-    const fields = ['Frontend Development','Backend Development','Fullstack Development','Datastructures and Algorithms','Database','Networking','Machine Learning','Data Science','None of the above']
+    const levels = {
+        beginner : "Beginner",
+        intermediate : "Intermediate",
+        advanced : "Advanced",
+    };
+    const platforms = {
+        video : "Videos",
+        blog : "Blogs",
+        pdf : "Documents",
+    };
+    const fields = {
+        frontend : "Frontend",
+        backend : "Backend",
+        fullstack : "Fullstack",
+        machineLearning : "Machine Learning",
+        ai : "AI",
+        dsa : "DSA",
+        algorithms : "Algorithms",
+        dbms : "DBMS",
+        operatingSystem : "Operating System",
+        networking : "Networking",
+        devops : "Devops",
+        blockchain : "Blockchain",
+        mobiledev : "Mobile development",
+        IoT : "IoT",
+    };
 
     function onSubmit(data) {
         if(data.experience == ''){
@@ -38,16 +65,21 @@ function UserReview() {
             form.setError("fields", { type: "focus", message:"Please select a field" }, { shouldFocus: true });
             return;
         }
+        if(data.platforms.length == 0){
+            form.setError("platforms", { type: "focus", message:"Please select a platform" }, { shouldFocus: true });
+            return;
+        }
         console.log(data);
+        navigate('/home');
     }
 
-    const toggleOption = (option) => {
-        let arr = form.getValues('fields');
+    const toggleOption = (option,field) => {
+        let arr = form.getValues(field);
         if(arr.includes(option)){
-            form.setValue('fields',arr.filter(item => item != option));
+            form.setValue(field,arr.filter(item => item != option));
         }
         else{
-            form.setValue('fields',[...arr , option]);
+            form.setValue(field,[...arr , option]);
         }
         setDummy(!dummy);
     };
@@ -67,7 +99,7 @@ function UserReview() {
         </BlurFade>
         
         <BlurFade delay={0.25 * 3} inView>
-            <div className="container mt-10 mb-10 mx-auto max-w-md p-4 rounded-lg shadow-md bg-white">
+            <div className="container mt-10 mb-10 mx-auto max-w-lg p-4 rounded-lg shadow-md bg-white">
                 <h1 className="text-2xl font-semibold text-gray-800 mb-4">Find Your Resources</h1>
                 
                 <Form {...form}>
@@ -87,9 +119,9 @@ function UserReview() {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            {levels.map((item)=>{
-                                                return <SelectItem key={item} value={item}>{item}</SelectItem>
-                                            })}
+                                            {Object.keys(levels).map(item => 
+                                                <SelectItem key={item} value={item} > {levels[item]} </SelectItem>
+                                            )}
                                         </SelectContent>
                                     </Select>
                                     <FormDescription>
@@ -102,6 +134,37 @@ function UserReview() {
 
                         <FormField
                             control={form.control}
+                            name="platforms"
+                            render={({ field }) => (
+                                <div className="container mx-auto max-w-lg p-4">
+                                    <h2 className="text-lg font-semibold text-gray-800">
+                                        Select Your preferred resource platforms.
+                                    </h2>
+                                    <FormDescription className="mb-4">
+                                        You must select at least 1 platform that you like to learn from.
+                                    </FormDescription>
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                        {Object.keys(platforms).map((option) => (
+                                        <div
+                                            key={option}
+                                            onClick={() => toggleOption(option,'platforms')}
+                                            className={`cursor-pointer min-w-fit p-4 rounded-lg border ${
+                                            form.getValues('platforms').includes(option)
+                                                ? "bg-blue-500 text-white border-blue-500"
+                                                : "bg-gray-100 hover:bg-blue-200 text-gray-800 border-gray-300"
+                                            } hover:shadow-lg transition`}
+                                        >
+                                            {platforms[option]}
+                                        </div>
+                                        ))}
+                                    </div>
+                                    <FormMessage />
+                                </div>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
                             name="fields"
                             render={({ field }) => (
                                 <div className="container mx-auto max-w-lg p-4">
@@ -109,20 +172,20 @@ function UserReview() {
                                         Select Your Interests
                                     </h2>
                                     <FormDescription className="mb-4">
-                                        You can select 'None of the above' if you are new
+                                        You can select any subjects you wish to get recommendations on.
                                     </FormDescription>
-                                    <div className="grid grid-cols-2 gap-4 mb-4">
-                                        {fields.map((option) => (
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                        {Object.keys(fields).map((option) => (
                                         <div
                                             key={option}
-                                            onClick={() => toggleOption(option)}
+                                            onClick={() => toggleOption(option,'fields')}
                                             className={`cursor-pointer min-w-fit p-4 rounded-lg border ${
                                             form.getValues('fields').includes(option)
                                                 ? "bg-blue-500 text-white border-blue-500"
                                                 : "bg-gray-100 hover:bg-blue-200 text-gray-800 border-gray-300"
                                             } hover:shadow-lg transition`}
                                         >
-                                            {option}
+                                            {fields[option]}
                                         </div>
                                         ))}
                                     </div>

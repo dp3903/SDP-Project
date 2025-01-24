@@ -91,7 +91,7 @@
       margin-left: 10px;
     }
     &::-webkit-scrollbar-thumb {
-      background-color: #6b7280; /* Thumb color */
+      background-color: #000000; /* Thumb color */
       border-radius: 9999px;
     }
     &::-webkit-scrollbar-track {

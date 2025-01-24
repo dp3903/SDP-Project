@@ -37,6 +37,12 @@ function App() {
             <Route path="signout" element={<div>Signout</div>} />
           </Route>
           <Route path="/authenticate" element={<LoginSignup />} />
+          <Route path='/userReview' element={
+              <div className='flex flex-row flex-nowrap justify-center bg-gradient-to-br from-cyan-500 to-fuchsia-500'>
+                <UserReview/>
+              </div>
+            }
+          />
           <Route path="/about" element={<div>About us page</div>} />
           <Route path="/contact" element={<div>Contact us page</div>} />
           <Route path="*" element={<div>Error: 404 page not found</div>} />
