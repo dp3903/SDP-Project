@@ -11,6 +11,10 @@ import Trending from './components/pages/Trending'
 import ProfilePage from './components/pages/Profile'
 import Roadmaps from './components/pages/Roadmaps'
 import Test from './components/pages/Test'
+import AdminHome from './components/pages/Admin/AdminHome'
+import AdminNavigator from './components/pages/Admin/AdminNavigator'
+import AllUsers from './components/pages/Admin/AllUsers'
+import AllItems from './components/pages/Admin/AllItems'
 
 function App() {
 
@@ -22,7 +26,7 @@ function App() {
           <Route
             path="home"
             element={
-              <div className="bg-gradient-to-br from-cyan-500 to-fuchsia-500 min-h-screen z-10 relative">
+              <div className="bg-gradient-to-br from-cyan-500 to-fuchsia-500 min-h-screen">
                 <SidebarProvider defaultOpen={false}>
                   <Home />
                 </SidebarProvider>
@@ -36,6 +40,22 @@ function App() {
             <Route path="details" element={<ResourceDetails /> } />
             <Route path="signout" element={<div>Signout</div>} />
           </Route>
+
+          <Route
+            path="Admin"
+            element={
+              <div className="bg-gradient-to-br from-cyan-500 to-fuchsia-500 min-h-screen">
+                <SidebarProvider defaultOpen={false}>
+                  <AdminNavigator />
+                </SidebarProvider>
+              </div>
+            }
+          >
+            <Route index element={<AdminHome/>} />
+            <Route path='users' element={<AllUsers/>} />
+            <Route path='items' element={<AllItems/>} />
+          </Route>
+
           <Route path="/authenticate" element={<LoginSignup />} />
           <Route path='/userReview' element={
               <div className='flex flex-row flex-nowrap justify-center bg-gradient-to-br from-cyan-500 to-fuchsia-500'>
