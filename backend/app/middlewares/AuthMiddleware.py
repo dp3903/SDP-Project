@@ -2,12 +2,11 @@ from fastapi import Request
 from fastapi.responses import JSONResponse 
 from starlette.middleware.base import BaseHTTPMiddleware
 from jose import JWTError 
-from app.helpers.JWTHelper import verify_access_token
-
-EXCLUDED_PATHS = ["/auth/login","/api/users"]
+from app.helpers.JWTHelpers import verify_access_token
+EXCLUDED_PATHS = ["/auth/login/","/api/users/","/"]
 class AuthMiddleware(BaseHTTPMiddleware):
 	async def dispatch(self,request:Request,call_next):
-		if request.url.path in EXCLUDED_PATHS
+		if request.url.path in EXCLUDED_PATHS:
 			return await call_next(request)
 		auth_header = request.headers.get("Authorization")
 		if not auth_header or not auth_header.startswith("Bearer "):

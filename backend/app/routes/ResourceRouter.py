@@ -26,4 +26,10 @@ async def get_all_resources():
 		raise HTTPException(status_code=404,detail="resources not found")
 	return resources
 
+@resourceRouter.delete("/{resourceId}")
+async def delete_resource(resourceId : str):
+	result = await db.resources.delete_one({"_id":resourceId})
+	if result.deleted_count==0:
+		raise HTTPException(status_code=404,detail="Resource not Found")
+	return {"message":"Resource Deleted Succesfully"}
 

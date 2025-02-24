@@ -2,6 +2,8 @@ from fastapi import APIRouter , HTTPException
 from app.database import db 
 from app.models import ReviewModel 
 from typing import List 
+
+from app.helpers.sentiment_analysis import analyze_sentiment
 import uuid 
 
 reviewRouter = APIRouter()
@@ -9,6 +11,9 @@ reviewRouter = APIRouter()
 @reviewRouter.post("/",response_model=ReviewModel)
 async def create_review(review : ReviewModel):
 	review.id = str(uuid.uuid4())[:8]
+	sentiment_result = analyze_sentiment(review.comment)
+	review.sentimentLabel = sentiment_result['sentiment']
+	review.sentimentScore = sentiment_result['score']
 	result = await db.reviews.insert_one(review.dict(by_alias=True))
 	new_review = await db.reviews.find_one({"_id":result.inserted_id})
 	return new_review

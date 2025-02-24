@@ -7,8 +7,9 @@ from app.models import UserModel
 from pymongo import ReturnDocument
 from passlib.context import CryptContext
 import uuid 
+from typing import List
 userRouter = APIRouter()
-pswd_context = CryptContext(schemas=["bcrypt"],deprecated="auto")
+pswd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
 @userRouter.post("/",response_model=UserModel)
 async def create_user(user : UserModel):
 	already_username = await db.users.find_one({"name":user.name})
@@ -43,4 +44,9 @@ async def update_user(userId : str,user:UserModel):
 		return {"updated_user":updated_user}
 	else :
 		raise HTTPException(status_code=404,detail="User not Found")
-
+@userRouter.get("/userList",response_model=List[UserModel])
+async def get_all_users():
+	users = await db.users.find().to_list(None)
+	if not users:
+		raise HTTPException(status_code=404,detail="Users not Found")
+	return users
