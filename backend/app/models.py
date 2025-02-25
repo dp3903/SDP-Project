@@ -15,7 +15,7 @@ class ResourceFormatEnum(str,Enum):
 	blog = "blog"
 	pdf = "pdf"
 	
-class ResourceCategoryEnum(str , Enum):
+class ResourceKeyWordEnum(str , Enum):
     AMETHYST = "Amethyst"
     SWIFTUI = "SwiftUI"
     OPENMP = "OpenMP"
@@ -133,12 +133,12 @@ class ResourceCategoryEnum(str , Enum):
 class InteractionTypeEnum(str,Enum):
 	like = "like"
 	click = "click"
-	saved = "saved"
+	reviewed = "reviewed"
 	
 class UserPrefrences(BaseModel):
 	skillLevel : SkillLevelEnum
 	preferredFormat : List[ResourceFormatEnum]
-	interests : List[ResourceCategoryEnum] 
+	interests : List[ResourceKeyWordEnum] 
 
 class UserModel(BaseModel):
 	id : Optional[str] = Field(None,alias="_id")
@@ -153,10 +153,9 @@ class ResourceModel(BaseModel):
 	id : Optional[str] = Field(None,alias="_id")
 	title : str 
 	type : ResourceFormatEnum
-	category : ResourceCategoryEnum 
 	url : str 
 	platform : str # youtube , coursera , offical docs , author name if the book 
-	tags : List[ResourceCategoryEnum] # list of keyword assoiciated with Resources
+	tags : List[ResourceKeyWordEnum] # list of keyword assoiciated with Resources
 	averageRating : float
 	no_of_reviews : float = Field(0,ge=0)
 
