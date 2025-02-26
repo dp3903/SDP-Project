@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useNavigate } from 'react-router-dom'
+import AuthContext from './AuthContext'
 
  
 export function SignIn(props) {
 
   const navigate = useNavigate();
+  const { setUsername, setToken, setEmail } = useContext(AuthContext);
 
   function onSubmit(values) {
     // Do something with the form values.
@@ -21,6 +23,14 @@ export function SignIn(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('password').value;
+
+    // validate
+    let response = { username, token:'abcd', email:'abc@123.com' }
+    setUsername(response.username);
+    setToken(response.token);
+    setEmail(response.email);
     navigate("/home")
   }
 
@@ -28,9 +38,9 @@ export function SignIn(props) {
     <div className="flex flex-col items-center justify-center w-full">
         <h1 className='text-5xl w-full '>Sign In</h1>
         <form className='w-full mt-10 text-left flex flex-col gap-2'>
-            <Input placeholder="Enter username" type="text"></Input>
+            <Input placeholder="Enter username" type="text" id="username"></Input>
 
-            <Input placeholder="Enter password" type="password"></Input>
+            <Input placeholder="Enter password" type="password" id="password"></Input>
 
             <Button onClick={handleSubmit} className="w-full  mt-2">Submit</Button>
         </form>

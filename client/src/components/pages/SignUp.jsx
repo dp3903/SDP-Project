@@ -2,11 +2,16 @@ import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import AuthContext from './AuthContext'
+import { useContext } from "react"
 
  
 export function SignUp(props) {
 
   const navigate = useNavigate();
+  const { setUsername, setToken, setEmail } = useContext(AuthContext);
+
 
   function onSubmit(values) {
     // Do something with the form values.
@@ -21,6 +26,26 @@ export function SignUp(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(event.target[0].value)
+    console.log(event.target[1].value)
+    console.log(event.target[2].value)
+    console.log(event.target[3].value)
+
+    let username = event.target[0].value;
+    let email = event.target[1].value;
+    let password = event.target[2].value;
+    if(password != event.target[3].value){
+      toast("Error!!! Password does not match confirm passoword", {
+        description: "Please make sure password matches confirm password.",
+      })
+      return;
+    }
+
+    // validate
+    response = { username, token:'abcd', email:'abc@123.com' }
+    setUsername(response.username);
+    setToken(response.token);
+    setEmail(response.email);
 
     navigate('/userReview')
   }

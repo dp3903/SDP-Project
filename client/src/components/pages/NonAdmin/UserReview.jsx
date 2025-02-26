@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import BlurFade from '../ui/blur-fade'
-import { Button } from '../ui/button';
+import BlurFade from '../../ui/blur-fade'
+import { Button } from '../../ui/button';
 import {
     Select,
     SelectContent,
@@ -10,10 +10,10 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from '../ui/select';
-import { Input } from '../ui/input';
+} from '../../ui/select';
+import { Input } from '../../ui/input';
 import { useForm } from 'react-hook-form';
-import { Form , FormField , FormItem , FormLabel , FormControl , FormDescription , FormMessage } from '../ui/form';
+import { Form , FormField , FormItem , FormLabel , FormControl , FormDescription , FormMessage } from '../../ui/form';
 import { useNavigate } from 'react-router-dom';
 
 function UserReview() {

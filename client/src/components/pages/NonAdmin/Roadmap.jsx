@@ -1,6 +1,6 @@
 import React, { act, useEffect, useState } from 'react';
 import { Progress } from "@/components/ui/progress"
-import Confetti from '../ui/confetti';
+import Confetti from '../../ui/confetti';
 import confetti from "canvas-confetti";
 import {
   closestCorners,

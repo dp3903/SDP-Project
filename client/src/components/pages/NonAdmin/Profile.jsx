@@ -1,9 +1,9 @@
 import {
     Card,
 } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { Button } from "../ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar"
+import { Button } from "../../ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs"
 import { Star } from 'lucide-react'
 import { useNavigate } from "react-router-dom"
 import CustomCard from "./CustomCard"
@@ -29,8 +29,11 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import AuthContext from "../AuthContext"
+import { useEffect, useContext } from "react"
 
-function EditProfile() {
+
+function EditProfile({ username, setUsername, token, email, setEmail }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -51,7 +54,7 @@ function EditProfile() {
             </Label>
             <Input
               id="username"
-              defaultValue="John Doe"
+              defaultValue={username}
               className="col-span-3"
             />
           </div>
@@ -62,7 +65,7 @@ function EditProfile() {
             <Input
               id="email"
               type="email"
-              defaultValue="John_Doe@gmail.com"
+              defaultValue={email}
               className="col-span-3"
             />
           </div>
@@ -133,7 +136,8 @@ function EditProfile() {
 
 export default function ProfilePage() {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { username, setUsername, token, email, setEmail } = useContext(AuthContext);
 
   const userStats = {
     averageRating: 4.7,
@@ -181,10 +185,10 @@ export default function ProfilePage() {
           <div className="flex flex-col md:flex-row items-center gap-6">
             <Avatar className="w-24 h-24">
               <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarFallback>{username[0]?.toUpperCase()}</AvatarFallback>
             </Avatar>
             <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl font-semibold mb-2">John Doe</h1>
+              <h1 className="text-3xl font-semibold mb-2">{username}</h1>
               <p className="text-gray-600 mb-4">Resource Curator & Tech Enthusiast</p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
 
@@ -214,7 +218,7 @@ export default function ProfilePage() {
             </div>
             
             <div>  
-              <EditProfile/>
+              <EditProfile username={username} setUsername={setUsername} token={token} email={email} setEmail={setEmail} />
             </div>
           </div>
         </Card>

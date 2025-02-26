@@ -8,7 +8,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import ReactStars from "react-rating-stars-component"
-import { Badge } from '../ui/badge';
+import { Badge } from '../../ui/badge';
 import {
     Drawer,
     DrawerClose,
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/drawer"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import { ThumbsUp, MessageSquareText, ChevronLeft, Pin, Route } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import {

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs"
 import Roadmap from './Roadmap';
 import { Plus, CircleHelp } from 'lucide-react';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
+import { Input } from '../../ui/input';
+import { Button } from '../../ui/button';
 
 
 const roadmaps = [

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Calendar, UserPen, Home as HomeIcon, LogOut, TrendingUp, Route } from "lucide-react"
 import { useNavigate } from "react-router-dom";
  
@@ -16,10 +16,11 @@ import {
     SidebarMenuAction,
     SidebarFooter,
     useSidebar,
-} from "../ui/sidebar"
+} from "../../ui/sidebar"
 import { Link, Outlet } from 'react-router-dom';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 import ResourceDetails from './ResourceDetails';
+import AuthContext from '../AuthContext';
 
 
 const items = [
@@ -50,11 +51,17 @@ function Home() {
 
     const navigate = useNavigate();
     const [active,setActive] = useState('Home');
+    const { token } = useContext(AuthContext);
 
     const handleSignOut = (e) => {
         console.log("signing out.");
         navigate("/")
     }
+
+    useEffect(() => {
+        if(token == '')
+            navigate('/');
+    },[]);
 
     const {
         setOpen,
