@@ -10,16 +10,7 @@ import uuid
 from typing import List
 userRouter = APIRouter()
 pswd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
-@userRouter.post("/",response_model=UserModel)
-async def create_user(user : UserModel):
-	already_username = await db.users.find_one({"name":user.name})
-	if already_username :
-		raise HTTPException(status_code=409,detail="Username already exists")
-	user.id = str(uuid.uuid4())[:8] #generates new str id every time new user is created
-	user.password = pswd_context.hash(user.password)
-	result = await db.users.insert_one(user.dict(by_alias=True))
-	new_user = await db.users.find_one({ "_id" : result.inserted_id})
-	return new_user
+
 
 @userRouter.get("/{userId}",response_model=UserModel)
 async def get_user(userId : str):
@@ -44,9 +35,3 @@ async def update_user(userId : str,user:UserModel):
 		return {"updated_user":updated_user}
 	else :
 		raise HTTPException(status_code=404,detail="User not Found")
-@userRouter.get("/userList",response_model=List[UserModel])
-async def get_all_users():
-	users = await db.users.find().to_list(None)
-	if not users:
-		raise HTTPException(status_code=404,detail="Users not Found")
-	return users
