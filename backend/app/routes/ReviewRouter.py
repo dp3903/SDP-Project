@@ -1,8 +1,8 @@
 from fastapi import APIRouter , HTTPException
 from app.database import db 
-from app.models import ReviewModel 
+from app.models import ReviewModel , InteractionModel , InteractionTypeEnum
 from typing import List 
-
+from datetime import datetime
 from app.helpers.sentiment_analysis import analyze_sentiment
 import uuid 
 
@@ -16,6 +16,13 @@ async def create_review(review : ReviewModel):
 	review.sentimentScore = sentiment_result['score']
 	result = await db.reviews.insert_one(review.dict(by_alias=True))
 	new_review = await db.reviews.find_one({"_id":result.inserted_id})
+	interaction: InteractionModel
+	interaction.id = str(uuid.uuid4())[:8]
+	interaction.userId = review.userId
+	interaction.resourceId = review.resourceId
+	interaction.interactionType = InteractionTypeEnum.reviewed
+	interaction.timestamp = datetime.now()
+	await db.interactions.insert_one(interaction.dict(by_alias=True))
 	return new_review
 
 @reviewRouter.get("/users/{userId}",response_model=List[ReviewModel])
