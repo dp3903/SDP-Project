@@ -204,7 +204,7 @@ async def get_collaborative(userId, top_n = 10):
     return resource_intIds
 
 async def get_content_based(userId,top_n = 10):
-    interactions = db.interactions.find({'userId': userId}).to_list(None)
+    interactions = db.interactions.find({'userId': userId}).sort('timestamp', -1).to_list(None)
     if not interactions :
         return None
     
