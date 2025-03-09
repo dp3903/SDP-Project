@@ -8,7 +8,7 @@ import AuthContext from './AuthContext'
 export function SignIn(props) {
 
   const navigate = useNavigate();
-  const { setUsername, setToken, setEmail } = useContext(AuthContext);
+  const { setUsername, setToken, setId } = useContext(AuthContext);
 
   function onSubmit(values) {
     // Do something with the form values.
@@ -25,13 +25,36 @@ export function SignIn(props) {
     e.preventDefault();
     let username = document.getElementById('username').value;
     let password = document.getElementById('password').value;
-
-    // validate
-    let response = { username, token:'abcd', email:'abc@123.com' }
-    setUsername(response.username);
-    setToken(response.token);
-    setEmail(response.email);
-    navigate("/home")
+    console.log(username, password)
+    const authResponse = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/auth/login/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username : username,
+            password :  password,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        else 
+        {
+          setUsername(username);
+          setToken(data.token);
+          setId(data.user_id);
+          console.log(data)
+          navigate("/home")
+        }
+      }
+      catch (error) {
+        console.error('Error:', error);
+      }
+    
+    }
+    authResponse();
   }
 
   return (

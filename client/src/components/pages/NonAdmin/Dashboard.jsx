@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import ReactStars from "react-rating-stars-component"
 import { Input } from '../../ui/input'
 import { Button } from '../../ui/button'
@@ -27,8 +27,7 @@ import {
 } from "@/components/ui/card"
 import { useNavigate } from 'react-router-dom'
 import CustomCard from './CustomCard'
-
-
+import AuthContext from '../AuthContext'
 
 const frameworks = [
     {
@@ -121,7 +120,7 @@ function Dashboard() {
     const [filterValue, setFilterValue] = React.useState("")
     const [searchValue, setSearchValue] = React.useState("")
     const [resources, setResources] = React.useState([]);
-
+    const { id , token } = useContext(AuthContext)
     const navigate = useNavigate();
 
     const handleResourceClick = (item) => {
@@ -143,7 +142,23 @@ function Dashboard() {
 
     useEffect(()=>{
         // get recommendations
-        setResources(demoResources)
+        let user_id = id 
+        const recResponse = async () => {
+            try {
+                const rec_response = await fetch("http://localhost:8080/api/recommendations/"+user_id)
+                if(rec_response.ok)
+                {
+                    let recommendations = await rec_response.json();
+                    setResources(recommendations.recommended_resources)
+                    console.log(recommendations)
+                }
+            }
+            catch (error) {
+                console.error("Recommendations error:", error);
+            }
+        }
+        // setResources(demoResources)
+        recResponse()
     },[]);
 
   return (
@@ -203,12 +218,14 @@ function Dashboard() {
                     Recommended For you
                 </h1>
                 <div className="flex flex-row justify-center flex-wrap gap-2 mt-2 p-4">
-                    {resources.map(item => 
-
-                        <CustomCard key={item.id} item={item} onClick={()=>handleResourceClick(item)} />
-                            
-                    )}
-                    
+                {resources.length > 0 ? 
+                (
+                    resources.map(item => (
+                    <CustomCard key={item._id} item={item} onClick={() => handleResourceClick(item)} />
+                    ))
+                ) : (
+                    <p>No recommendations available</p>
+                )}  
                 </div>
             </div>
         </div>

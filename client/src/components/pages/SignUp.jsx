@@ -3,14 +3,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import AuthContext from './AuthContext'
-import { useContext } from "react"
+
 
  
 export function SignUp(props) {
 
   const navigate = useNavigate();
-  const { setUsername, setToken, setEmail } = useContext(AuthContext);
+
 
 
   function onSubmit(values) {
@@ -42,12 +41,12 @@ export function SignUp(props) {
     }
 
     // validate
-    response = { username, token:'abcd', email:'abc@123.com' }
-    setUsername(response.username);
-    setToken(response.token);
-    setEmail(response.email);
+    // let response = { username:use, token:'abcd', email:'abc@123.com' }
+    // setUsername(response.username);
+    // setToken(response.token);
+    // setEmail(response.email);
 
-    navigate('/userReview')
+    navigate('/userReview',{state : { username: username, email: email, password: password }})
   }
 
   return (

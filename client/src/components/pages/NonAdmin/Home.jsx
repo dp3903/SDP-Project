@@ -59,8 +59,9 @@ function Home() {
     }
 
     useEffect(() => {
-        if(token == '')
-            navigate('/');
+        // if(token == '')
+        //     console.log("due to no token....")
+        //     navigate('/');
     },[]);
 
     const {

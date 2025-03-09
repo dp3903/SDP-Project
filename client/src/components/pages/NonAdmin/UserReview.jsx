@@ -14,10 +14,14 @@ import {
 import { Input } from '../../ui/input';
 import { useForm } from 'react-hook-form';
 import { Form , FormField , FormItem , FormLabel , FormControl , FormDescription , FormMessage } from '../../ui/form';
-import { useNavigate } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
+import { date } from 'zod';
+import AuthContext from '../AuthContext'
+import { useContext } from "react"
 function UserReview() {
-
+    const { setUsername, setToken, setEmail , setId} = useContext(AuthContext);
+    const location = useLocation();
+    const { username , email , password} = location.state || {}
     const navigate = useNavigate();
     const [dummy,setDummy] = useState();
 
@@ -40,20 +44,120 @@ function UserReview() {
         pdf : "Documents",
     };
     const fields = {
-        frontend : "Frontend",
-        backend : "Backend",
-        fullstack : "Fullstack",
-        machineLearning : "Machine Learning",
-        ai : "AI",
-        dsa : "DSA",
-        algorithms : "Algorithms",
-        dbms : "DBMS",
-        operatingSystem : "Operating System",
-        networking : "Networking",
-        devops : "Devops",
-        blockchain : "Blockchain",
-        mobiledev : "Mobile development",
-        IoT : "IoT",
+        
+            AMETHYST: "Amethyst",
+            SWIFTUI: "SwiftUI",
+            OPENMP: "OpenMP",
+            UI_UX: "UI/UX",
+            KTOR: "Ktor",
+            ML_NET: "ML.NET",
+            NOSQL: "NoSQL",
+            IOT: "IoT",
+            AI: "ai",
+            ANGULAR: "Angular",
+            GAME_DEVELOPMENT: "Game Development",
+            BACKEND: "Backend",
+            UNITY: "Unity",
+            ROCKET: "Rocket",
+            SQLITE: "SQLite",
+            NUXT_JS: "Nuxt.js",
+            JAKARTA_EE: "Jakarta EE",
+            MACHINE_LEARNING: "Machine Learning",
+            APACHE_HADOOP: "Apache Hadoop",
+            COCOS2D_X: "Cocos2d-x",
+            FLASK: "Flask",
+            UNREAL_ENGINE: "Unreal Engine",
+            WINFORMS: "WinForms",
+            MONGODB: "MongoDB",
+            SPRING_BOOT: "Spring Boot",
+            GO: "Go",
+            CLOUD_MICROSERVICES: "Cloud & Microservices",
+            OPERATING_SYSTEM: "operating System",
+            DEVOPS: "devops",
+            DATA_SCIENCE: "Data Science",
+            BLOCKCHAIN: "blockchain",
+            SCENEKIT: "SceneKit",
+            CLOUD_COMPUTING: "Cloud Computing",
+            PYGAME: "Pygame",
+            PYTORCH: "PyTorch",
+            ALGORITHMS: "algorithms",
+            CPP: "C++",
+            MYSQL: "MySQL",
+            KIVY: "Kivy",
+            GIN: "Gin",
+            EXPRESS_JS: "Express.js",
+            WXWIDGETS: "wxWidgets",
+            DJANGO: "Django",
+            VAPOR: "Vapor",
+            POSTGRESQL: "PostgreSQL",
+            CYBERSECURITY: "cybersecurity",
+            SFML: "SFML",
+            DESKTOP_APPLICATIONS: "Desktop Applications",
+            MLPACK: "MLpack",
+            FASTAPI: "FastAPI",
+            COBRA: "Cobra",
+            BEVY: "Bevy",
+            CUDA: "CUDA",
+            FRONTEND: "Frontend",
+            SEABORN: "Seaborn",
+            SVELTE: "Svelte",
+            PYTHON: "Python",
+            TENSORFLOW_CPP: "TensorFlow C++",
+            GRPC: "gRPC",
+            NUMPY: "NumPy",
+            THREE_JS: "Three.js",
+            JETPACK_COMPOSE: "Jetpack Compose",
+            FULL_STACK: "Full-Stack",
+            JMONKEYENGINE: "jMonkeyEngine",
+            NATURAL_LANGUAGE_PROCESSING: "natural Language Processing",
+            DATA_STRUCTURES: "data Structures",
+            SPRITEKIT: "SpriteKit",
+            FIREBASE: "Firebase",
+            SQL: "SQL",
+            MOBILE_DEVELOPMENT: "Mobile Development",
+            CLI_DEVELOPMENT: "CLI Development",
+            GUI_DEVELOPMENT: "GUI Development",
+            LIBGDX: "libGDX",
+            ACTIX: "Actix",
+            PANDAS: "Pandas",
+            KUBERNETES: "Kubernetes",
+            ECHO: "Echo",
+            WEB_DEVELOPMENT: "Web Development",
+            EMBEDDED_SYSTEMS: "Embedded Systems",
+            CSHARP: "C#",
+            JAVASCRIPT: "JavaScript",
+            QT: "Qt",
+            APACHE_SPARK: "Apache Spark",
+            MATPLOTLIB: "Matplotlib",
+            REACT: "React",
+            PHASER_JS: "Phaser.js",
+            WPF: "WPF",
+            UIKIT: "UIKit",
+            HIGH_PERFORMANCE_COMPUTING: "High-Performance Computing",
+            NESTJS: "NestJS",
+            REDIS: "Redis",
+            BIG_DATA: "Big Data",
+            SWIFT: "Swift",
+            DATABASES: "Databases",
+            IOS_DEVELOPMENT: "iOS Development",
+            MACHINE_LEARNING_2: "machine Learning",
+            VUE_JS: "Vue.js",
+            RUST: "Rust",
+            KOTLIN: "Kotlin",
+            COMPUTER_VISION: "computer Vision",
+            KOA: "Koa",
+            PYGLET: "Pyglet",
+            JAVA: "Java",
+            NEXT_JS: "Next.js",
+            SPRING_BOOT_KOTLIN: "Spring Boot (Kotlin)",
+            ASP_NET_CORE: "ASP.NET Core",
+            TENSORFLOW: "TensorFlow",
+            FIBER: "Fiber",
+            NETWORK: "network",
+            ANDROID_SDK: "Android SDK",
+            SCIKIT_LEARN: "Scikit-Learn"
+        
+               
     };
 
     function onSubmit(data) {
@@ -70,7 +174,83 @@ function UserReview() {
             return;
         }
         console.log(data);
-        navigate('/home');
+        console.log(username,email,password)
+        // post request to backend api 
+        const postdata = async ( ) => {
+            data = {
+                name : username,
+                email : email,
+                password :  password,
+                prefrences : {
+                    skillLevel : data.experience,
+                    preferredFormat : data.platforms,
+                    interests : data.fields,
+                },
+                joinedat: new Date().toISOString().replace(/\.\d+Z$/, "Z"),
+            
+            }
+            console.log(data)
+            try {
+                const response = await fetch("http://localhost:8000/api/users/",{
+                    method : 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(
+                        data
+                    )
+                })
+                if (!response.ok)
+                {
+                    console.log(response)
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                    
+                }
+                else 
+                {
+                    console.log("success creating user")
+                    try {
+                        const response = await fetch("http://localhost:8000/auth/login/",{
+                            method : 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(
+                                {
+                                    username : username,
+                                    password :  password,
+                                }
+                            )
+                        })
+                        if (!response.ok)
+                        {
+                                console.log(response)
+                        }
+                        else 
+                        {
+                            const data = await response.json();
+                            console.log(data)
+                             setUsername(username);
+                             setToken(response.token);
+                             setEmail(email);   
+                             setId(data.user_id);
+                        }
+                    }catch (e)
+                    {
+                        console.error('Error:', e);
+                        console.log(e)
+                    }
+                     navigate("/home")
+                }
+            }
+            catch (error) {
+                console.error('Error:', error);
+                console.log(error)
+            }
+        }
+        postdata();
+        
+       
     }
 
     const toggleOption = (option,field) => {
