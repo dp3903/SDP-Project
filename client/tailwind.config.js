@@ -6,7 +6,31 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+  	fontFamily: {
+		sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'],
+
+  		serif: [
+  			'ui-serif',
+  			'Georgia'
+  		],
+  		mono: [
+  			'ui-monospace',
+  			'SFMono-Regular'
+  		],
+  		display: [
+  			'Bebas Neue'
+  		],
+  		body: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'],
+  	},
   	extend: {
+  		backgroundImage: {
+  			'landing-bg': 'url("./src/assets/design-2.2.png")',
+  			'bg-2': 'url("./src/assets/bg-2.webp")',
+  			'bg-3': 'url("./src/assets/image.webp")',
+  			'bg-6': 'url("./src/assets/bg-6.webp")',
+  			'bg-7': 'url("./src/assets/bg-7.jpg")',
+  			'google': 'url("./src/assets/google_icon.png")',
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -52,6 +76,16 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			sidebar: {
+  				DEFAULT: 'hsl(var(--sidebar-background))',
+  				foreground: 'hsl(var(--sidebar-foreground))',
+  				primary: 'hsl(var(--sidebar-primary))',
+  				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+  				accent: 'hsl(var(--sidebar-accent))',
+  				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				border: 'hsl(var(--sidebar-border))',
+  				ring: 'hsl(var(--sidebar-ring))'
   			}
   		}
   	}
