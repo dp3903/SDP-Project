@@ -9,9 +9,13 @@ interactionRouter = APIRouter()
 @interactionRouter.post("/",response_model=InteractionModel)
 async def create_interacction(interaction : InteractionModel):
 	interaction.id = str(uuid.uuid4())[:8]
-	result = await db.interactions.insert_one(interaction.dict(by_alias=True))
-	new_interaction = await db.interactions.find_one({"_id":result.inserted_id})
-	return new_interaction
+	already_created = await db.interactions.find_one({"userId" : interaction.userId , "resourceId" : interaction.resourceId , "interactionType" : interaction.interactionType})
+	if not already_created:
+		result = await db.interactions.insert_one(interaction.dict(by_alias=True))
+		new_interaction = await db.interactions.find_one({"_id":result.inserted_id})
+		return new_interaction
+	else:
+		return already_created
 
 @interactionRouter.get("/users/{userId}",response_model=List[InteractionModel])
 async def get_interaction_by_user(userId : str):

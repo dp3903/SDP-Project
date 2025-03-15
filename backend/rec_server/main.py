@@ -12,7 +12,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import math
 from collections import defaultdict
 import scipy.stats as stats
+from fastapi.middleware.cors import CORSMiddleware
 
+origins = [
+    "*",  
+]
 load_dotenv()
 
 
@@ -26,7 +30,13 @@ client = MongoClient(MONGODB_URL)
 db = client[DATABASE_NAME]
 collection = db["resources"]
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allowed frontend origins
+    allow_credentials=True,  # Allow cookies/authentication
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 #model matrices 
 user_matrix = np.load("shared_files/user_matrix.npy")
 resource_matrix = np.load("shared_files/resource_matrix.npy")
@@ -63,7 +73,7 @@ async def get_recommendations(userId):
     # print(resource_id_list)
     return {"recommended_resources":resources}
 
-@app.get("/api/trending")
+@app.get("/api/trending/")
 async def get_trending(count=10,history=20):
     # get last few resources from all sorted on timestamp with highest interaction value for liking/rating/commenting i.e 2-3-4
     # count = no. of resources required
@@ -161,7 +171,7 @@ async def get_merged_recommendations(userId,items_needed = 10, interaction_thres
     # print(n_interactions)
     alpha_1 = min(1, (n_interactions / interaction_threshold))
     if alpha_1>0: 
-        new_content_items = form_items[:math.floor(len(form_items)(1-alpha_1))] + content_items[:math.floor(len(form_items)(alpha_1))]
+        new_content_items = form_items[:math.floor(len(form_items)*(1-alpha_1))] + content_items[:math.floor(len(form_items)*(alpha_1))]
     else:
         new_content_items = form_items
         
@@ -172,9 +182,8 @@ async def get_merged_recommendations(userId,items_needed = 10, interaction_thres
         # return
         return new_content_items
 
-    x = (n_interactions / interaction_threshold) - 1
-    x = 1 - math.exp(-x)
-    alpha_2 = 0.5 * x               # this parameter represents fraction of collaborative recommendations on saturation
+    x = (n_interactions / interaction_threshold * 5) - interaction_threshold
+    alpha_2 = 0.5 * 1 / (1+math.exp(-x))             # this parameter represents fraction of collaborative recommendations on saturation
     user_items = await get_collaborative(userId, top_n=2*items_needed)
     # print(user_items)
     recommendations = new_content_items[:math.floor(len(new_content_items)*(1-alpha_2))] + user_items[:math.floor(len(user_items)*(alpha_2))]

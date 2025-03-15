@@ -1,4 +1,4 @@
-from fastapi import APIRouter , HTTPException
+from fastapi import APIRouter , HTTPException ,Request
 from typing import List
 from app.models import RoadmapModel,ResourceModel
 from app.database import db
@@ -9,7 +9,7 @@ roadmapRouter = APIRouter()
 
 @roadmapRouter.get("/{userId}",response_model=List[RoadmapModel])
 async def get_all_roadmaps_by_userId(userId : str):
-	roadmaps = await db.roadmaps.find({"userId":userId})
+	roadmaps = await db.roadmaps.find({"userId": userId}).to_list(None) 
 	if not roadmaps:
 		raise HTTPException(status_code=404,detail="No Roadmap Found")
 	return roadmaps
@@ -22,8 +22,9 @@ async def create_roadmap(roadmap:RoadmapModel):
 	return new_roadmap
 
 @roadmapRouter.put("/{roadmapId}")
-async def update_roadmap_by_id(roadmapId:str,roadmap:RoadmapModel):
-	roadmap_dict = roadmap.dict(by_alias=True)
+async def update_roadmap_by_id(roadmapId:str,roadmap:Request):
+	roadmap_dict =await roadmap.json()
+	print(roadmap_dict)
 	roadmap_dict.pop('_id',None)
 	updated_roadmap = await db.roadmaps.find_one_and_update({"_id":roadmapId},{"$set":roadmap_dict},return_document=ReturnDocument.AFTER)
 	if updated_roadmap :

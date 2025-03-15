@@ -1,5 +1,6 @@
 # virtual environment directory 
 .venv/
+venv/
 
 #.env file 
 .env 
@@ -7,3 +8,4 @@
 # cache files of the python 
 __pycache__/
 
+.qodo

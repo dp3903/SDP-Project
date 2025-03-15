@@ -4,7 +4,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from jose import JWTError 
 from app.helpers.JWTHelpers import verify_access_token
 
-EXCLUDED_PATHS = ["/auth/login","/auth/google","/auth/google/callback","/auth/signup"]
+EXCLUDED_PATHS = ["/auth/login/","/auth/google","/auth/google/callback","/auth/signup/"]
 
 class AuthMiddleware(BaseHTTPMiddleware):
 	async def dispatch(self,request:Request,call_next):

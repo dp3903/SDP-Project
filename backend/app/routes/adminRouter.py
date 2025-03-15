@@ -31,14 +31,14 @@ async def get_all_resources(request: Request):
 	return resources
 
 @adminRouter.delete("/resource/{resourceId}")
-async def delete_resource(request: Request):
+async def delete_resource(request: Request,resourceId : str):
 	if request.state.username != "__admin__":
 		raise HTTPException(status_code=401,details="Unauthorized")
-	try:
-		body = await request.json()
-	except Exception:
-		raise HTTPException(status_code=400, detail="Invalid or missing JSON body")
-	resourceId = body.get("resourceId")
+	# try:
+	# 	body = await request.json()
+	# except Exception:
+	# 	raise HTTPException(status_code=400, detail="Invalid or missing JSON body")
+	# resourceId = body.get("resourceId")
 	result = await db.resources.delete_one({"_id":resourceId})
 	if result.deleted_count==0:
 		raise HTTPException(status_code=404,detail="Resource not Found")

@@ -17,12 +17,15 @@ from app.database import db
 from passlib.context import CryptContext
 from app.models import UserModel
 import uuid
+from fastapi.middleware.cors import CORSMiddleware
 
-
+origins = [
+    "*",  
+]
 pswd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
 app = FastAPI()
 
-@app.post("/auth/login")
+@app.post("/auth/login/")
 async def user_login(request:Request):
 	try:
 		body = await request.json()
@@ -41,7 +44,7 @@ async def user_login(request:Request):
 	else:
 		raise HTTPException(status_code=401,detail="Invalid Credentials")
 
-@app.post("/auth/signup")
+@app.post("/auth/signup/")
 async def user_signup(request:Request):
 	try:
 		body = await request.json()
@@ -90,6 +93,13 @@ async def google_callback():
 			raise HTTPException(status_code=400,detail=str(e))
 
 app.add_middleware(AuthMiddleware)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allowed frontend origins
+    allow_credentials=True,  # Allow cookies/authentication
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 app.include_router(userRouter,prefix="/api/users")
 app.include_router(resourceRouter,prefix="/api/resources")

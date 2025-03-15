@@ -1,6 +1,6 @@
 # app/routes/UserRouter.py
 
-from fastapi import APIRouter , HTTPException
+from fastapi import APIRouter , HTTPException ,Request
 from bson import ObjectId 
 from app.database import db
 from app.models import UserModel
@@ -27,9 +27,11 @@ async def delete_user(userId : str):
 	return {"message":"User Deleted Succesfully"}
 
 @userRouter.put("/{userId}")
-async def update_user(userId : str,user:UserModel):
-	user_dict = user.dict(by_alias=True)
+async def update_user(userId : str,request:Request):
+	user_dict = await request.json()
 	user_dict.pop('_id', None) # _id is immutable so remove it 
+	if 'password' in user_dict:
+		user_dict['password'] = pswd_context.hash(user_dict['password'])
 	updated_user = await db.users.find_one_and_update({"_id" : userId},{"$set" : user_dict},return_document=ReturnDocument.AFTER)
 	if updated_user : 
 		return {"updated_user":updated_user}

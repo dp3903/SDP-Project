@@ -26,3 +26,43 @@ async def get_resource(resourceId : str):
 	if not resource:
 		raise HTTPException(status_code=404,detail="Resource not found")
 	return resource
+
+
+
+@resourceRouter.get("/like/{userId}")
+async def get_liked_resource(userId: str):
+    try:
+     
+        liked_interactions = await db.interactions.find(
+            {"userId": userId, "interactionType": "like"},  
+        ).to_list(None)
+        # print(liked_interactions)
+        resource_ids = [interaction["resourceId"] for interaction in liked_interactions]
+        print(resource_ids)
+        if not resource_ids:
+            raise HTTPException(status_code=404, detail="No liked resources found")
+        resources = await db.resources.find({"_id": {"$in": resource_ids}}).to_list(length=len(resource_ids))
+        print(resources)
+        return resources
+    except Exception as e:
+        print("Error:", str(e))  
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+@resourceRouter.get("/review/{userId}")
+async def get_reviewed_resource(userId: str):
+    try:
+        reviewed_interactions = await db.interactions.find(
+            {"userId": userId, "interactionType": "reviewed"},  
+        ).to_list(None)
+        # print(liked_interactions)
+        resource_ids = [interaction["resourceId"] for interaction in reviewed_interactions]
+        print(resource_ids)
+        if not resource_ids:
+            raise HTTPException(status_code=404, detail="No Reviewed resources found")
+        resources = await db.resources.find({"_id": {"$in": resource_ids}}).to_list(length=len(resource_ids))
+        print(resources)
+        return resources
+    except Exception as e:
+        print("Error:", str(e))  
+       
+
+
