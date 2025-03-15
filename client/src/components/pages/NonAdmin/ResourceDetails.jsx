@@ -119,7 +119,7 @@ function AddToRoadmap({ roadmaps , resource}) {
     const [dialogOpen, setDialogOpen] = useState(false)
     const { token } = useContext(AuthContext)
     const handleSelectRoadmap = (id) => {
-      const roadmap = roadmaps.find((r) => r.id === id)
+      const roadmap = roadmaps.find((r) => r._id === id)
       if (roadmap) {
         setSelectedRoadmap(roadmap)
         setRoadmapId(id)
@@ -138,9 +138,7 @@ function AddToRoadmap({ roadmaps , resource}) {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            selectedRoadmap
-        })
+        body: JSON.stringify({...selectedRoadmap})
       })
       if(res.ok)
       {
@@ -177,8 +175,8 @@ function AddToRoadmap({ roadmaps , resource}) {
                   <DropdownMenuRadioGroup value={roadmapId} onValueChange={handleSelectRoadmap}>
                     {roadmaps.map((item) => (
                       <DropdownMenuRadioItem
-                        key={item.id}
-                        value={item.id}
+                        key={item._id}
+                        value={item._id}
                         // Prevent the dropdown from closing when clicking an item
                         onSelect={(e) => {
                           e.preventDefault()
@@ -498,7 +496,7 @@ function ResourceDetails(props) {
 
         </div>
 
-        <div className="comments flex flex-col h-[100vh] gap-4 py-20">
+        <div className="comments flex flex-col h-[100vh] min-w-80 gap-4 py-20">
             <div className="text-2xl">Comments</div>
             <div className="flex flex-col border-t-2 p-2 shadow-lg border-t-gray-600 overflow-y-auto custom-scrollbar gap-4">
                 {reviews.length === 0 && <div>No comments yet...</div>}

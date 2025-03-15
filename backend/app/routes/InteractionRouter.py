@@ -2,7 +2,9 @@ from fastapi import APIRouter , HTTPException
 from typing import List 
 from app.database import db 
 from app.models import InteractionModel
-import uuid 
+import uuid
+import threading
+from app.utils import process_new_interaction
 
 interactionRouter = APIRouter()
 
@@ -13,6 +15,8 @@ async def create_interacction(interaction : InteractionModel):
 	if not already_created:
 		result = await db.interactions.insert_one(interaction.dict(by_alias=True))
 		new_interaction = await db.interactions.find_one({"_id":result.inserted_id})
+		thread = threading.Thread(target=process_new_interaction, args=(new_interaction))
+		thread.start()
 		return new_interaction
 	else:
 		return already_created

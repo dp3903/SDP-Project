@@ -8,6 +8,9 @@ from pymongo import ReturnDocument
 from passlib.context import CryptContext
 import uuid 
 from typing import List
+from app.utils import delete_user_mapping
+
+
 userRouter = APIRouter()
 pswd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
 
@@ -23,7 +26,8 @@ async def get_user(userId : str):
 async def delete_user(userId : str):
 	result = await db.users.delete_one({"_id" : userId})
 	if result.deleted_count == 0:
-			raise HTTPException(status_code=404,detail="User not Found")	
+			raise HTTPException(status_code=404,detail="User not Found")
+	delete_user_mapping(userId)
 	return {"message":"User Deleted Succesfully"}
 
 @userRouter.put("/{userId}")
