@@ -38,9 +38,9 @@ function Landing() {
             We recommend best learning resources for any computer science student out there.
           </p>
         </BlurFade>
-        <BlurFade delay={0.25 * 3} inView>
+        {/* <BlurFade delay={0.25 * 3} inView>
           <Button className='p-4 mt-4 w-40'>Get started</Button>
-        </BlurFade>
+        </BlurFade> */}
       </div>
 
       <div className='right-0 bg-landing-bg bg-no-repeat bg-contain bg-right w-full h-full'></div>

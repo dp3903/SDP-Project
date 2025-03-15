@@ -25,6 +25,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom'
 import CustomCard from './CustomCard'
 import AuthContext from '../AuthContext'
@@ -117,26 +119,90 @@ const demoResources = [
 function Dashboard() {
 
     const [open, setOpen] = React.useState(false)
+    const [isSearch, setIsSearch] = React.useState(false)
+    const [isSearching, setIsSearching] = React.useState(false)
     const [filterValue, setFilterValue] = React.useState("")
     const [searchValue, setSearchValue] = React.useState("")
     const [resources, setResources] = React.useState([]);
-    const { id , token } = useContext(AuthContext)
+    const { id , token} = useContext(AuthContext)
     const navigate = useNavigate();
 
-    const handleResourceClick = (item) => {
+    const handleResourceClick =async (item) => {
         console.log('hi',item);
-        navigate('/home/details',{state: {item}})
+        // add like interaction to the database 
+        let data = {
+            userId : id,
+            resourceId : item._id,
+            interactionType : "click" ,
+            timestamp : new Date().toISOString().replace(/\.\d+Z$/, "Z"),
+        }
+        // add like interaction to the database 
+        try {
+            const response = await fetch("http://localhost:8000/api/interactions/",{
+                method : 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                    data
+                )
+            })
+            if(response.ok)
+            {
+                const data = await response.json()
+                console.log(data)
+                navigate('/home/details',{state: {item}})
+            }
+        }
+        catch(error)
+        {
+            console.log(error)
+
+        }
+      
+        
     }
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
-        if(searchValue == ''){
-            // get recommendations
-            setResources(demoResources)
+        setIsSearching(true)
+        setResources([])
+        if(searchValue.trim() === ''){
+            // get recommendations 
+            toast.warning('Please enter a search keyword!', {
+                position: 'top-right',
+                autoClose: 3000, // Closes after 3 seconds
+            });
+            setIsSearch(false)
+            setIsSearching(false)
+            setResources(resources)
         }
         else{
             // search from all
-            setResources([]);
+            try {
+                const search_res = await fetch("http://localhost:8000/api/resources/search?q="+searchValue,{
+                    method : "GET",
+                    headers : {
+                        "Authorization": `Bearer ${token}`,  // Set Bearer token here
+                        "Content-Type": "application/json",
+                    }
+                })
+                if(!search_res.ok)
+                {
+                    console.log("ERROR seacrhing the database")
+                }
+                const data = await search_res.json();
+                console.log(data)
+                setIsSearch(true)
+                setIsSearching(false)
+                setResources(data);
+            }
+            catch (error)
+            {
+                console.log(error)
+            }
+           
         }
     }
 
@@ -145,7 +211,7 @@ function Dashboard() {
         let user_id = id 
         const recResponse = async () => {
             try {
-                const rec_response = await fetch("http://localhost:8080/api/recommendations/"+user_id)
+                const rec_response = await fetch("http://localhost:8080/api/recommendations/"+user_id,)
                 if(rec_response.ok)
                 {
                     let recommendations = await rec_response.json();
@@ -215,17 +281,21 @@ function Dashboard() {
         <div className="w-full flex flex-row gap-2 flex-wrap">
             <div className="w-full min-w-fit">
                 <h1 className='text-center text-3xl font-display border-b-2 py-2'>
-                    Recommended For you
+                     {isSearch ? "Search Results" : "Recommended For You"}
                 </h1>
                 <div className="flex flex-row justify-center flex-wrap gap-2 mt-2 p-4">
-                {resources.length > 0 ? 
-                (
-                    resources.map(item => (
-                    <CustomCard key={item._id} item={item} onClick={() => handleResourceClick(item)} />
-                    ))
-                ) : (
-                    <p>No recommendations available</p>
-                )}  
+                {resources.length > 0 ? (
+    resources.map(item => (
+        <CustomCard key={item._id} item={item} onClick={() => handleResourceClick(item)} />
+    ))
+) : (
+    isSearching ? (
+        <p>Searching for best results... 🔍</p>
+    ) : (
+        <p>Getting your recommendations... 🔃</p>
+    )
+)}
+
                 </div>
             </div>
         </div>

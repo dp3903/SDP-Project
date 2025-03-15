@@ -19,7 +19,7 @@ import { date } from 'zod';
 import AuthContext from '../AuthContext'
 import { useContext } from "react"
 function UserReview() {
-    const { setUsername, setToken, setEmail , setId} = useContext(AuthContext);
+    const { setUsername, setToken, setEmail , setId , token , id} = useContext(AuthContext);
     const location = useLocation();
     const { username , email , password} = location.state || {}
     const navigate = useNavigate();
@@ -191,7 +191,7 @@ function UserReview() {
             }
             console.log(data)
             try {
-                const response = await fetch("http://localhost:8000/api/users/",{
+                const response = await fetch("http://localhost:8000/auth/signup/",{
                     method : 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -231,9 +231,10 @@ function UserReview() {
                             const data = await response.json();
                             console.log(data)
                              setUsername(username);
-                             setToken(response.token);
+                             setToken(response.access_token);
+                             console.log(token)
                              setEmail(email);   
-                             setId(data.user_id);
+                             setId(data.userId);
                         }
                     }catch (e)
                     {

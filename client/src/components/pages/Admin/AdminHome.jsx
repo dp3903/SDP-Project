@@ -110,7 +110,7 @@ function AdminHome() {
                 <span>
                     Email: mail@123.com
                 </span>
-                <EditProfile/>
+                {/* <EditProfile/> */}
             </div>
             
             <h1 className='font-display text-2xl'>The following points must be read to know your admin previleges.</h1>
@@ -122,7 +122,7 @@ function AdminHome() {
                     The admin will have rights to add any item/resource but be careful as you cannot update an item.
                 </li>
                 <li>
-                    The admin cannot update any personal information for any other user then themselves but they can completely delete their account.
+                    The admin cannot update any personal information for any other but they can completely delete their account.
                 </li>
                 <li>
                     To add items, go to the 'Items' page on the sidebar and add item.
@@ -130,9 +130,9 @@ function AdminHome() {
                 <li>
                     To delete any user, go to 'Users' page using the sidebar and delete the user.
                 </li>
-                <li>
+                {/* <li>
                     You can update any personal information by clicking on the 'Edit information' Button Above.
-                </li>
+                </li> */}
             </ul>
         </div>
     </div>

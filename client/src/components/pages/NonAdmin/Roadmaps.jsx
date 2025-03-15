@@ -1,99 +1,141 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs"
 import Roadmap from './Roadmap';
 import { Plus, CircleHelp } from 'lucide-react';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
+import AuthContext from '../AuthContext';
 
-
-const roadmaps = [
-  {
-    id : 1,
-    title : 'Roadmap-title-1', 
-    userId : 'User-id',
-    resourceList : [
-      { id : '1', title : 'Title-1', },
-      { id : '2', title : 'Title-2', },
-      { id : '3', title : 'Title-3', },
-      { id : '4', title : 'Title-4', },
-      { id : '5', title : 'Title-5', },
-      { id : '6', title : 'Title-6', },
-      { id : '7', title : 'Title-7', },
-      { id : '8', title : 'Title-8', },
-      { id : '9', title : 'Title-9', },
-      { id : '10', title : 'Title-10', },
-      { id : '11', title : 'Title-11', },
-      { id : '12', title : 'Title-12', },
-      { id : '13', title : 'Title-13', },
-      { id : '14', title : 'Title-14', },
-      { id : '15', title : 'Title-15', },
-      { id : '16', title : 'Title-16', },
-      { id : '17', title : 'Title-17', },
-      { id : '18', title : 'Title-18', },
-      { id : '19', title : 'Title-19', },
-    ],
-    completed : [
-      { id : '1', title : 'Title-1', },
-      { id : '2', title : 'Title-2', },
-    ],
-    ongoing : [
-      { id : '3', title : 'Title-3', },
-    ],
-    createdAt : 'MM-DD-YYYY', 
-    progress : 50.0
-  },
-  {
-    id : 2,
-    title : 'Roadmap-title-2', 
-    userId : 'User-id',
-    resourceList : [
-      { id : '1', title : 'Title-1', },
-      { id : '2', title : 'Title-2', },
-      { id : '3', title : 'Title-3', },
-      { id : '4', title : 'Title-4', },
-    ],
-    completed : [
-      { id : '1', title : 'Title-1', },
-      { id : '2', title : 'Title-2', },
-    ],
-    ongoing : [
-      { id : '3', title : 'Title-3', },
-    ],
-    createdAt : 'MM-DD-YYYY', 
-    progress : 50.0
-  },
-  {
-    id : 3,
-    title : 'Roadmap-title-3', 
-    userId : 'User-id',
-    resourceList : [
-      { id : '1', title : 'Title-1', },
-      { id : '2', title : 'Title-2', },
-      { id : '3', title : 'Title-3', },
-      { id : '4', title : 'Title-4', },
-    ],
-    completed : [
-      { id : '1', title : 'Title-1', },
-      { id : '2', title : 'Title-2', },
-    ],
-    ongoing : [
-      { id : '3', title : 'Title-3', },
-    ],
-    createdAt : 'MM-DD-YYYY', 
-    progress : 50.0
-  },
+// const roadmaps = [
+//   {
+//     id : 1,
+//     title : 'Roadmap-title-1', 
+//     userId : 'User-id',
+//     resourceList : [
+//       { id : '1', title : 'Title-1', },
+//       { id : '2', title : 'Title-2', },
+//       { id : '3', title : 'Title-3', },
+//       { id : '4', title : 'Title-4', },
+//       { id : '5', title : 'Title-5', },
+//       { id : '6', title : 'Title-6', },
+//       { id : '7', title : 'Title-7', },
+//       { id : '8', title : 'Title-8', },
+//       { id : '9', title : 'Title-9', },
+//       { id : '10', title : 'Title-10', },
+//       { id : '11', title : 'Title-11', },
+//       { id : '12', title : 'Title-12', },
+//       { id : '13', title : 'Title-13', },
+//       { id : '14', title : 'Title-14', },
+//       { id : '15', title : 'Title-15', },
+//       { id : '16', title : 'Title-16', },
+//       { id : '17', title : 'Title-17', },
+//       { id : '18', title : 'Title-18', },
+//       { id : '19', title : 'Title-19', },
+//     ],
+//     completed : [
+//       { id : '1', title : 'Title-1', },
+//       { id : '2', title : 'Title-2', },
+//     ],
+//     ongoing : [
+//       { id : '3', title : 'Title-3', },
+//     ],
+//     createdAt : 'MM-DD-YYYY', 
+//     progress : 50.0
+//   },
+//   {
+//     id : 2,
+//     title : 'Roadmap-title-2', 
+//     userId : 'User-id',
+//     resourceList : [
+//       { id : '1', title : 'Title-1', },
+//       { id : '2', title : 'Title-2', },
+//       { id : '3', title : 'Title-3', },
+//       { id : '4', title : 'Title-4', },
+//     ],
+//     completed : [
+//       { id : '1', title : 'Title-1', },
+//       { id : '2', title : 'Title-2', },
+//     ],
+//     ongoing : [
+//       { id : '3', title : 'Title-3', },
+//     ],
+//     createdAt : 'MM-DD-YYYY', 
+//     progress : 50.0
+//   },
+//   {
+//     id : 3,
+//     title : 'Roadmap-title-3', 
+//     userId : 'User-id',
+//     resourceList : [
+//       { id : '1', title : 'Title-1', },
+//       { id : '2', title : 'Title-2', },
+//       { id : '3', title : 'Title-3', },
+//       { id : '4', title : 'Title-4', },
+//     ],
+//     completed : [
+//       { id : '1', title : 'Title-1', },
+//       { id : '2', title : 'Title-2', },
+//     ],
+//     ongoing : [
+//       { id : '3', title : 'Title-3', },
+//     ],
+//     createdAt : 'MM-DD-YYYY', 
+//     progress : 50.0
+//   },
   
-];
+// ];
 
 function Roadmaps() {
-
+  const [roadmaps,setRoadmaps] = React.useState([])
+  const { id , token } = useContext(AuthContext)
   function handleResourceClick(item) {
 
   }
 
-  function handleNewRoadmap(e){
+ async function handleNewRoadmap(e){
     e.preventDefault();
+    let title = e.target.roadmap_name.value 
+    console.log(title)
+    let roadmap = { 
+      title : title , 
+      userId : id,
+      completed : [],
+      remaining : [],
+      ongoing : [], 
+      createdAt : new Date().toISOString().replace(/\.\d+Z$/, "Z"),
+      progress : 0.0
+    }
+    const res = await fetch("http://localhost:8000/api/roadmaps/",{
+      method : "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                    roadmap 
+                )
+    })
+    if(res.ok)
+    {
+      const data = await res.json()
+      console.log(data)
+      setRoadmaps(prev=>[...prev,data])
+    }
+
   }
+  useEffect( ()=>{
+    const fetchData = async () => {
+      const response = await fetch(`http://localhost:8000/api/roadmaps/${id}`,{
+        headers: {
+                  'Authorization': `Bearer ${token}`, 
+              }
+        })
+      const data = await response.json()
+      setRoadmaps([...data])
+      console.log(roadmaps)
+    }
+    fetchData()
+  },[])
 
   return (
     <div className="w-full h-full">
@@ -111,8 +153,8 @@ function Roadmaps() {
             </TabsTrigger>
             {roadmaps.map((roadmap) => (
               <TabsTrigger
-                key={roadmap.id}
-                value={roadmap.id}
+                key={roadmap._id}
+                value={roadmap._id}
                 className="hover:bg-[#b8b8ff] mt-1 border-b-2 rounded-none hover:rounded-md"
               >
                 {roadmap.title}
@@ -135,7 +177,7 @@ function Roadmaps() {
             <TabsContent value="__default__">
               <div className='flex flex-col justify-start items-center mt-8 gap-8'>
                 <h1 className='font-display text-6xl'>Roadmaps</h1>
-                <h1 className='font-display text-2xl'>Setting roadmaps helps you manage multiple coarses</h1>
+                <h1 className='font-display text-2xl'>Setting roadmaps helps you manage multiple courses</h1>
                 <ul className='list-decimal text-md max-w-xl font-bold list-inside flex flex-col gap-4'>
                   <li>
                     If you are new start by creating your first roadmap.
@@ -162,13 +204,13 @@ function Roadmaps() {
               <div className='flex flex-col justify-start items-center mt-8 gap-8'>
                 <h1 className='font-display text-6xl'>Create a New Roadmap</h1>
                 <form onSubmit={handleNewRoadmap} className='w-2/3'>
-                  <Input placeholder="Roadmap name..."></Input>
+                  <Input placeholder="Roadmap name..." id="roadmap_name"></Input>
                   <Button className="w-full mt-2">Create Roadmap</Button>
                 </form>
               </div>
             </TabsContent>
             {roadmaps.map(roadmap => 
-              <TabsContent key={roadmap.id} value={roadmap.id} className="h-5/6">
+              <TabsContent key={roadmap._id} value={roadmap._id} className="h-5/6">
                   <Roadmap roadmap={roadmap} />
               </TabsContent>
             )}

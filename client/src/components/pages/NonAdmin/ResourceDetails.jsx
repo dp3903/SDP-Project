@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState , useContext } from 'react'
 import {
     Card,
     CardContent,
@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from '../../ui/button';
 import { ThumbsUp, MessageSquareText, ChevronLeft, Pin, Route } from 'lucide-react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { UNSAFE_createClientRoutesWithHMRRevalidationOptOut, useLocation, useNavigate } from 'react-router-dom';
 import {
     Dialog,
     DialogClose,
@@ -43,55 +43,55 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import AuthContext from "../AuthContext"
 
-
-const reviews = [
-    {
-      _id: "64a7f3b1d29a4e1234567890",
-      userId: "user123",
-      userName: "John Doe",
-      resourceId: "res567",
-      rating: 4.5,
-      comment: "This resource was very helpful and easy to follow!",
-      timestamp: "2024-12-01T10:15:30Z",
-    },
-    {
-      _id: "64a7f3b1d29a4e1234567891",
-      userId: "user456",
-      userName: "Jane Smith",
-      resourceId: "res567",
-      rating: 3.0,
-      comment: "The content was okay, but some parts were hard to understand.",
-      timestamp: "2024-12-02T14:25:45Z",
-    },
-    {
-      _id: "64a7f3b1d29a4e1234567892",
-      userId: "user789",
-      userName: "Alice Johnson",
-      resourceId: "res567",
-      rating: 5.0,
-      comment: "Absolutely fantastic! It exceeded my expectations.",
-      timestamp: "2024-12-03T09:00:00Z",
-    },
-    {
-      _id: "64a7f3b1d29a4e1234567893",
-      userId: "user321",
-      userName: "Bob Brown",
-      resourceId: "res567",
-      rating: 1.5,
-      comment: "The content quality was poor and not worth the time.",
-      timestamp: "2024-12-04T18:45:15Z",
-    },
-    {
-      _id: "64a7f3b1d29a4e1234567894",
-      userId: "user654",
-      userName: "Emily Davis",
-      resourceId: "res567",
-      rating: 4.0,
-      comment: "Good resource with a few minor flaws. Worth checking out!",
-      timestamp: "2024-12-05T12:30:20Z",
-    },
-];
+// const reviews = [
+//     {
+//       _id: "64a7f3b1d29a4e1234567890",
+//       userId: "user123",
+//       userName: "John Doe",
+//       resourceId: "res567",
+//       rating: 4.5,
+//       comment: "This resource was very helpful and easy to follow!",
+//       timestamp: "2024-12-01T10:15:30Z",
+//     },
+//     {
+//       _id: "64a7f3b1d29a4e1234567891",
+//       userId: "user456",
+//       userName: "Jane Smith",
+//       resourceId: "res567",
+//       rating: 3.0,
+//       comment: "The content was okay, but some parts were hard to understand.",
+//       timestamp: "2024-12-02T14:25:45Z",
+//     },
+//     {
+//       _id: "64a7f3b1d29a4e1234567892",
+//       userId: "user789",
+//       userName: "Alice Johnson",
+//       resourceId: "res567",
+//       rating: 5.0,
+//       comment: "Absolutely fantastic! It exceeded my expectations.",
+//       timestamp: "2024-12-03T09:00:00Z",
+//     },
+//     {
+//       _id: "64a7f3b1d29a4e1234567893",
+//       userId: "user321",
+//       userName: "Bob Brown",
+//       resourceId: "res567",
+//       rating: 1.5,
+//       comment: "The content quality was poor and not worth the time.",
+//       timestamp: "2024-12-04T18:45:15Z",
+//     },
+//     {
+//       _id: "64a7f3b1d29a4e1234567894",
+//       userId: "user654",
+//       userName: "Emily Davis",
+//       resourceId: "res567",
+//       rating: 4.0,
+//       comment: "Good resource with a few minor flaws. Worth checking out!",
+//       timestamp: "2024-12-05T12:30:20Z",
+//     },
+// ];
 const roadmaps = [
     {
         id: 'roadmap-1',
@@ -112,69 +112,107 @@ const roadmaps = [
 ];
 
 
-function AddToRoadmap(props) {
-
-    const [roadmap,setRoadmap] = useState('');
-    const { roadmaps } = props;
-
-    const handleConfirm = (event) => {
-        console.log(roadmap);
+function AddToRoadmap({ roadmaps , resource}) {
+    const [selectedRoadmap, setSelectedRoadmap] = useState(null)
+    const [roadmapId, setRoadmapId] = useState("")
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const { token } = useContext(AuthContext)
+    const handleSelectRoadmap = (id) => {
+      const roadmap = roadmaps.find((r) => r.id === id)
+      if (roadmap) {
+        setSelectedRoadmap(roadmap)
+        setRoadmapId(id)
+        
+      }
     }
-
+  
+    const handleConfirm = async () => {
+      console.log(selectedRoadmap)
+      // adding the resource to the roadmap 
+      selectedRoadmap.remaining.push(resource)
+      console.log(selectedRoadmap)
+      const res = await fetch("http://localhost:8000/api/roadmaps/"+selectedRoadmap._id,{
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            selectedRoadmap
+        })
+      })
+      if(res.ok)
+      {
+        const data = await res.json();
+        console.log(data)
+      }
+      setDialogOpen(false)
+    }
+  
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="outline" className="border-2 border-black" >Add to roadmaps <Route/></Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle>Add to your roadmaps.</DialogTitle>
-                    <DialogDescription>
-                        You can add this resource to any of your selected roadmap. If the resource already exists within the roadmap, it won't be affected.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="flex flex-col items-center justify-center gap-2">
-
-                    {roadmap != '' && 
-                        <div>
-                            {roadmap}
-                        </div>
-                    }
-
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline">Select Roadmap</Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                            <DropdownMenuLabel>Your Roadmaps</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-
-                            <DropdownMenuRadioGroup value={roadmap} onValueChange={setRoadmap}>
-                            {roadmaps.map(item => 
-                                <DropdownMenuRadioItem key={item.id} value={item.id}>{item.title}</DropdownMenuRadioItem>
-                            )}
-                            
-                            </DropdownMenuRadioGroup>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          <Button variant="outline" className="border-2 border-black">
+            Add to roadmaps
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add to your roadmaps.</DialogTitle>
+            <DialogDescription>
+              You can add this resource to any of your selected roadmap. If the resource already exists within the
+              roadmap, it won't be affected.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">{selectedRoadmap ? selectedRoadmap.title : "Select Roadmap"}</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="center">
+                <DropdownMenuLabel>Your Roadmaps</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <div className="max-h-[300px] overflow-y-auto">
+                  <DropdownMenuRadioGroup value={roadmapId} onValueChange={handleSelectRoadmap}>
+                    {roadmaps.map((item) => (
+                      <DropdownMenuRadioItem
+                        key={item.id}
+                        value={item.id}
+                        // Prevent the dropdown from closing when clicking an item
+                        onSelect={(e) => {
+                          e.preventDefault()
+                        }}
+                      >
+                        {item.title}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
                 </div>
-                <DialogFooter className="flex flex-row sm:justify-between">
-                    <DialogClose asChild>
-                        <Button type="button" variant="secondary">
-                        Close
-                        </Button>
-                    </DialogClose>
-                    <DialogClose asChild disabled={roadmap==''}>
-                        <Button type="button"  onClick={handleConfirm}>
-                        Confirm
-                        </Button>
-                    </DialogClose>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
-}
+                <div className="mt-2 flex justify-end p-1">
+                  <Button size="sm" onClick={() => setIsDropdownOpen(false)} variant="outline">
+                    Done
+                  </Button>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <DialogFooter className="flex flex-row sm:justify-between">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Close
+              </Button>
+            </DialogClose>
+            <Button type="button" onClick={handleConfirm} disabled={!selectedRoadmap}>
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
+
   
 
 function ResourceDetails(props) {
@@ -182,10 +220,13 @@ function ResourceDetails(props) {
     const [open, setOpen] = React.useState(false)
     const [rating,setRating] = React.useState(0);
     const [comment,setComment] = React.useState('');
+    const [reviews,setReviews] = React.useState([]);
+    const [roadmaps,setRoadmaps] = React.useState([]);
     const location = useLocation();
     const navigate = useNavigate();
-
+    const [liked, setLiked] = useState(false);
     const { item } = location.state;
+    const { id , token , username} = useContext(AuthContext)
 
     if(!item){
         return <div>Error: 404 resource not found...</div>
@@ -194,9 +235,68 @@ function ResourceDetails(props) {
     // console.log(item);
     let resource = item;
     // console.log(resource);
+   
 
-    const handleCommentSubmit = (e) => {
+    const handleCommentSubmit = async (e) => {
         e.preventDefault();
+        // adding comment to db 
+        let review = {
+            userId : id,
+            username : username,
+            resourceId : item._id,
+            rating : rating,
+            comment : comment,
+        }
+        try {
+                const review_res = await fetch("http://localhost:8000/api/reviews/",{
+                method : 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                    review
+                )
+            })
+            if(review_res.ok)
+            {
+                const data = await review_res.json()
+                console.log(data)
+                setReviews([...reviews,data])
+            }
+        }
+        catch(error) 
+        {
+            console.log(error)
+        }
+        let interaction = {
+            userId : id,
+            resourceId : item._id,
+            interactionType : "reviewed",
+            timestamp : new Date().toISOString().replace(/\.\d+Z$/, "Z"),
+        }
+        try {
+            const interaction_res = await fetch("http://localhost:8000/api/interactions/",{
+                method : 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                    interaction
+                )
+            })
+            if(interaction_res.ok)
+            {
+                const data = await interaction_res.json()
+                console.log(data)
+            }
+        }
+
+        catch (error) 
+        {
+            console.log(error)
+        }
         console.log(rating,comment);
     }
 
@@ -204,9 +304,85 @@ function ResourceDetails(props) {
         navigate(-1)
     }
 
-    const handleLike = () => {
-        console.log("liked")
+    const handleLike = async () => {
+        let data = {
+            userId : id,
+            resourceId : item._id,
+            interactionType : "like" ,
+            timestamp : new Date().toISOString().replace(/\.\d+Z$/, "Z"),
+        }
+        // add like interaction to the database 
+        try {
+            const response = await fetch("http://localhost:8000/api/interactions/",{
+                method : 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                    data
+                )
+            })
+            if(response.ok)
+            {
+                const data = await response.json()
+                console.log(data)
+                // navigate('/home/details',{state: {item}})
+            }
+        }
+        catch(error)
+        {
+            console.log(error)
+
+        }
+        console.log(data)
+        setLiked((prev) => !prev);
+        
     }
+    // getting comments from the server 
+    useEffect(()=>{
+        const fetchReviews = async ()=>{
+            try {
+                const response = await fetch(`http://localhost:8000/api/reviews/resources/${resource._id}`,{
+                    headers: {
+                        'Authorization': `Bearer ${token}`, 
+                    },
+                })
+                if(response.ok)
+                {
+                    const data = await response.json()
+                    setReviews(data)
+                    console.log(data)
+                }
+            }
+            catch(error)
+            {
+                console.log(error)
+            }
+        }
+        const fetchRoadmaps = async ()=>{
+            try {
+                const response = await fetch(`http://localhost:8000/api/roadmaps/`+id,{
+                    headers: {
+                        'Authorization': `Bearer ${token}`, 
+                    },
+                })
+                if(response.ok)
+                {
+                    const data = await response.json()
+                    setRoadmaps(data)
+                    console.log(data)
+                }
+            }
+            catch(error)
+            {
+                console.log(error)
+            }
+        }
+        fetchRoadmaps()
+        fetchReviews()
+    },[])
+
 
 
   return (
@@ -228,7 +404,7 @@ function ResourceDetails(props) {
                         // activeColor="rgba(96, 165, 250,1)"
                         color={"rgba(255,255,255,.5)"}
                     />
-                    <span>{resource.averageRating} / 5 ({resource.numberOfRatings})</span>
+                    <span>{resource.averageRating.toFixed(2)} / 5 ({resource.numberOfRatings || 10})</span>
                 </div>
 
                 <div className="text-2xl">
@@ -239,7 +415,14 @@ function ResourceDetails(props) {
                     Platform: {resource.platform}
                     <br/>
                     <span>
-                        Link: <a href={resource.url} className="underline italic font-bold inline hover:underline mb-4">{resource.url}</a>
+                    <a 
+  href={resource.url}  
+  target="_blank" 
+  rel="noopener noreferrer" 
+  className="underline italic font-bold inline hover:underline mb-4"
+>
+  {resource.url}
+</a>
                     </span>
                     <br/>
                     Type: {resource.type}
@@ -253,11 +436,20 @@ function ResourceDetails(props) {
 
                 <div className="text-md mt-10 max-w-sm flex flex-row flex-wrap gap-2">
                     <Button onClick={handleBack} ><ChevronLeft/>Back</Button>
-                    <Button onClick={handleLike} variant="outline" className="border-2 border-black" >Like <ThumbsUp/></Button>
-                    <Button onClick={handleLike} variant="outline" className="border-2 border-black" >Save <Pin/></Button>
+                    <Button
+            onClick={handleLike}
+            variant="outline"
+            className={`border-2 !important ${
+                liked
+                    ? "border-white text-white bg-black hover:bg-black hover:text-white"
+                    : "border-black text-black bg-white hover:bg-gray-200"
+            }`}
+        >
+            Like <ThumbsUp />
+        </Button>
+                    {/* <Button onClick={handleLike} variant="outline" className="border-2 border-black" >Save <Pin/></Button> */}
 
-                    <AddToRoadmap roadmaps={roadmaps} />
-                    
+                    <AddToRoadmap roadmaps={roadmaps} resource={resource} />
                     <Drawer open={open} onOpenChange={setOpen}>
                         <DrawerTrigger asChild>
                             <Button variant="outline" className="border-2 border-black">Comment<MessageSquareText/></Button>
@@ -309,10 +501,11 @@ function ResourceDetails(props) {
         <div className="comments flex flex-col h-[100vh] gap-4 py-20">
             <div className="text-2xl">Comments</div>
             <div className="flex flex-col border-t-2 p-2 shadow-lg border-t-gray-600 overflow-y-auto custom-scrollbar gap-4">
+                {reviews.length === 0 && <div>No comments yet...</div>}
                 {reviews.map(review => 
                     <Card key={review._id} className="w-full bg-[rgba(255,255,255,.3)] backdrop-blur-lg border-none hover:shadow-lg hover:bg-[rgba(255,255,255,0.5)]">
                         <CardHeader>
-                            <CardTitle>{review.userName}</CardTitle>
+                            <CardTitle>{review.username}</CardTitle>
                             <CardDescription>
                                 <ReactStars
                                     edit={false}

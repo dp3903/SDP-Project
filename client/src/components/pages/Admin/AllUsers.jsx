@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -13,25 +13,26 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import DataTable from './DataTable'
-
- 
-const users = [
-    { id: 'i1', username: 'JohnDoe', email: 'johndoe@example.com' },
-    { id: 'i2', username: 'JaneSmith', email: 'janesmith@example.com' },
-    { id: 'i3', username: 'RobertBrown', email: 'robertbrown@example.com' },
-    { id: 'i4', username: 'EmilyClark', email: 'emilyclark@example.com' },
-    { id: 'i5', username: 'MichaelJohnson', email: 'michaeljohnson@example.com' },
-    { id: 'i6', username: 'SarahDavis', email: 'sarahdavis@example.com' },
-    { id: 'i7', username: 'DavidWilson', email: 'davidwilson@example.com' },
-    { id: 'i8', username: 'OliviaMartinez', email: 'oliviamartinez@example.com' },
-    { id: 'i9', username: 'JamesAnderson', email: 'jamesanderson@example.com' },
-    { id: 'i10', username: 'SophiaMiller', email: 'sophiamiller@example.com' },
-    { id: 'i11', username: 'DhruvPatel', email: 'dhruvpatel@example.com' },
-]
+import AuthContext from '../AuthContext'
+import { Navigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+// const users = [
+//     { id: 'i1', username: 'JohnDoe', email: 'johndoe@example.com' },
+//     { id: 'i2', username: 'JaneSmith', email: 'janesmith@example.com' },
+//     { id: 'i3', username: 'RobertBrown', email: 'robertbrown@example.com' },
+//     { id: 'i4', username: 'EmilyClark', email: 'emilyclark@example.com' },
+//     { id: 'i5', username: 'MichaelJohnson', email: 'michaeljohnson@example.com' },
+//     { id: 'i6', username: 'SarahDavis', email: 'sarahdavis@example.com' },
+//     { id: 'i7', username: 'DavidWilson', email: 'davidwilson@example.com' },
+//     { id: 'i8', username: 'OliviaMartinez', email: 'oliviamartinez@example.com' },
+//     { id: 'i9', username: 'JamesAnderson', email: 'jamesanderson@example.com' },
+//     { id: 'i10', username: 'SophiaMiller', email: 'sophiamiller@example.com' },
+//     { id: 'i11', username: 'DhruvPatel', email: 'dhruvpatel@example.com' },
+// ]
  
 const columns = [
     {
-        accessorKey: "id",
+        accessorKey: "_id",
         header: ({ column }) => {
             return (
                 <div className='flex gap-2 items-center'>
@@ -48,10 +49,10 @@ const columns = [
                 </div>
             )
         },
-        cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
+        cell: ({ row }) => <div className="capitalize">{row.getValue("_id")}</div>,
     },
   {
-    accessorKey: "username",
+    accessorKey: "name",
     header: ({ column }) => {
         return (
             <div className='flex gap-2 items-center'>
@@ -68,7 +69,7 @@ const columns = [
             </div>
         )
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("username")}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "email",
@@ -97,7 +98,7 @@ const columns = [
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="destructive">
-            Delete Account {row.getValue("id")}
+            Delete Account {row.getValue("_id")}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
@@ -106,8 +107,8 @@ const columns = [
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the following account
               and remove data from servers.<br/>
-              Id: {row.getValue("id")}<br/>
-              Username: {row.getValue("username")}<br/>
+              Id: {row.getValue("_id")}<br/>
+              Username: {row.getValue("name")}<br/>
               Email: {row.getValue("email")}
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -122,11 +123,61 @@ const columns = [
 ]
 
 const delete_user = (row) => {
-  console.log("deleting user: ",row.original);
+  console.log("deleting user: ",row.original); 
+  const deleteUser = async ( ) => { 
+    try { 
+      // delete user from server
+      const response = await fetch('http://localhost:8000/api/admin/user/'+row.original._id, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+localStorage.getItem("token"),
+        },
+      })
+      if(response.ok)
+      {
+          let data = await response.json();
+          console.log(data)
+          // setusers(users.filter(user=>user._id!==row.original._id))
+          // const navigate = useNavigate();
+          // navigate("/Admin/users")
+          window.location.href = "/Admin/users";
+      }
+    }
+    catch (error) {
+        console.error('Error:', error);
+    }
+  }
+  deleteUser()
 }
 
 
 function AllUsers() {
+  const [users,setusers]=React.useState([])
+  const {token,id}= React.useContext(AuthContext)
+  
+  useEffect(()=>{
+       const fetchUsers =  async ()=>{
+          try {
+              const response = await fetch('http://localhost:8000/api/admin/userList', {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer '+token,
+                },
+              })
+              if(response.ok)
+              {
+                  let data = await response.json();
+                  setusers(data)
+                  console.log(data)
+              }
+          } catch (error) {
+              console.error('Error:', error);
+          }
+        }
+        fetchUsers()
+  },[])
   return (
     <div className='w-full p-10 text-black'>
         <h1 className='text-6xl'>Users</h1>

@@ -11,8 +11,6 @@ export function SignIn(props) {
   const { setUsername, setToken, setId } = useContext(AuthContext);
 
   function onSubmit(values) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values)
   }
 
@@ -42,11 +40,20 @@ export function SignIn(props) {
         }
         else 
         {
-          setUsername(username);
-          setToken(data.token);
-          setId(data.user_id);
+          setUsername(data.username);
+          setToken(data.access_token);
+          setId(data.userId);
           console.log(data)
-          navigate("/home")
+          if(data.username === "__admin__")
+          {
+            console.log("routing to admin panel")
+            navigate("/Admin")
+
+          }
+          else {
+            navigate("/home")
+          }
+       
         }
       }
       catch (error) {

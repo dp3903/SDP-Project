@@ -17,6 +17,8 @@ import AllUsers from './components/pages/Admin/AllUsers'
 import AllItems from './components/pages/Admin/AllItems'
 import { AuthProvider } from './components/pages/AuthContext'
 import { Toaster } from 'sonner'
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -72,10 +74,10 @@ function App() {
             <Route path="/contact" element={<div>Contact us page</div>} />
             <Route path="*" element={<div>Error: 404 page not found</div>} />
           </Routes>
+        {/* </ToastContainer> */}
         </BrowserRouter>
       </AuthProvider>
-      
-      <Toaster />
+      <Toaster/>
 
       {/* <LoginSignup></LoginSignup> */}
       

@@ -23,8 +23,8 @@ function Roadmap(props){
   
     const [roadmap,setRoadmap]  = useState(props.roadmap);
     const [columns,setColumns] = useState([
-      {id: "remaining", title: "Remaining", cards: props.roadmap.resourceList.filter(item => (!(props.roadmap.ongoing.some(og => og.id == item.id)) && !(props.roadmap.completed.some(cp => cp.id == item.id))))},
-      {id: "ongoing", title: "On-going", cards: props.roadmap.ongoing},
+      {id: "remaining", title: "Remaining" , cards : props.roadmap.remaining},
+      {id: "ongoing", title: "On-goinng", cards: props.roadmap.ongoing},
       {id: "completed", title: "Completed", cards: props.roadmap.completed},
     ]);
     const [progress,setProgress] = useState(props.roadmap.progress);
@@ -33,7 +33,6 @@ function Roadmap(props){
     // console.log(columns)
 
     useEffect(() => {
-        
         setProgress((columns.find(col => col.id == 'completed').cards.length)/noOfResources * 100);
     },[columns]);
 

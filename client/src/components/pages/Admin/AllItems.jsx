@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { ArrowUpDown, ChevronsUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -41,6 +41,7 @@ import { Badge } from "@/components/ui/badge"
 import { Check, X } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { toast } from "sonner"
+import AuthContext from "../AuthContext"
 
 
 
@@ -164,122 +165,123 @@ const Formats = {
   pdf: "PDF/Documents",
 }
 
-const resources = [
-  {
-    id: "r1",
-    title: "React for Beginners",
-    type: "video",
-    category: "frontend",
-    url: "https://www.youtube.com/watch?v=Ke90Tje7VS0",
-    platform: "YouTube",
-    tags: ["react", "frontend", "javascript", "web development"],
-    averageRating: 4.8,
-    no_of_reviews: 1200,
-  },
-  {
-    id: "r2",
-    title: "Node.js Crash Course",
-    type: "video",
-    category: "backend",
-    url: "https://www.youtube.com/watch?v=fBNz5xF-Kx4",
-    platform: "YouTube",
-    tags: ["nodejs", "backend", "javascript", "express"],
-    averageRating: 4.7,
-    no_of_reviews: 950,
-  },
-  {
-    id: "r3",
-    title: "Data Structures and Algorithms Explained",
-    type: "blog",
-    category: "dsa",
-    url: "https://www.geeksforgeeks.org/data-structures/",
-    platform: "GeeksforGeeks",
-    tags: ["dsa", "algorithms", "programming", "computer science"],
-    averageRating: 4.6,
-    no_of_reviews: 2200,
-  },
-  {
-    id: "r4",
-    title: "Machine Learning Course",
-    type: "pdf",
-    category: "machineLearning",
-    url: "https://cs229.stanford.edu/notes2021fall/cs229-notes1.pdf",
-    platform: "Stanford",
-    tags: ["machine learning", "ai", "statistics", "python"],
-    averageRating: 4.9,
-    no_of_reviews: 500,
-  },
-  {
-    id: "r5",
-    title: "Database Management Systems",
-    type: "video",
-    category: "dbms",
-    url: "https://www.coursera.org/learn/database-management",
-    platform: "Coursera",
-    tags: ["dbms", "database", "SQL", "postgresql"],
-    averageRating: 4.5,
-    no_of_reviews: 1800,
-  },
-  {
-    id: "r6",
-    title: "Operating System Concepts",
-    type: "pdf",
-    category: "operatingSystem",
-    url: "https://codex.cs.yale.edu/avi/os-book/OS9/slide-dir/",
-    platform: "Yale University",
-    tags: ["os", "linux", "windows", "system programming"],
-    averageRating: 4.7,
-    no_of_reviews: 1300,
-  },
-  {
-    id: "r7",
-    title: "DevOps Roadmap",
-    type: "blog",
-    category: "devops",
-    url: "https://roadmap.sh/devops",
-    platform: "Roadmap.sh",
-    tags: ["devops", "CI/CD", "docker", "kubernetes"],
-    averageRating: 4.8,
-    no_of_reviews: 900,
-  },
-  {
-    id: "r8",
-    title: "Blockchain Fundamentals",
-    type: "video",
-    category: "blockchain",
-    url: "https://www.udemy.com/course/blockchain-and-cryptocurrency/",
-    platform: "Udemy",
-    tags: ["blockchain", "cryptocurrency", "ethereum", "web3"],
-    averageRating: 4.6,
-    no_of_reviews: 750,
-  },
-  {
-    id: "r9",
-    title: "Android Development Guide",
-    type: "blog",
-    category: "mobiledev",
-    url: "https://developer.android.com/guide",
-    platform: "Android Developer",
-    tags: ["android", "mobile development", "kotlin", "java"],
-    averageRating: 4.9,
-    no_of_reviews: 1000,
-  },
-  {
-    id: "r10",
-    title: "IoT Security and Challenges",
-    type: "pdf",
-    category: "IoT",
-    url: "https://www.iotforall.com/iot-security-guide",
-    platform: "IoT For All",
-    tags: ["IoT", "security", "networking", "edge computing"],
-    averageRating: 4.7,
-    no_of_reviews: 620,
-  },
-]
+// const resources = [
+//   {
+//     id: "r1",
+//     title: "React for Beginners",
+//     type: "video",
+//     category: "frontend",
+//     url: "https://www.youtube.com/watch?v=Ke90Tje7VS0",
+//     platform: "YouTube",
+//     tags: ["react", "frontend", "javascript", "web development"],
+//     averageRating: 4.8,
+//     no_of_reviews: 1200,
+//   },
+//   {
+//     id: "r2",
+//     title: "Node.js Crash Course",
+//     type: "video",
+//     category: "backend",
+//     url: "https://www.youtube.com/watch?v=fBNz5xF-Kx4",
+//     platform: "YouTube",
+//     tags: ["nodejs", "backend", "javascript", "express"],
+//     averageRating: 4.7,
+//     no_of_reviews: 950,
+//   },
+//   {
+//     id: "r3",
+//     title: "Data Structures and Algorithms Explained",
+//     type: "blog",
+//     category: "dsa",
+//     url: "https://www.geeksforgeeks.org/data-structures/",
+//     platform: "GeeksforGeeks",
+//     tags: ["dsa", "algorithms", "programming", "computer science"],
+//     averageRating: 4.6,
+//     no_of_reviews: 2200,
+//   },
+//   {
+//     id: "r4",
+//     title: "Machine Learning Course",
+//     type: "pdf",
+//     category: "machineLearning",
+//     url: "https://cs229.stanford.edu/notes2021fall/cs229-notes1.pdf",
+//     platform: "Stanford",
+//     tags: ["machine learning", "ai", "statistics", "python"],
+//     averageRating: 4.9,
+//     no_of_reviews: 500,
+//   },
+//   {
+//     id: "r5",
+//     title: "Database Management Systems",
+//     type: "video",
+//     category: "dbms",
+//     url: "https://www.coursera.org/learn/database-management",
+//     platform: "Coursera",
+//     tags: ["dbms", "database", "SQL", "postgresql"],
+//     averageRating: 4.5,
+//     no_of_reviews: 1800,
+//   },
+//   {
+//     id: "r6",
+//     title: "Operating System Concepts",
+//     type: "pdf",
+//     category: "operatingSystem",
+//     url: "https://codex.cs.yale.edu/avi/os-book/OS9/slide-dir/",
+//     platform: "Yale University",
+//     tags: ["os", "linux", "windows", "system programming"],
+//     averageRating: 4.7,
+//     no_of_reviews: 1300,
+//   },
+//   {
+//     id: "r7",
+//     title: "DevOps Roadmap",
+//     type: "blog",
+//     category: "devops",
+//     url: "https://roadmap.sh/devops",
+//     platform: "Roadmap.sh",
+//     tags: ["devops", "CI/CD", "docker", "kubernetes"],
+//     averageRating: 4.8,
+//     no_of_reviews: 900,
+//   },
+//   {
+//     id: "r8",
+//     title: "Blockchain Fundamentals",
+//     type: "video",
+//     category: "blockchain",
+//     url: "https://www.udemy.com/course/blockchain-and-cryptocurrency/",
+//     platform: "Udemy",
+//     tags: ["blockchain", "cryptocurrency", "ethereum", "web3"],
+//     averageRating: 4.6,
+//     no_of_reviews: 750,
+//   },
+//   {
+//     id: "r9",
+//     title: "Android Development Guide",
+//     type: "blog",
+//     category: "mobiledev",
+//     url: "https://developer.android.com/guide",
+//     platform: "Android Developer",
+//     tags: ["android", "mobile development", "kotlin", "java"],
+//     averageRating: 4.9,
+//     no_of_reviews: 1000,
+//   },
+//   {
+//     id: "r10",
+//     title: "IoT Security and Challenges",
+//     type: "pdf",
+//     category: "IoT",
+//     url: "https://www.iotforall.com/iot-security-guide",
+//     platform: "IoT For All",
+//     tags: ["IoT", "security", "networking", "edge computing"],
+//     averageRating: 4.7,
+//     no_of_reviews: 620,
+//   },
+// ]
+let resources_list = []
 
 const columns = [
   {
-    accessorKey: "id",
+    accessorKey: "_id",
     header: ({ column }) => {
       return (
         <div className="flex gap-2 items-center">
@@ -294,7 +296,7 @@ const columns = [
         </div>
       )
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.getValue("_id")}</div>,
   },
   {
     accessorKey: "title",
@@ -320,7 +322,7 @@ const columns = [
     cell: ({ row }) => (
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive">Delete Resource {row.getValue("id")}</Button>
+          <Button variant="destructive">Delete Resource {row.getValue("_id")}</Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -329,23 +331,23 @@ const columns = [
               This action cannot be undone. This will permanently delete the following Resource and remove data from
               servers.
               <br />
-              Id: {row.getValue("id")}
+              Id: {row.getValue("_id")}
               <br />
               Title: {row.getValue("title")}
               <br />
-              Type: {resources.find((r) => r.id == row.getValue("id"))?.type}
+              Type: {resources_list.find((r) => r.id == row.getValue("_id"))?.type}
               <br />
-              Category: {resources.find((r) => r.id == row.getValue("id"))?.category}
+              Tags: {resources_list.find((r) => r.id == row.getValue("_id"))?.tags}
               <br />
-              Platform: {resources.find((r) => r.id == row.getValue("id"))?.platform}
+              Platform: {resources_list.find((r) => r.id == row.getValue("_id"))?.platform}
               <br />
-              URL: {resources.find((r) => r.id == row.getValue("id"))?.url}
+              URL: {resources_list.find((r) => r.id == row.getValue("_id"))?.url}
               <br />
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => delete_user(row)}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={() => delete_resource(row)}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -353,8 +355,34 @@ const columns = [
   },
 ]
 
-const delete_user = (row) => {
-  console.log("deleting resource: ", row.original)
+const delete_resource =async (row) => {
+  // console.log("deleting resource: ", row.original)
+  console.log("deleting user: ",row.original); 
+  const deleteResource = async ( ) => { 
+    try { 
+      // delete user from server
+      const response = await fetch('http://localhost:8000/api/admin/resource/'+row.original._id, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+localStorage.getItem("token"),
+        },
+      })
+      if(response.ok)
+      {
+          let data = await response.json();
+          console.log(data)
+          // setusers(users.filter(user=>user._id!==row.original._id))
+          // const navigate = useNavigate();
+          // navigate("/Admin/users")
+          window.location.href = "/Admin/items";
+      }
+    }
+    catch (error) {
+        console.error('Error:', error);
+    }
+  }
+  deleteResource()
 }
 
 function TagSelector({
@@ -449,6 +477,8 @@ function AllItems() {
   const [drawerOpen, setDrawerOpen] = React.useState(false)
   const [tagsOpen, setTagsOpen] = React.useState(false)
   const [tags, setTags] = React.useState([])
+  const [resources, setResources] = React.useState([])
+  const {token} = React.useContext(AuthContext)
   const [resource, setResource] = React.useState({
     title: "",
     platform: "",
@@ -457,7 +487,7 @@ function AllItems() {
     format: null,
   })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     let keys = Object.keys(resource);
@@ -478,9 +508,62 @@ function AllItems() {
 
     setDrawerOpen(false)
 
-    console.log(resource)
+    console.log(resource) 
+    let request = {
+      title : resource.title,
+      type : resource.format,
+      url : resource.url,
+      platform : resource.platform,
+      tags : resource.keywords,
+      averageRating : 0,
+      no_of_reviews : 0,
+    }
+    const respone = await fetch("http://localhost:8000/api/admin/resource/",{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+token,
+      },
+      body: JSON.stringify(request),
+    })
+    if(respone.ok)
+    {
+      toast.success("Resource added successfully!")
+      setResource({
+        title: "",
+        platform: "",
+        url: "",
+        keywords: null,
+        format: null,
+      })
+      const data = await respone.json()
+      console.log(data)
+    }
   }
+  useEffect(()=>{
+    const fetchResources = async () => { 
+      try {
+        const response = await fetch('http://localhost:8000/api/admin/resourceList', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+token,
 
+          },
+        })
+        if(response.ok)
+        {
+            let data = await response.json();
+            setResources(()=>data)
+            console.log(resources)
+            console.log(data)
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+    }
+    fetchResources()
+  },[])
   return (
     <div className="w-full p-10 text-black">
       <h1 className="text-6xl mb-4">Resources</h1>
