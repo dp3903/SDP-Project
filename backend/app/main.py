@@ -18,10 +18,8 @@ from passlib.context import CryptContext
 from app.models import UserModel
 import uuid
 from fastapi.middleware.cors import CORSMiddleware
+from app.utils import add_new_user, update_user_mapping
 
-origins = [
-    "*",  
-]
 pswd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
 app = FastAPI()
 
@@ -66,6 +64,8 @@ async def user_signup(request:Request):
 	user.password = pswd_context.hash(user.password)
 	result = await db.users.insert_one(user.dict(by_alias=True))
 	new_user = await db.users.find_one({ "_id" : result.inserted_id})
+	add_new_user()
+	update_user_mapping(new_user["_id"])
 	token = create_access_token(data={"sub":new_user["name"]})
 	return {"access_token": token, "token_type": "bearer", "username": new_user["name"], "email": new_user["email"], "userId": new_user["_id"]}
 
@@ -92,6 +92,9 @@ async def google_callback():
 		except Exception as e:
 			raise HTTPException(status_code=400,detail=str(e))
 
+origins = [
+    "http://localhost:5173",  
+]
 app.add_middleware(AuthMiddleware)
 app.add_middleware(
     CORSMiddleware,

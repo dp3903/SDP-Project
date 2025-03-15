@@ -27,6 +27,7 @@ async def update_roadmap_by_id(roadmapId:str,roadmap:Request):
 	print(roadmap_dict)
 	roadmap_dict.pop('_id',None)
 	updated_roadmap = await db.roadmaps.find_one_and_update({"_id":roadmapId},{"$set":roadmap_dict},return_document=ReturnDocument.AFTER)
+	print(updated_roadmap)
 	if updated_roadmap :
 		return {"updated_roadmap":updated_roadmap}
 	else : 

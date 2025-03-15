@@ -8,6 +8,9 @@ from pymongo import ReturnDocument
 from passlib.context import CryptContext
 import uuid 
 from typing import List
+from app.utils import add_new_resource, update_resource_mapping, delete_resource_mapping, delete_user_mapping
+
+
 adminRouter = APIRouter()
 pswd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
 
@@ -42,6 +45,7 @@ async def delete_resource(request: Request,resourceId : str):
 	result = await db.resources.delete_one({"_id":resourceId})
 	if result.deleted_count==0:
 		raise HTTPException(status_code=404,detail="Resource not Found")
+	delete_resource_mapping(resourceId)
 	return {"message":"Resource Deleted Succesfully"}
 
 @adminRouter.post("/resource",response_model=ResourceModel)
@@ -57,6 +61,8 @@ async def create_resource(request: Request):
 	resource.id = str(uuid.uuid4())[:8]
 	result = await db.resources.insert_one(resource.dict(by_alias=True))
 	new_resource = await db.resources.find_one({"_id":result.inserted_id})
+	add_new_resource()
+	update_resource_mapping(new_resource["_id"])
 	return new_resource
 
 @adminRouter.delete("/user/{userId}")
@@ -66,5 +72,6 @@ async def delete_user(userId: str, request: Request):
 	
 	result = await db.users.delete_one({"_id" : userId})
 	if result.deleted_count == 0:
-			raise HTTPException(status_code=404,detail="User not Found")	
+			raise HTTPException(status_code=404,detail="User not Found")
+	delete_user_mapping(userId)
 	return {"message":"User Deleted Succesfully"}
