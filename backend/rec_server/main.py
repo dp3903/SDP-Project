@@ -230,12 +230,12 @@ class ResourceKeyWordEnum(str , Enum):
 #     return zip(tags, [ResourceKeyWordEnum(t) for t in tags])
     # return tags
 
-@app.get("/api/clear_roadmaps/{userId}")
-async def clear(userId: str):
-    rm = db.roadmaps.find({"userId": userId}).to_list(None)
-    return rm
-    # mes = db.roadmaps.delete_many({"userId": userId})
-    # return mes
+# @app.get("/api/clear_roadmaps/{userId}")
+# async def clear(userId: str):
+#     rm = db.roadmaps.find({"userId": userId}).to_list(None)
+#     return rm
+#     # mes = db.roadmaps.delete_many({"userId": userId})
+#     # return mes
 
 # def format_tag(tag: str) -> str:
 #     """
@@ -273,13 +273,14 @@ async def clear(userId: str):
 #     return resources_collection.find({}).to_list(None)
 
 # to see user interactions
-# @app.get("/api/test/{userId}")
-# async def test(userId):
-#     it = db.interactions.find({'userId':userId}).to_list(None)
-#     rec = []
-#     for i in it:
-#         rec.append(db.resources.find_one({'_id': i['resourceId']}))
-#     return rec
+@app.get("/api/test/{username}")
+async def test(username):
+    user = db.users.find_one({'name':username})
+    it = db.interactions.find({'userId':user["_id"]}).to_list(None)
+    rec = []
+    for i in it:
+        rec.append(db.resources.find_one({'_id': i['resourceId']}))
+    return rec
 
 
 

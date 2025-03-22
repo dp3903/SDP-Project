@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useNavigate } from 'react-router-dom'
 import AuthContext from './AuthContext'
+import { toast } from 'sonner'
 
  
 export function SignIn(props) {
@@ -36,7 +37,12 @@ export function SignIn(props) {
         });
         const data = await response.json();
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          console.log(response)
+          // throw new Error({message: response, status: response.status});
+          if(response.status == 401)
+            throw new Error("Invalid Credentials.")
+          else
+            throw new Error("User not found.")
         }
         else 
         {
@@ -57,7 +63,12 @@ export function SignIn(props) {
         }
       }
       catch (error) {
-        console.error('Error:', error);
+        console.log('Error:', error.message);
+        toast.error("Error!!!", {
+          description: (<h1 className='text-xl'>{error.message}</h1>),
+          richColors: true,
+        })
+        return;
       }
     
     }

@@ -17,17 +17,17 @@ import AuthContext from '../AuthContext'
 import { Navigate } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 // const users = [
-//     { id: 'i1', username: 'JohnDoe', email: 'johndoe@example.com' },
-//     { id: 'i2', username: 'JaneSmith', email: 'janesmith@example.com' },
-//     { id: 'i3', username: 'RobertBrown', email: 'robertbrown@example.com' },
-//     { id: 'i4', username: 'EmilyClark', email: 'emilyclark@example.com' },
-//     { id: 'i5', username: 'MichaelJohnson', email: 'michaeljohnson@example.com' },
-//     { id: 'i6', username: 'SarahDavis', email: 'sarahdavis@example.com' },
-//     { id: 'i7', username: 'DavidWilson', email: 'davidwilson@example.com' },
-//     { id: 'i8', username: 'OliviaMartinez', email: 'oliviamartinez@example.com' },
-//     { id: 'i9', username: 'JamesAnderson', email: 'jamesanderson@example.com' },
-//     { id: 'i10', username: 'SophiaMiller', email: 'sophiamiller@example.com' },
-//     { id: 'i11', username: 'DhruvPatel', email: 'dhruvpatel@example.com' },
+//     { id: 'i1', name: 'JohnDoe', email: 'johndoe@example.com' },
+//     { id: 'i2', name: 'JaneSmith', email: 'janesmith@example.com' },
+//     { id: 'i3', name: 'RobertBrown', email: 'robertbrown@example.com' },
+//     { id: 'i4', name: 'EmilyClark', email: 'emilyclark@example.com' },
+//     { id: 'i5', name: 'MichaelJohnson', email: 'michaeljohnson@example.com' },
+//     { id: 'i6', name: 'SarahDavis', email: 'sarahdavis@example.com' },
+//     { id: 'i7', name: 'DavidWilson', email: 'davidwilson@example.com' },
+//     { id: 'i8', name: 'OliviaMartinez', email: 'oliviamartinez@example.com' },
+//     { id: 'i9', name: 'JamesAnderson', email: 'jamesanderson@example.com' },
+//     { id: 'i10', name: 'SophiaMiller', email: 'sophiamiller@example.com' },
+//     { id: 'i11', name: 'DhruvPatel', email: 'dhruvpatel@example.com' },
 // ]
  
 const columns = [
@@ -181,7 +181,7 @@ function AllUsers() {
   return (
     <div className='w-full p-10 text-black'>
         <h1 className='text-6xl'>Users</h1>
-        <DataTable data={users} columns={columns} filters={['username','email']}/>
+        <DataTable data={users} columns={columns} filters={['name','email']}/>
     </div>
   )
 }

@@ -39,6 +39,8 @@ async def user_login(request:Request):
 	if user and pswd_context.verify(password,user["password"]):
 		token = create_access_token(data={"sub":user["name"]})
 		return {"access_token": token, "token_type": "bearer", "username": user["name"], "email": user["email"], "userId": user["_id"]}
+	elif user is None:
+		raise HTTPException(status_code=404,detail="User not found")
 	else:
 		raise HTTPException(status_code=401,detail="Invalid Credentials")
 

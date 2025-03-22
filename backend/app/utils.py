@@ -1,8 +1,8 @@
 import numpy as np
 import json
 
-USER_MAPPING_FILE = "shared_files/usr_mappings.json"
-RESOURCE_MAPPING_FILE = "shared_files/res_mappings.json" 
+USER_MAPPING_FILE = "shared_files/user_mappings.json"
+RESOURCE_MAPPING_FILE = "shared_files/resource_mappings.json" 
 USER_MATRIX_FILE = "shared_files/user_matrix.npy"
 RESOURCE_MATRIX_FILE = "shared_files/resource_matrix.npy"
 LEARNING_RATE = 0.001
@@ -51,7 +51,7 @@ def add_new_resource():
 # Function to update user mappings
 def update_user_mapping(new_user_id):
     if new_user_id not in user_mappings:
-        user_mappings[new_user_id] = len(user_mappings)  # Assign new index
+        user_mappings[new_user_id] = len(user_mappings) + 1  # Assign new index
         save_json(USER_MAPPING_FILE, user_mappings)
         add_new_user() # adding new row in user_matrix 
         print(f"Updated user mapping: {new_user_id} -> {user_mappings[new_user_id]}")

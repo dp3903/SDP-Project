@@ -23,7 +23,7 @@ export function SignUp(props) {
     props.signInClick(e)
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(event.target[0].value)
     console.log(event.target[1].value)
@@ -39,6 +39,35 @@ export function SignUp(props) {
       })
       return;
     }
+
+    
+    try {
+      const response = await fetch('http://localhost:8000/auth/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username : username,
+          password :  password,
+        }),
+      });
+      const data = await response.json();
+      
+      console.log(response)
+      // throw new Error({message: response, status: response.status});
+      if(response.status != 404)
+        throw new Error("Username already exists, please try again with a different username.")
+      
+    }
+    catch (error) {
+      console.log('Error:', error.message);
+      toast.error("Error!!!", {
+        description: (<h1 className='text-xl'>{error.message}</h1>),
+        richColors: true,
+      })
+      return;
+    }
+  
+    
 
     // validate
     // let response = { username:use, token:'abcd', email:'abc@123.com' }

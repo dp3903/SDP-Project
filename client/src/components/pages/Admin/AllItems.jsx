@@ -335,13 +335,13 @@ const columns = [
               <br />
               Title: {row.getValue("title")}
               <br />
-              Type: {resources_list.find((r) => r.id == row.getValue("_id"))?.type}
+              Type: {row.getValue("type")}
               <br />
-              Tags: {resources_list.find((r) => r.id == row.getValue("_id"))?.tags}
+              Tags: {row.getValue("tags")}
               <br />
-              Platform: {resources_list.find((r) => r.id == row.getValue("_id"))?.platform}
+              Platform: {row.getValue("platform")}
               <br />
-              URL: {resources_list.find((r) => r.id == row.getValue("_id"))?.url}
+              URL: {row.getValue("url")}
               <br />
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -676,7 +676,7 @@ function AllItems() {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-      <DataTable data={resources} columns={columns} filters={["id", "title"]} />
+      <DataTable data={resources} columns={columns} filters={["_id", "title"]} />
     </div>
   )
 }

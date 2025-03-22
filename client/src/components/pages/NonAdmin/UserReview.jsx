@@ -45,118 +45,99 @@ function UserReview() {
     };
     const fields = {
         
-            AMETHYST: "Amethyst",
-            SWIFTUI: "SwiftUI",
-            OPENMP: "OpenMP",
-            UI_UX: "UI/UX",
-            KTOR: "Ktor",
-            ML_NET: "ML.NET",
-            NOSQL: "NoSQL",
-            IOT: "IoT",
-            AI: "ai",
-            ANGULAR: "Angular",
-            GAME_DEVELOPMENT: "Game Development",
-            BACKEND: "Backend",
-            UNITY: "Unity",
-            ROCKET: "Rocket",
-            SQLITE: "SQLite",
-            NUXT_JS: "Nuxt.js",
-            JAKARTA_EE: "Jakarta EE",
-            MACHINE_LEARNING: "Machine Learning",
-            APACHE_HADOOP: "Apache Hadoop",
-            COCOS2D_X: "Cocos2d-x",
-            FLASK: "Flask",
-            UNREAL_ENGINE: "Unreal Engine",
-            WINFORMS: "WinForms",
-            MONGODB: "MongoDB",
-            SPRING_BOOT: "Spring Boot",
-            GO: "Go",
-            CLOUD_MICROSERVICES: "Cloud & Microservices",
-            OPERATING_SYSTEM: "operating System",
-            DEVOPS: "devops",
-            DATA_SCIENCE: "Data Science",
-            BLOCKCHAIN: "blockchain",
-            SCENEKIT: "SceneKit",
-            CLOUD_COMPUTING: "Cloud Computing",
-            PYGAME: "Pygame",
-            PYTORCH: "PyTorch",
-            ALGORITHMS: "algorithms",
-            CPP: "C++",
-            MYSQL: "MySQL",
-            KIVY: "Kivy",
-            GIN: "Gin",
-            EXPRESS_JS: "Express.js",
-            WXWIDGETS: "wxWidgets",
-            DJANGO: "Django",
-            VAPOR: "Vapor",
-            POSTGRESQL: "PostgreSQL",
-            CYBERSECURITY: "cybersecurity",
-            SFML: "SFML",
-            DESKTOP_APPLICATIONS: "Desktop Applications",
-            MLPACK: "MLpack",
-            FASTAPI: "FastAPI",
-            COBRA: "Cobra",
-            BEVY: "Bevy",
-            CUDA: "CUDA",
-            FRONTEND: "Frontend",
-            SEABORN: "Seaborn",
-            SVELTE: "Svelte",
-            PYTHON: "Python",
-            TENSORFLOW_CPP: "TensorFlow C++",
-            GRPC: "gRPC",
-            NUMPY: "NumPy",
-            THREE_JS: "Three.js",
-            JETPACK_COMPOSE: "Jetpack Compose",
-            FULL_STACK: "Full-Stack",
-            JMONKEYENGINE: "jMonkeyEngine",
-            NATURAL_LANGUAGE_PROCESSING: "natural Language Processing",
-            DATA_STRUCTURES: "data Structures",
-            SPRITEKIT: "SpriteKit",
-            FIREBASE: "Firebase",
-            SQL: "SQL",
-            MOBILE_DEVELOPMENT: "Mobile Development",
-            CLI_DEVELOPMENT: "CLI Development",
-            GUI_DEVELOPMENT: "GUI Development",
-            LIBGDX: "libGDX",
-            ACTIX: "Actix",
-            PANDAS: "Pandas",
-            KUBERNETES: "Kubernetes",
-            ECHO: "Echo",
-            WEB_DEVELOPMENT: "Web Development",
-            EMBEDDED_SYSTEMS: "Embedded Systems",
-            CSHARP: "C#",
-            JAVASCRIPT: "JavaScript",
-            QT: "Qt",
-            APACHE_SPARK: "Apache Spark",
-            MATPLOTLIB: "Matplotlib",
-            REACT: "React",
-            PHASER_JS: "Phaser.js",
-            WPF: "WPF",
-            UIKIT: "UIKit",
-            HIGH_PERFORMANCE_COMPUTING: "High-Performance Computing",
-            NESTJS: "NestJS",
-            REDIS: "Redis",
-            BIG_DATA: "Big Data",
-            SWIFT: "Swift",
-            DATABASES: "Databases",
-            IOS_DEVELOPMENT: "iOS Development",
-            MACHINE_LEARNING_2: "machine Learning",
-            VUE_JS: "Vue.js",
-            RUST: "Rust",
-            KOTLIN: "Kotlin",
-            COMPUTER_VISION: "computer Vision",
-            KOA: "Koa",
-            PYGLET: "Pyglet",
-            JAVA: "Java",
-            NEXT_JS: "Next.js",
-            SPRING_BOOT_KOTLIN: "Spring Boot (Kotlin)",
-            ASP_NET_CORE: "ASP.NET Core",
-            TENSORFLOW: "TensorFlow",
-            FIBER: "Fiber",
-            NETWORK: "network",
-            ANDROID_SDK: "Android SDK",
-            SCIKIT_LEARN: "Scikit-Learn"
-        
+        PYTHON : "Python",
+        ANGULAR : "Angular",
+        SEABORN : "Seaborn",
+        RUST : "Rust",
+        COMPUTER_VISION : "Computer Vision",
+        PYGAME : "PYGAME",
+        NUMPY : "NUMPY",
+        CLOUD_COMPUTING : "Cloud Computing",
+        UNITY : "UNITY",
+        ALGORITHMS : "Algorithms",
+        UNREAL_ENGINE : "Unreal Engine",
+        GO : "GO",
+        SVELTE : "SVELTE",
+        JAVASCRIPT : "Javascript",
+        FRONTEND : "Front-end",
+        QT : "QT",
+        GUI_DEVELOPMENT : "GUI Development",
+        DATA_SCIENCE : "Data Science",
+        POSTGRESQL : "PostgreSQL",
+        NESTJS : "NestJS",
+        MYSQL : "MYSQL",
+        SPRITEKIT : "SpriteKit",
+        SCENEKIT : "SceneKit",
+        DESKTOP_APPLICATIONS : "Desktop Apps",
+        AI : "AI",
+        BIG_DATA : "Big Data",
+        ASP_NET_CORE : "ASP NET Core",
+        COCOS2D_X : "COCOS2D X",
+        KTOR : "KTOR",
+        SQL : "SQL",
+        IOS_DEVELOPMENT : "IOS Development",
+        APACHE_HADOOP : "APACHE HADOOP",
+        PYTORCH : "PYTORCH",
+        GAME_DEVELOPMENT : "GAME Development",
+        NEXT_JS : "NextJS",
+        SWIFTUI : "SwiftUI",
+        NOSQL : "NOSQL",
+        FIREBASE : "FireBase",
+        JAKARTA_EE : "Jakarta EE",
+        FIBER : "Fiber",
+        MONGODB : "MongoDB",
+        BLOCKCHAIN : "Bloackchain",
+        REDIS : "Redis",
+        TENSORFLOW : "Tensorflow",
+        WINFORMS : "Windows forms",
+        SWIFT : "Swift",
+        KIVY : "KIVY",
+        REACT : "ReactJS",
+        FULL_STACK : "Full Stack",
+        GRPC : "GRPC",
+        DATABASES : "Databases",
+        SCIKIT_LEARN : "SciKIT Learn",
+        OPERATING_SYSTEM : "Operating System",
+        APACHE_SPARK : "APACHE Spark",
+        EMBEDDED_SYSTEMS : "Embedded Systems",
+        PANDAS : "Pandas",
+        UI_UX : "UI/UX",
+        WPF : "WPF",
+        KUBERNETES : "Kubernetes",
+        JAVA : "Java",
+        NATURAL_LANGUAGE_PROCESSING : "Natural Language Processing",
+        SPRING_BOOT : "Spring Boot",
+        MACHINE_LEARNING : "Machine Learning",
+        GIN : "Gin",
+        LIBGDX : "LIBGDX",
+        JETPACK_COMPOSE : "Jetpack Compose",
+        DEVOPS : "Dev-Ops",
+        C : "C",
+        MOBILE_DEVELOPMENT : "Mobile Development",
+        THREE_JS : "ThreeJS",
+        UIKIT : "UI Kit",
+        ML_NET : "ML Net",
+        CYBERSECURITY : "CyberSecurity",
+        IOT : "IOT",
+        FLASK : "Flask",
+        KOA : "KOA",
+        ROCKET : "Rocket",
+        NETWORK : "Network",
+        BACKEND : "Backend",
+        VUE_JS : "VueJS",
+        FASTAPI : "FastAPI",
+        WEB_DEVELOPMENT : "Web Development",
+        CUDA : "CUDA",
+        DJANGO : "Django",
+        HIGH_PERFORMANCE_COMPUTING : "High Perfomance Computing",
+        SQLITE : "SQLite",
+        DATA_STRUCTURES : "Data Structures",
+        KOTLIN : "Kotlin",
+        NUXT_JS : "NuxtJS",
+        EXPRESS_JS : "ExpressJS",
+        MATPLOTLIB : "MatplotLib",
+        VAPOR : "Vapor",
+        SFML : "SFML"
                
     };
 
@@ -209,38 +190,45 @@ function UserReview() {
                 else 
                 {
                     console.log("success creating user")
-                    try {
-                        const response = await fetch("http://localhost:8000/auth/login/",{
-                            method : 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(
-                                {
-                                    username : username,
-                                    password :  password,
-                                }
-                            )
-                        })
-                        if (!response.ok)
-                        {
-                                console.log(response)
-                        }
-                        else 
-                        {
-                            const data = await response.json();
-                            console.log(data)
-                             setUsername(username);
-                             setToken(response.access_token);
-                             console.log(token)
-                             setEmail(email);   
-                             setId(data.userId);
-                        }
-                    }catch (e)
-                    {
-                        console.error('Error:', e);
-                        console.log(e)
-                    }
+                    const data = await response.json();
+                    console.log(data)
+                    setUsername(username);
+                    setToken(data.access_token);
+                    console.log(token)
+                    setEmail(email);   
+                    setId(data.userId);
+                    // try {
+                    //     const response = await fetch("http://localhost:8000/auth/login/",{
+                    //         method : 'POST',
+                    //         headers: {
+                    //             'Content-Type': 'application/json'
+                    //         },
+                    //         body: JSON.stringify(
+                    //             {
+                    //                 username : username,
+                    //                 password :  password,
+                    //             }
+                    //         )
+                    //     })
+                    //     if (!response.ok)
+                    //     {
+                    //             console.log(response)
+                    //     }
+                    //     else 
+                    //     {
+                    //         const data = await response.json();
+                    //         console.log(data)
+                    //          setUsername(username);
+                    //          setToken(response.access_token);
+                    //          console.log(token)
+                    //          setEmail(email);   
+                    //          setId(data.userId);
+                    //     }
+                    // }catch (e)
+                    // {
+                    //     console.error('Error:', e);
+                    //     console.log(e)
+                    // }
                      navigate("/home")
                 }
             }
