@@ -62,12 +62,10 @@ async def root():
 
 @app.get("/api/recommendations/{userId}")
 async def get_recommendations(userId):
-    resource_intIds = await get_merged_recommendations(userId)
-    if not resource_intIds or type(resource_intIds) is not list:
+    resource_id_list = await get_merged_recommendations(userId)
+    if not resource_id_list or type(resource_id_list) is not list:
         raise HTTPException(status_code=500,detail="Error: some unkown error occured.")
-    resource_id_list = list()
-    for resource_id in resource_intIds:
-        resource_id_list.append(resource_map[str(resource_id+1)])
+    
     resources = list(collection.find({'_id':{'$in':resource_id_list}}))
     random.shuffle(resources)
     # print(resource_id_list)
@@ -103,19 +101,21 @@ async def get_trending(count=10,history=20):
     resource_intIds = list(set(resource_intIds))[:count]
 
     # step-4 the returned resources can be considered trending topics' resources
-    resource_id_list = list()
-    for resource_id in resource_intIds:
-        resource_id_list.append(resource_map[str(resource_id+1)])
+    resource_id_list = [df.iloc[idx]['_id'] for idx in resource_intIds if idx < len(df)]
     resources = list(collection.find({'_id':{'$in':resource_id_list}}))
     return resources
 
 @app.get("/api/reload_files")
 async def reload_files():
-    global user_matrix,resource_matrix,user_map,resource_map 
+    global user_matrix,resource_matrix,user_map,resource_map,df,tfidf,resource_similarity_matrix
     user_matrix = await asyncio.to_thread(np.load,"shared_files/user_matrix.npy")
     resource_matrix = await asyncio.to_thread(np.load,"shared_files/resource_matrix.npy")
     user_map = await asyncio.to_thread(lambda : json.load(open("shared_files/user_mappings.json")))
     resource_map = await asyncio.to_thread(lambda : json.load(open("shared_files/resource_mappings.json")))
+    df = pd.DataFrame(db.resources.find())
+    df = df.astype({'no_of_reviews': 'int64', 'averageRating': 'float64', 'title': pd.StringDtype(), 'tags': pd.StringDtype(), 'url': pd.StringDtype(), 'platform': pd.StringDtype(), 'type': pd.StringDtype()})
+    tfidf = TfidfVectorizer(stop_words='english')
+    resource_similarity_matrix = tfidf.fit_transform(df['title'] + ' ' + df['tags'])
     return {"msg":"files reloaded successfully"}
 
 
@@ -124,101 +124,6 @@ async def reload_files():
 #     res = db.resources.find({}).to_list(None)
 #     return res
 
-from enum import Enum
-class ResourceKeyWordEnum(str , Enum):
-    PYTHON = "PYTHON",
-    ANGULAR = "ANGULAR",
-    SEABORN = "SEABORN",
-    RUST = "RUST",
-    COMPUTER_VISION = "COMPUTER_VISION",
-    PYGAME = "PYGAME",
-    NUMPY = "NUMPY",
-    CLOUD_COMPUTING = "CLOUD_COMPUTING",
-    UNITY = "UNITY",
-    ALGORITHMS = "ALGORITHMS",
-    UNREAL_ENGINE = "UNREAL_ENGINE",
-    GO = "GO",
-    SVELTE = "SVELTE",
-    JAVASCRIPT = "JAVASCRIPT",
-    FRONTEND = "FRONTEND",
-    QT = "QT",
-    GUI_DEVELOPMENT = "GUI_DEVELOPMENT",
-    DATA_SCIENCE = "DATA_SCIENCE",
-    POSTGRESQL = "POSTGRESQL",
-    NESTJS = "NESTJS",
-    MYSQL = "MYSQL",
-    SPRITEKIT = "SPRITEKIT",
-    SCENEKIT = "SCENEKIT",
-    DESKTOP_APPLICATIONS = "DESKTOP_APPLICATIONS",
-    AI = "AI",
-    BIG_DATA = "BIG_DATA",
-    ASP_NET_CORE = "ASP_NET_CORE",
-    COCOS2D_X = "COCOS2D_X",
-    KTOR = "KTOR",
-    SQL = "SQL",
-    IOS_DEVELOPMENT = "IOS_DEVELOPMENT",
-    APACHE_HADOOP = "APACHE_HADOOP",
-    PYTORCH = "PYTORCH",
-    GAME_DEVELOPMENT = "GAME_DEVELOPMENT",
-    NEXT_JS = "NEXT_JS",
-    SWIFTUI = "SWIFTUI",
-    NOSQL = "NOSQL",
-    FIREBASE = "FIREBASE",
-    JAKARTA_EE = "JAKARTA_EE",
-    FIBER = "FIBER",
-    MONGODB = "MONGODB",
-    BLOCKCHAIN = "BLOCKCHAIN",
-    REDIS = "REDIS",
-    TENSORFLOW = "TENSORFLOW",
-    WINFORMS = "WINFORMS",
-    SWIFT = "SWIFT",
-    KIVY = "KIVY",
-    REACT = "REACT",
-    FULL_STACK = "FULL_STACK",
-    GRPC = "GRPC",
-    DATABASES = "DATABASES",
-    SCIKIT_LEARN = "SCIKIT_LEARN",
-    OPERATING_SYSTEM = "OPERATING_SYSTEM",
-    APACHE_SPARK = "APACHE_SPARK",
-    EMBEDDED_SYSTEMS = "EMBEDDED_SYSTEMS",
-    PANDAS = "PANDAS",
-    UI_UX = "UI_UX",
-    WPF = "WPF",
-    KUBERNETES = "KUBERNETES",
-    JAVA = "JAVA",
-    NATURAL_LANGUAGE_PROCESSING = "NATURAL_LANGUAGE_PROCESSING",
-    SPRING_BOOT = "SPRING_BOOT",
-    MACHINE_LEARNING = "MACHINE_LEARNING",
-    GIN = "GIN",
-    LIBGDX = "LIBGDX",
-    JETPACK_COMPOSE = "JETPACK_COMPOSE",
-    DEVOPS = "DEVOPS",
-    C = "C",
-    MOBILE_DEVELOPMENT = "MOBILE_DEVELOPMENT",
-    THREE_JS = "THREE_JS",
-    UIKIT = "UIKIT",
-    ML_NET = "ML_NET",
-    CYBERSECURITY = "CYBERSECURITY",
-    IOT = "IOT",
-    FLASK = "FLASK",
-    KOA = "KOA",
-    ROCKET = "ROCKET",
-    NETWORK = "NETWORK",
-    BACKEND = "BACKEND",
-    VUE_JS = "VUE_JS",
-    FASTAPI = "FASTAPI",
-    WEB_DEVELOPMENT = "WEB_DEVELOPMENT",
-    CUDA = "CUDA",
-    DJANGO = "DJANGO",
-    HIGH_PERFORMANCE_COMPUTING = "HIGH_PERFORMANCE_COMPUTING",
-    SQLITE = "SQLITE",
-    DATA_STRUCTURES = "DATA_STRUCTURES",
-    KOTLIN = "KOTLIN",
-    NUXT_JS = "NUXT_JS",
-    EXPRESS_JS = "EXPRESS_JS",
-    MATPLOTLIB = "MATPLOTLIB",
-    VAPOR = "VAPOR",
-    SFML = "SFML"
 
 # @app.get("/api/get_all_tags")
 # async def fun():
@@ -272,16 +177,27 @@ class ResourceKeyWordEnum(str , Enum):
 #             )
 #     return resources_collection.find({}).to_list(None)
 
-# to see user interactions
+# to see user interactions and related resources
 @app.get("/api/test/{username}")
 async def test(username):
     user = db.users.find_one({'name':username})
-    it = db.interactions.find({'userId':user["_id"]}).to_list(None)
+    it = db.interactions.find({'userId':user["_id"]}).sort('timestamp',-1).to_list(None)
     rec = []
-    for i in it:
-        rec.append(db.resources.find_one({'_id': i['resourceId']}))
+    # for i in it:
+    #     o = db.resources.find_one({'_id': i['resourceId']})
+    #     rec.append(o)
+    # resources = await get_form_based(user['_id'])
+    # resources = db.resources.find({'_id': {'$in': resources}}).to_list(None)
+    # return {'user': user, 'interactions': rec, 'recommendations': resources}
+    for k in user['prefrences']['interests']:
+        o = {}
+        o['keyword'] = k
+        sim = get_similar_resources(k,2)
+        sim = [df.iloc[idx]['_id'] for idx in sim if idx < len(df)]
+        resources = db.resources.find({'_id': {'$in': sim}}).to_list(None)
+        o['resources'] = resources
+        rec.append(o)
     return rec
-
 
 
 # to add dummy interactions
@@ -350,11 +266,10 @@ async def get_form_based(userId, top_n = 10):
     user = db.users.find_one({ "_id": userId })
     if not user:
         raise HTTPException(status_code=404,detail="User not Found with Given userId")
-    keywords = ''
+    recommendations = []
     for k in user['prefrences']['interests']:
-        keywords += k
-    # print(keywords)
-    recommendations = get_similar_resources(keywords, top_n=top_n)
+        recommendations += get_similar_resources(k, top_n=math.ceil(top_n/len(user['prefrences']['interests'])))
+    recommendations = [df.iloc[idx]['_id'] for idx in recommendations if idx < len(df)]
     return recommendations
 
 async def get_collaborative(userId, top_n = 10):
@@ -364,7 +279,8 @@ async def get_collaborative(userId, top_n = 10):
         raise HTTPException("Invalid user ID")
     resource_score_list = await asyncio.to_thread(np.dot,user_matrix[idx],resource_matrix.T)
     resource_intIds = await asyncio.to_thread(lambda: np.argsort(resource_score_list)[-1*top_n:][::-1].tolist())
-    return resource_intIds
+    resource_ids = [resource_map[i] for i in resource_intIds]
+    return resource_ids
 
 async def get_content_based(userId,top_n = 10):
     interactions = db.interactions.find({'userId': userId}).sort('timestamp', -1).to_list(None)
@@ -379,9 +295,9 @@ async def get_content_based(userId,top_n = 10):
     weights = get_weights(int_count,top_n)
     for index,w in enumerate(weights):
         it = interactions[index]
-        res_id = int([key for key,val in resource_map.items() if val == it['resourceId']][0])
+        res_id = int(df.index[df['_id'] == it['resourceId']].to_list()[0])
         recommendations = recommendations.union(set(get_similar_resources(res_id, top_n = w)))
-        
+    recommendations = [df.iloc[idx]['_id'] for idx in recommendations if idx < len(df)]
     # print(recommendations)
     return list(recommendations)[:top_n]
 

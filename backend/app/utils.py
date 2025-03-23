@@ -1,5 +1,6 @@
 import numpy as np
 import json
+import httpx
 
 USER_MAPPING_FILE = "shared_files/user_mappings.json"
 RESOURCE_MAPPING_FILE = "shared_files/resource_mappings.json" 
@@ -30,6 +31,13 @@ def save_json(file_path, data):
     with open(file_path, "w") as f:
         json.dump(data, f, indent=4)
 
+# function to reload files
+async def reload_files():
+    api_url = "https://localhost:8080/api/reload_files"
+    async with httpx.AsyncClient() as client:
+        await client.get(api_url)
+        
+
 # ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 # function to add dummy embedding for new user
@@ -54,6 +62,7 @@ def update_user_mapping(new_user_id):
         user_mappings[new_user_id] = len(user_mappings) + 1  # Assign new index
         save_json(USER_MAPPING_FILE, user_mappings)
         add_new_user() # adding new row in user_matrix 
+        reload_files() # reload files
         print(f"Updated user mapping: {new_user_id} -> {user_mappings[new_user_id]}")
 
 # Function to update resource mappings
@@ -62,6 +71,7 @@ def update_resource_mapping(new_resource_id):
         resource_mappings[len(resource_mappings)] = new_resource_id
         save_json(RESOURCE_MAPPING_FILE, resource_mappings)
         add_new_resource()
+        reload_files() # reload files
         print(f"Updated resource mapping: {len(resource_mappings) - 1} -> {new_resource_id}")
 
 # function to delete user mapping
@@ -80,7 +90,7 @@ def delete_user_mapping(user_id):
             user_mappings[uid] -= 1  
     np.save(USER_MATRIX_FILE, user_matrix)
     save_json(USER_MAPPING_FILE, user_mappings)
-
+    reload_files() # reload files
     print(f"Deleted user {user_id} and updated mappings.")
 
 # function to delete resource mapping
@@ -119,7 +129,7 @@ def delete_resource_mapping(resource_id):
     # Save the updated matrix and mappings
     np.save(RESOURCE_MATRIX_FILE, resource_matrix)
     save_json(RESOURCE_MAPPING_FILE, new_mappings)
-
+    reload_files() # reload files
     print(f"Deleted resource {resource_id} and updated mappings.")
 
 # Function to handle new interactions
@@ -144,6 +154,9 @@ def process_new_interaction(interaction):
     
     # Incrementally update the matrix factorization model
     update_matrix_factorization(user_index, resource_index, rating)
+
+    # reload files
+    reload_files()
 
 # function to re-train model
 def update_matrix_factorization(user_index, resource_index, rating):
