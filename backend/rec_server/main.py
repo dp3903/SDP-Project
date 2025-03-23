@@ -268,7 +268,8 @@ async def get_form_based(userId, top_n = 10):
         raise HTTPException(status_code=404,detail="User not Found with Given userId")
     recommendations = []
     for k in user['prefrences']['interests']:
-        recommendations += get_similar_resources(k, top_n=math.ceil(top_n/len(user['prefrences']['interests'])))
+        print(k)
+        recommendations += get_similar_resources(k,top_n=math.ceil(top_n/len(user['prefrences']['interests'])))
     recommendations = [df.iloc[idx]['_id'] for idx in recommendations if idx < len(df)]
     return recommendations
 
@@ -308,12 +309,12 @@ def get_similar_resources(resource: str|int, top_n=10):
     if type(resource) is str:
       sim_scores = cosine_similarity(tfidf.transform([resource]), resource_similarity_matrix).flatten()
       # Get indices sorted by similarity score
-      similar_indices = sim_scores.argsort()[::][1:top_n+1]  # Skip the resource itself
+      similar_indices = sim_scores.argsort()[::-1][1:top_n+1]  # Skip the resource itself
     elif type(resource) is int:
       sim_scores = cosine_similarity(resource_similarity_matrix[resource], resource_similarity_matrix).flatten()
       # Get indices sorted by similarity score
       similar_indices = sim_scores.argsort()[::-1][1:top_n+1]  # Skip the resource itself    
-
+    print(similar_indices)
     return list(similar_indices) # convert to list for return
 
 # function for weight distribution of interactions
