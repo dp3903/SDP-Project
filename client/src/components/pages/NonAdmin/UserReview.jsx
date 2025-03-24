@@ -18,6 +18,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { date } from 'zod';
 import AuthContext from '../AuthContext'
 import { useContext } from "react"
+import { TagSelector } from '@/components/ui/TagSelector';
+
 function UserReview() {
     const { setUsername, setToken, setEmail , setId , token , id} = useContext(AuthContext);
     const location = useLocation();
@@ -43,103 +45,7 @@ function UserReview() {
         blog : "Blogs",
         pdf : "Documents",
     };
-    const fields = {
-        
-        PYTHON : "Python",
-        ANGULAR : "Angular",
-        SEABORN : "Seaborn",
-        RUST : "Rust",
-        COMPUTER_VISION : "Computer Vision",
-        PYGAME : "PYGAME",
-        NUMPY : "NUMPY",
-        CLOUD_COMPUTING : "Cloud Computing",
-        UNITY : "UNITY",
-        ALGORITHMS : "Algorithms",
-        UNREAL_ENGINE : "Unreal Engine",
-        GO : "GO",
-        SVELTE : "SVELTE",
-        JAVASCRIPT : "Javascript",
-        FRONTEND : "Front-end",
-        QT : "QT",
-        GUI_DEVELOPMENT : "GUI Development",
-        DATA_SCIENCE : "Data Science",
-        POSTGRESQL : "PostgreSQL",
-        NESTJS : "NestJS",
-        MYSQL : "MYSQL",
-        SPRITEKIT : "SpriteKit",
-        SCENEKIT : "SceneKit",
-        DESKTOP_APPLICATIONS : "Desktop Apps",
-        AI : "AI",
-        BIG_DATA : "Big Data",
-        ASP_NET_CORE : "ASP NET Core",
-        COCOS2D_X : "COCOS2D X",
-        KTOR : "KTOR",
-        SQL : "SQL",
-        IOS_DEVELOPMENT : "IOS Development",
-        APACHE_HADOOP : "APACHE HADOOP",
-        PYTORCH : "PYTORCH",
-        GAME_DEVELOPMENT : "GAME Development",
-        NEXT_JS : "NextJS",
-        SWIFTUI : "SwiftUI",
-        NOSQL : "NOSQL",
-        FIREBASE : "FireBase",
-        JAKARTA_EE : "Jakarta EE",
-        FIBER : "Fiber",
-        MONGODB : "MongoDB",
-        BLOCKCHAIN : "Bloackchain",
-        REDIS : "Redis",
-        TENSORFLOW : "Tensorflow",
-        WINFORMS : "Windows forms",
-        SWIFT : "Swift",
-        KIVY : "KIVY",
-        REACT : "ReactJS",
-        FULL_STACK : "Full Stack",
-        GRPC : "GRPC",
-        DATABASES : "Databases",
-        SCIKIT_LEARN : "SciKIT Learn",
-        OPERATING_SYSTEM : "Operating System",
-        APACHE_SPARK : "APACHE Spark",
-        EMBEDDED_SYSTEMS : "Embedded Systems",
-        PANDAS : "Pandas",
-        UI_UX : "UI/UX",
-        WPF : "WPF",
-        KUBERNETES : "Kubernetes",
-        JAVA : "Java",
-        NATURAL_LANGUAGE_PROCESSING : "Natural Language Processing",
-        SPRING_BOOT : "Spring Boot",
-        MACHINE_LEARNING : "Machine Learning",
-        GIN : "Gin",
-        LIBGDX : "LIBGDX",
-        JETPACK_COMPOSE : "Jetpack Compose",
-        DEVOPS : "Dev-Ops",
-        C : "C",
-        MOBILE_DEVELOPMENT : "Mobile Development",
-        THREE_JS : "ThreeJS",
-        UIKIT : "UI Kit",
-        ML_NET : "ML Net",
-        CYBERSECURITY : "CyberSecurity",
-        IOT : "IOT",
-        FLASK : "Flask",
-        KOA : "KOA",
-        ROCKET : "Rocket",
-        NETWORK : "Network",
-        BACKEND : "Backend",
-        VUE_JS : "VueJS",
-        FASTAPI : "FastAPI",
-        WEB_DEVELOPMENT : "Web Development",
-        CUDA : "CUDA",
-        DJANGO : "Django",
-        HIGH_PERFORMANCE_COMPUTING : "High Perfomance Computing",
-        SQLITE : "SQLite",
-        DATA_STRUCTURES : "Data Structures",
-        KOTLIN : "Kotlin",
-        NUXT_JS : "NuxtJS",
-        EXPRESS_JS : "ExpressJS",
-        MATPLOTLIB : "MatplotLib",
-        VAPOR : "Vapor",
-        SFML : "SFML"
-               
-    };
+    
 
     function onSubmit(data) {
         if(data.experience == ''){
@@ -197,39 +103,8 @@ function UserReview() {
                     console.log(token)
                     setEmail(email);   
                     setId(data.userId);
-                    // try {
-                    //     const response = await fetch("http://localhost:8000/auth/login/",{
-                    //         method : 'POST',
-                    //         headers: {
-                    //             'Content-Type': 'application/json'
-                    //         },
-                    //         body: JSON.stringify(
-                    //             {
-                    //                 username : username,
-                    //                 password :  password,
-                    //             }
-                    //         )
-                    //     })
-                    //     if (!response.ok)
-                    //     {
-                    //             console.log(response)
-                    //     }
-                    //     else 
-                    //     {
-                    //         const data = await response.json();
-                    //         console.log(data)
-                    //          setUsername(username);
-                    //          setToken(response.access_token);
-                    //          console.log(token)
-                    //          setEmail(email);   
-                    //          setId(data.userId);
-                    //     }
-                    // }catch (e)
-                    // {
-                    //     console.error('Error:', e);
-                    //     console.log(e)
-                    // }
-                     navigate("/home")
+                    
+                    navigate("/home")
                 }
             }
             catch (error) {
@@ -344,19 +219,11 @@ function UserReview() {
                                         You can select any subjects you wish to get recommendations on.
                                     </FormDescription>
                                     <div className="flex flex-wrap gap-2 mb-4">
-                                        {Object.keys(fields).map((option) => (
-                                        <div
-                                            key={option}
-                                            onClick={() => toggleOption(option,'fields')}
-                                            className={`cursor-pointer min-w-fit p-4 rounded-lg border ${
-                                            form.getValues('fields').includes(option)
-                                                ? "bg-blue-500 text-white border-blue-500"
-                                                : "bg-gray-100 hover:bg-blue-200 text-gray-800 border-gray-300"
-                                            } hover:shadow-lg transition`}
-                                        >
-                                            {fields[option]}
-                                        </div>
-                                        ))}
+                                        <TagSelector 
+                                            onChange={(newtags)=>{
+                                                form.setValue("fields", newtags)
+                                            }}
+                                        />
                                     </div>
                                     <FormMessage />
                                 </div>
