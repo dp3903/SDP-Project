@@ -24,11 +24,7 @@ export default {
   	},
   	extend: {
   		backgroundImage: {
-  			'landing-bg': 'url("./src/assets/design-2.2.png")',
-  			'bg-2': 'url("./src/assets/bg-2.webp")',
-  			'bg-3': 'url("./src/assets/image.webp")',
-  			'bg-6': 'url("./src/assets/bg-6.webp")',
-  			'bg-7': 'url("./src/assets/bg-7.jpg")',
+  			'landing-bg': 'url("./src/assets/png-1.png")',
   			'google': 'url("./src/assets/google_icon.png")',
   		},
   		borderRadius: {

@@ -100,9 +100,6 @@ export function SignIn(props) {
               <div className="bg-google bg-contain bg-no-repeat h-[30px] w-[30px]"></div>
             </button>
         </div>
-        <a className='mt-2 cursor-pointer font-semibold underline'>
-          Forgot Password?
-        </a>
     </div>
   );
 }

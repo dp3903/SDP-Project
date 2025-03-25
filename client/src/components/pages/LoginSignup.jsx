@@ -11,8 +11,12 @@ function LoginSignup() {
     const signUpref = useRef();
   
     const [highlightStyle, setHighlightStyle] = useState({ width: 0, left: 0 });
-    const [highlightSignIn, setHighlightSignIn] = useState({ width: '100%' });
-    const [highlightSignUp, setHighlightSignUp] = useState({ width: '0%' });
+    const [highlightSignIn, setHighlightSignIn] = useState({
+      width: '100%'
+    });
+    const [highlightSignUp, setHighlightSignUp] = useState({
+      width: '0%'
+    });
   
     const signInClick = (e)=>{
   
@@ -21,7 +25,7 @@ function LoginSignup() {
   
       setTimeout(()=>{
         setHighlightSignIn({ width: '100%' })
-      },300);
+      },100);
       setHighlightSignUp({ width: '0%' })
     };
   
@@ -33,7 +37,7 @@ function LoginSignup() {
       setHighlightSignIn({ width: '0%' })
       setTimeout(()=>{
         setHighlightSignUp({ width: '100%' })
-      },300);
+      },100);
     }
   
     useEffect(()=>{
@@ -44,7 +48,7 @@ function LoginSignup() {
     return (
       <>
         <div className='w-[100vw] h-[100vh] flex flex-col items-center bg-gradient-to-br from-cyan-500 to-fuchsia-500 bg-no-repeat bg-cover'>
-          <div className="absolute text-xl font-semibold py-8 top-0 w-[100vw] flex flex-row flex-nowrap justify-around backdrop-blur shadow-lg">
+          <div className=" text-xl font-semibold py-8 top-0 w-[100vw] flex flex-row flex-nowrap justify-around backdrop-blur shadow-lg">
             <h1>
               <Link to='/'>
                 Welcome To Hermes
@@ -63,7 +67,7 @@ function LoginSignup() {
             </ul>
           </div>
   
-          <div className="relative mt-24 flex justify-center items-center w-1/4">
+          <div className="relative mt-8 flex justify-center items-center w-1/4">
             <ul className="nav-items m-0 p-0 flex list-none gap-10">
               
                 <li
@@ -94,11 +98,11 @@ function LoginSignup() {
           </div>
   
           <div className='flex flex-row w-full mt-2 justify-center overflow-x-hidden flex-nowrap'>
-            <div className='w-1/4 p-10 relative flex flex-row overflow-x-hidden flex-nowrap backdrop-blur bg-[rgba(55,55,55,0.1)] rounded-md shadow-xl mb-8'>
+            <div className='w-1/4 min-w-[290px] p-5 relative flex flex-row justify-between overflow-x-hidden flex-nowrap backdrop-blur bg-[rgba(55,55,55,0.1)] rounded-md shadow-xl mb-8'>
   
-              <div className='overflow-hidden relative left-0'
+              <div className='overflow-hidden overflow-y-auto relative left-0'
                 style={{
-                  width: `${highlightSignIn.width}`,
+                  ...highlightSignIn,
                   transition: "all .3s ease",
                   whiteSpace: "nowrap"
                 }}
@@ -107,9 +111,9 @@ function LoginSignup() {
               </div>
               
             
-              <div className='overflow-hidden relative right-0'
+              <div className='overflow-hidden overflow-y-auto relative right-0'
                 style={{
-                  width: `${highlightSignUp.width}`,
+                  ...highlightSignUp,
                   transition: "all .3s ease",
                   whiteSpace: "nowrap"
                 }}
