@@ -28,9 +28,9 @@ function About() {
         </div>
 
         <div className='m-10 lg:m-40 mt-60'>
-            <div className="grid col-span-1 lg:grid-cols-3 gap-20">
+            <div className="grid col-span-1 lg:grid-cols-3 gap-20 gap-x-40">
                 <div className="col lg:col-span-2  lg:order-first">
-                    <h1 className="text-center font-bold text-lg mb-4">Empowering Learners with the Best Learning Resources!</h1>
+                    <h1 className="text-center font-bold text-2xl font-display mb-4">Empowering Learners with the Best Learning Resources!</h1>
                     <div className='font-semibold'>
                         Welcome to Hermes! Our mission is to help learners find the best online learning resources for computer and IT students tailored to their needs. Whether you're a beginner or an expert, we guide you to the right materials.
                     </div>
@@ -41,7 +41,7 @@ function About() {
 
                 
                 <div className="col lg:col-span-2 lg:order-4">
-                    <h1 className="text-center font-bold text-lg">Our Mission</h1>
+                    <h1 className="text-center font-bold text-2xl font-display">Our Mission</h1>
                     <div className='font-semibold'>
                         In today’s vast digital world, finding the right learning resource can be overwhelming. We simplify this by curating, categorizing, and recommending high-quality learning materials.
                         Whether you're a student, a professional, or a self-learner, we provide trusted resources across various domains like programming, data science, AI, and more.
@@ -54,7 +54,7 @@ function About() {
 
                 
                 <div className="col lg:col-span-2 lg:order-5">
-                    <h1 className="text-center font-bold text-lg">How It Works</h1>
+                    <h1 className="text-center font-bold text-2xl font-display">How It Works</h1>
                     <div className='font-semibold'>
                         In simple words, We analyze various learning resources based on user reviews, ratings, and tags. Our system intelligently suggests the best materials tailored to your learning preferences. Various metrics are taken into consideration to calculate best resources that you may find engaging and thus provide you the best experience into the world of computers.
                     </div>
@@ -65,7 +65,7 @@ function About() {
                 
                 
                 <div className="col lg:col-span-2 lg:order-8">
-                    <h1 className="text-center font-bold text-lg">Key Features</h1>
+                    <h1 className="text-center font-bold text-2xl font-display">Key Features</h1>
                     <ul className='font-semibold list-disc'>
                         <li>
                             Personalized Recommendations – Find what resources fits you the best!
