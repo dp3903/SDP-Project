@@ -195,30 +195,6 @@ export default function ProfilePage() {
     roadmapsOngoing: 1,
   }
 
-  const recommendedResources = [
-    {
-        id : 1,
-        title : 'Title', 
-        type : 'Type',
-        category : 'Category', 
-        url : 'URL',
-        platform : 'Platform', 
-        tags : ['Tag-1','Tag-2','Tag-3','Tag-4',],
-        averageRating : 3.2,
-        numberOfRatings: 100,
-    },
-    {
-        id : 2,
-        title : 'Title', 
-        type : 'Type',
-        category : 'Category', 
-        url : 'URL',
-        platform : 'Platform', 
-        tags : ['Tag-1','Tag-2','Tag-3','Tag-4',],
-        averageRating : 4.7,
-        numberOfRatings: 100,
-    },
-  ]
 
     const handleResourceClick = (item) => {
         console.log('hi',item);
@@ -236,7 +212,8 @@ export default function ProfilePage() {
         });
     
         if (!response.ok) {
-          throw new Error(`Error: ${response.status} ${response.statusText}`);
+          navigate('/error',{state:{error: {status:response.status, message:response.message||"Internal Server Error."}}})
+          return;
         }
     
         const data = await response.json();
@@ -245,6 +222,8 @@ export default function ProfilePage() {
         
       } catch (error) {
         console.error("Failed to fetch liked resources:", error);
+        navigate('/error',{state:{error: {status:500, message:"Internal Server Error."}}})
+        return;
       }
     };
     const getReviewedResources = async () => {
@@ -257,13 +236,16 @@ export default function ProfilePage() {
           }
         });
         if (!response.ok) {
-          throw new Error(`Error: ${response.status} ${response.statusText}`);
+          navigate('/error',{state:{error: {status:response.status, message:response.message||"Internal Server Error."}}})
+          return;
         }
         const data = await response.json();
         console.log("Reviewed Resources:", data);
         setResourceReviewed(data)
       } catch (error) {
         console.error("Failed to fetch liked resources:", error);
+        navigate('/error',{state:{error: {status:500, message:"Internal Server Error."}}})
+        return;
       }
     }
     

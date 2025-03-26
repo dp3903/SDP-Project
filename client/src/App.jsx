@@ -19,7 +19,7 @@ import { AuthProvider } from './components/pages/AuthContext'
 import { Toaster } from 'sonner'
 import About from './components/pages/About'
 import Contact from './components/pages/Contact'
-import Error from './components/pages/Error'
+import ErrorPage from './components/pages/Error'
 
 function App() {
 
@@ -73,7 +73,8 @@ function App() {
 
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<Error />} />
+            {/* <Route path="/error" element={<ErrorPage />} /> */}
+            <Route path="*" element={<ErrorPage errorCode={404} errorMessage='Page not Found.' />} />
           </Routes>
         {/* </ToastContainer> */}
         </BrowserRouter>

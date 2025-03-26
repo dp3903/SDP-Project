@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from '../../ui/button';
 import { ThumbsUp, MessageSquareText, ChevronLeft, Pin, Route } from 'lucide-react'
-import { UNSAFE_createClientRoutesWithHMRRevalidationOptOut, useLocation, useNavigate } from 'react-router-dom';
+import { redirect, UNSAFE_createClientRoutesWithHMRRevalidationOptOut, useLocation, useNavigate } from 'react-router-dom';
 import {
     Dialog,
     DialogClose,
@@ -44,6 +44,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import AuthContext from "../AuthContext"
+import ErrorPage from '../Error';
 
 // const reviews = [
 //     {
@@ -118,6 +119,7 @@ function AddToRoadmap({ roadmaps , resource}) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [dialogOpen, setDialogOpen] = useState(false)
     const { token } = useContext(AuthContext)
+    const navigate = useNavigate()
     const handleSelectRoadmap = (id) => {
       const roadmap = roadmaps.find((r) => r._id === id)
       if (roadmap) {
@@ -144,6 +146,9 @@ function AddToRoadmap({ roadmaps , resource}) {
       {
         const data = await res.json();
         console.log(data)
+      }
+      else{
+        navigate("/error",{state:{error:{status:res.status, message:res.message||"Server Error"}}})
       }
       setDialogOpen(false)
     }
@@ -223,16 +228,17 @@ function ResourceDetails(props) {
     const location = useLocation();
     const navigate = useNavigate();
     const [liked, setLiked] = useState(false);
-    const { item } = location.state;
     const { id , token , username} = useContext(AuthContext)
-
-    if(!item){
-        return <div>Error: 404 resource not found...</div>
-    }
-    
-    // console.log(item);
-    let resource = item;
-    // console.log(resource);
+    const [resource, setResource] = useState({
+        _id : '',
+        title : '', 
+        type : '',
+        url : '',
+        platform : '', 
+        tags : [],
+        averageRating : 0,
+        no_of_reviews : 0,
+    })
    
 
     const handleCommentSubmit = async (e) => {
@@ -339,6 +345,13 @@ function ResourceDetails(props) {
     }
     // getting comments from the server 
     useEffect(()=>{
+        const item = location.state?.item;
+        if(!item){
+            navigate("/error",{state:{error:{status:404, message:"Resource Not Found", redirect:'/home'}}})
+            return
+        }
+        setResource(item)
+        console.log(resource)
         const fetchReviews = async ()=>{
             try {
                 const response = await fetch(`http://localhost:8000/api/reviews/resources/${resource._id}`,{

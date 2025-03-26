@@ -158,7 +158,7 @@ function Dashboard() {
         catch(error)
         {
             console.log(error)
-
+            navigate('/error',{error})
         }
       
         
@@ -201,6 +201,7 @@ function Dashboard() {
             catch (error)
             {
                 console.log(error)
+                navigate('/error',{error})
             }
            
         }
@@ -220,7 +221,10 @@ function Dashboard() {
                 }
             }
             catch (error) {
-                console.error("Recommendations error:", error);
+                error.status == null ? error.status=500 : null ;
+                error.message == null ? error.message="Internal Server Error." : null ;
+                console.log("Recommendations error:", error);
+                navigate('/error',{state:{error:{status:500, message:"Internal server error."}}})
             }
         }
         // setResources(demoResources)

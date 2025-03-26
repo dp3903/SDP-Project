@@ -5,85 +5,87 @@ import { Plus, CircleHelp } from 'lucide-react';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
 import AuthContext from '../AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-const test_roadmaps = [
-  {
-    _id : 1,
-    title : 'Roadmap-title-1', 
-    userId : 'User-id',
-    remaining : [
-      { _id : '4', title : 'Title-4', },
-      { _id : '5', title : 'Title-5', },
-      { _id : '6', title : 'Title-6', },
-      { _id : '7', title : 'Title-7', },
-      { _id : '8', title : 'Title-8', },
-      { _id : '9', title : 'Title-9', },
-      { _id : '10', title : 'Title-10', },
-      { _id : '11', title : 'Title-11', },
-      { _id : '12', title : 'Title-12', },
-      { _id : '13', title : 'Title-13', },
-      { _id : '14', title : 'Title-14', },
-      { _id : '15', title : 'Title-15', },
-      { _id : '16', title : 'Title-16', },
-      { _id : '17', title : 'Title-17', },
-      { _id : '18', title : 'Title-18', },
-      { _id : '19', title : 'Title-19', },
-    ],
-    completed : [
-      { _id : '1', title : 'Title-1', },
-      { _id : '2', title : 'Title-2', },
-    ],
-    ongoing : [
-      { _id : '3', title : 'Title-3', },
-    ],
-    createdAt : 'MM-DD-YYYY', 
-    progress : 50.0
-  },
-  {
-    _id : 2,
-    title : 'Roadmap-title-2', 
-    userId : 'User-id',
-    remaining : [
-      { _id : '4', title : 'Title-4', },
-    ],
-    completed : [
-      { _id : '1', title : 'Title-1', },
-      { _id : '2', title : 'Title-2', },
-    ],
-    ongoing : [
-      { _id : '3', title : 'Title-3', },
-    ],
-    createdAt : 'MM-DD-YYYY', 
-    progress : 50.0
-  },
-  {
-    _id : 3,
-    title : 'Roadmap-title-3', 
-    userId : 'User-id',
-    remaining : [
-      { _id : '4', title : 'Title-4', },
-    ],
-    completed : [
-      { _id : '1', title : 'Title-1', },
-      { _id : '2', title : 'Title-2', },
-    ],
-    ongoing : [
-      { _id : '3', title : 'Title-3', },
-    ],
-    createdAt : 'MM-DD-YYYY', 
-    progress : 50.0
-  },
+// const test_roadmaps = [
+//   {
+//     _id : 1,
+//     title : 'Roadmap-title-1', 
+//     userId : 'User-id',
+//     remaining : [
+//       { _id : '4', title : 'Title-4', },
+//       { _id : '5', title : 'Title-5', },
+//       { _id : '6', title : 'Title-6', },
+//       { _id : '7', title : 'Title-7', },
+//       { _id : '8', title : 'Title-8', },
+//       { _id : '9', title : 'Title-9', },
+//       { _id : '10', title : 'Title-10', },
+//       { _id : '11', title : 'Title-11', },
+//       { _id : '12', title : 'Title-12', },
+//       { _id : '13', title : 'Title-13', },
+//       { _id : '14', title : 'Title-14', },
+//       { _id : '15', title : 'Title-15', },
+//       { _id : '16', title : 'Title-16', },
+//       { _id : '17', title : 'Title-17', },
+//       { _id : '18', title : 'Title-18', },
+//       { _id : '19', title : 'Title-19', },
+//     ],
+//     completed : [
+//       { _id : '1', title : 'Title-1', },
+//       { _id : '2', title : 'Title-2', },
+//     ],
+//     ongoing : [
+//       { _id : '3', title : 'Title-3', },
+//     ],
+//     createdAt : 'MM-DD-YYYY', 
+//     progress : 50.0
+//   },
+//   {
+//     _id : 2,
+//     title : 'Roadmap-title-2', 
+//     userId : 'User-id',
+//     remaining : [
+//       { _id : '4', title : 'Title-4', },
+//     ],
+//     completed : [
+//       { _id : '1', title : 'Title-1', },
+//       { _id : '2', title : 'Title-2', },
+//     ],
+//     ongoing : [
+//       { _id : '3', title : 'Title-3', },
+//     ],
+//     createdAt : 'MM-DD-YYYY', 
+//     progress : 50.0
+//   },
+//   {
+//     _id : 3,
+//     title : 'Roadmap-title-3', 
+//     userId : 'User-id',
+//     remaining : [
+//       { _id : '4', title : 'Title-4', },
+//     ],
+//     completed : [
+//       { _id : '1', title : 'Title-1', },
+//       { _id : '2', title : 'Title-2', },
+//     ],
+//     ongoing : [
+//       { _id : '3', title : 'Title-3', },
+//     ],
+//     createdAt : 'MM-DD-YYYY', 
+//     progress : 50.0
+//   },
   
-];
+// ];
 
 function Roadmaps() {
   const [roadmaps,setRoadmaps] = React.useState([])
   const { id , token } = useContext(AuthContext)
+  const navigate = useNavigate()
   function handleResourceClick(item) {
 
   }
 
- async function handleNewRoadmap(e){
+  async function handleNewRoadmap(e){
     e.preventDefault();
     let title = e.target.roadmap_name.value 
     console.log(title)
@@ -112,19 +114,29 @@ function Roadmaps() {
       console.log(data)
       setRoadmaps(prev=>[...prev,data])
     }
+    else{
+      navigate("/error",{state:{error:{status:res.status, message:res.message||"Server Error."}}})
+    }
 
   }
   useEffect( ()=>{
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:8000/api/roadmaps/${id}`,{
-        headers: {
-                  'Authorization': `Bearer ${token}`, 
+      try{
+
+        const response = await fetch(`http://localhost:8000/api/roadmaps/${id}`,{
+          headers: {
+            'Authorization': `Bearer ${token}`, 
               }
         })
       const data = await response.json()
       setRoadmaps([...data])
       // setRoadmaps(test_roadmaps)
       console.log(roadmaps)
+      }
+      catch(error){
+        navigate("/error",{state:{error:{status:500, message:"Internal Server Error."}}})
+        return;
+      }
     }
     fetchData()
   },[])

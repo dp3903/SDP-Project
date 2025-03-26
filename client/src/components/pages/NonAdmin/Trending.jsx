@@ -82,25 +82,28 @@ function Trending() {
     }
     useEffect(()=>{
         async function fetchData() {
-        try {
-            const response = await fetch('http://localhost:8080/api/trending/', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
+            try {
+                const response = await fetch('http://localhost:8080/api/trending/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            })
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                setResources(data);
             }
-            const data = await response.json();
-            setResources(data);
+            catch (error) {
+                console.error('Error:', error);
+                navigate("/error",{state:{error:{status:500, message:"Internal Server Error."}}})
+                return;
+            }
         }
-        catch (error) {
-            console.error('Error:', error);
-        }
-    }
-    fetchData();
-})
+        fetchData();
+    },[])
+
   return (
     <div className="w-full flex flex-row gap-2 pt-20 flex-wrap">
         <div className="w-full min-w-fit">

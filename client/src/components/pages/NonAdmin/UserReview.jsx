@@ -14,7 +14,7 @@ import {
 import { Input } from '../../ui/input';
 import { useForm } from 'react-hook-form';
 import { Form , FormField , FormItem , FormLabel , FormControl , FormDescription , FormMessage } from '../../ui/form';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { redirect, useLocation, useNavigate } from 'react-router-dom';
 import { date } from 'zod';
 import AuthContext from '../AuthContext'
 import { useContext } from "react"
@@ -26,6 +26,14 @@ function UserReview() {
     const { username , email , password} = location.state || {}
     const navigate = useNavigate();
     const [dummy,setDummy] = useState();
+
+    useEffect(()=>{
+        if(!username || !email || !password){
+            console.log("User data not present.")
+            navigate('/error',{state:{error: {status:300, message:"Invalid Action.", redirect:"/"}}})
+            return;
+        }
+    },[])
 
     const form = useForm({
         defaultValues: {
@@ -110,10 +118,11 @@ function UserReview() {
             catch (error) {
                 console.error('Error:', error);
                 console.log(error)
+                navigate('/error',{state:{error: {status:500, message:"Internal Server Error."}}})
+                return;
             }
         }
         postdata();
-        
        
     }
 
