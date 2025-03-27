@@ -1,35 +1,11 @@
 import React, { useContext, useEffect } from 'react'
-import ReactStars from "react-rating-stars-component"
 import { Input } from '../../ui/input'
-import { Button } from '../../ui/button'
-import { Check, ChevronsUpDown,  } from "lucide-react"
-import { cn } from "@/lib/utils"
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom'
 import CustomCard from './CustomCard'
 import AuthContext from '../AuthContext'
+import { Grid, MagnifyingGlass } from 'react-loader-spinner';
 
 const frameworks = [
     {
@@ -170,10 +146,22 @@ function Dashboard() {
         setResources([])
         if(searchValue.trim() === ''){
             // get recommendations 
-            toast.warning('Please enter a search keyword!', {
-                position: 'top-right',
-                autoClose: 3000, // Closes after 3 seconds
-            });
+            let user_id = id 
+            try {
+                const rec_response = await fetch("http://localhost:8080/api/recommendations/"+user_id,)
+                if(rec_response.ok)
+                {
+                    let recommendations = await rec_response.json();
+                    setResources(recommendations.recommended_resources)
+                    console.log(recommendations)
+                }
+            }
+            catch (error) {
+                error.status == null ? error.status=500 : null ;
+                error.message == null ? error.message="Internal Server Error." : null ;
+                console.log("Recommendations error:", error);
+                navigate('/error',{state:{error:{status:500, message:"Internal server error."}}})
+            }
             setIsSearch(false)
             setIsSearching(false)
             setResources(resources)
@@ -238,49 +226,6 @@ function Dashboard() {
 
             <Input placeholder="Search resources" value={searchValue} onChange={e => setSearchValue(e.target.value)} className="rounded-full w-2/5 border-[1px] border-gray-500 bg-[rgba(255,255,255,.3)] placeholder:text-gray-700 hover:shadow-lg hover:bg-[rgba(55,55,55,0.1)] font-semibold"></Input>
 
-            {/* <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                    <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
-                        className={cn("w-[200px] justify-between rounded-full mt-2 text-gray-500 border-[1px] border-gray-500 hover:shadow-lg hover:bg-[rgba(55,55,55,0.1)]" ,filterValue ? 'focus:bg-slate-200 text-black' : 'bg-[rgba(255,255,255,.3)]')}
-                    >
-                        {filterValue
-                            ? frameworks.find((framework) => framework.value === filterValue)?.label
-                            : "Filter..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                    <CommandInput placeholder="Filter..." />
-                    <CommandList>
-                        <CommandEmpty>No Technology found.</CommandEmpty>
-                        <CommandGroup>
-                        {frameworks.map((framework) => (
-                            <CommandItem
-                            key={framework.value}
-                            value={framework.value}
-                            onSelect={(currentValue) => {
-                                setFilterValue(currentValue === filterValue ? "" : currentValue)
-                                setOpen(false)
-                            }}
-                            >
-                            <Check
-                                className={cn(
-                                "mr-2 h-4 w-4",
-                                filterValue === framework.value ? "opacity-100" : "opacity-0"
-                                )}
-                            />
-                            {framework.label}
-                            </CommandItem>
-                        ))}
-                        </CommandGroup>
-                    </CommandList>
-                    </Command>
-                </PopoverContent>
-            </Popover> */}
         </form>
         <div className="w-full flex flex-row gap-2 flex-wrap">
             <div className="w-full min-w-fit">
@@ -294,9 +239,37 @@ function Dashboard() {
     ))
 ) : (
     isSearching ? (
-        <p>Searching for best results... 🔍</p>
+        <div className='flex flex-col items-center gap-10'>
+            <div className='font-semibold text-lg'>
+                Getting Your Search results...
+            </div>
+            <MagnifyingGlass
+                visible={true}
+                height="120"
+                width="120"
+                ariaLabel="magnifying-glass-loading"
+                wrapperStyle={{}}
+                wrapperClass="magnifying-glass-wrapper"
+                glassColor="#c0efff"
+                color="#e15b64"
+            />
+        </div>
     ) : (
-        <p>Getting your recommendations... 🔃</p>
+        <div className='flex flex-col items-center gap-10'>
+            <div className='font-semibold text-lg'>
+                Getting your recommendations...
+            </div>
+            <Grid
+                visible={true}
+                height="80"
+                width="80"
+                color="rgb(0,0,0)"
+                ariaLabel="grid-loading"
+                radius="12.5"
+                wrapperStyle={{}}
+                wrapperClass="grid-wrapper"
+            />
+        </div>
     )
 )}
 

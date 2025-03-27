@@ -126,14 +126,18 @@ function Roadmaps() {
         const response = await fetch(`http://localhost:8000/api/roadmaps/${id}`,{
           headers: {
             'Authorization': `Bearer ${token}`, 
-              }
+          }
         })
-      const data = await response.json()
-      setRoadmaps([...data])
-      // setRoadmaps(test_roadmaps)
-      console.log(roadmaps)
+        if(response.status == 404){
+          return
+        }
+        const data = await response.json()
+        setRoadmaps([...data])
+        // setRoadmaps(test_roadmaps)
+        console.log(roadmaps)
       }
       catch(error){
+        console.log(error)
         navigate("/error",{state:{error:{status:500, message:"Internal Server Error."}}})
         return;
       }

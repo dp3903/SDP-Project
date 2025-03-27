@@ -1,14 +1,6 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import ReactStars from "react-rating-stars-component"
+import { FallingLines } from 'react-loader-spinner';
 import CustomCard from './CustomCard';
 
 
@@ -116,7 +108,17 @@ function Trending() {
         <CustomCard key={item.id} item={item} onClick={() => handleResourceClick(item)} />
     ))
 ) : (
-    <p className="text-black-500 text-center">Getting New Trends📈📉</p>
+    <div className="flex flex-col items-center gap-10">
+        <div className='font-semibold text-lg'>
+            Getting New Trends
+        </div>
+        <FallingLines
+            color="rgb(0,0,0)"
+            width="100"
+            visible={true}
+            ariaLabel="falling-circles-loading"
+        />
+    </div>
 )}
 
                 

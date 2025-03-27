@@ -211,10 +211,10 @@ export default function ProfilePage() {
           }
         });
     
-        if (!response.ok) {
-          navigate('/error',{state:{error: {status:response.status, message:response.message||"Internal Server Error."}}})
-          return;
-        }
+        // if (!response.ok) {
+        //   navigate('/error',{state:{error: {status:response.status, message:response.message||"Internal Server Error."}}})
+        //   return;
+        // }
     
         const data = await response.json();
         console.log("Liked Resources:", data);
@@ -235,10 +235,10 @@ export default function ProfilePage() {
             'Authorization': `Bearer ${token}`
           }
         });
-        if (!response.ok) {
-          navigate('/error',{state:{error: {status:response.status, message:response.message||"Internal Server Error."}}})
-          return;
-        }
+        // if (!response.ok) {
+        //   navigate('/error',{state:{error: {status:response.status, message:response.message||"Internal Server Error."}}})
+        //   return;
+        // }
         const data = await response.json();
         console.log("Reviewed Resources:", data);
         setResourceReviewed(data)
@@ -271,7 +271,7 @@ export default function ProfilePage() {
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
 
                 <div className="text-center">
-                  <div className="font-semibold">{resourcesLiked.length}</div>
+                  <div className="font-semibold">{resourcesLiked?.length || 0}</div>
                   <div className="text-sm text-gray-600">Resources Liked</div>
                 </div>
                 

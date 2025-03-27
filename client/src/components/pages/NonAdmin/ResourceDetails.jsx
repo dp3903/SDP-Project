@@ -247,7 +247,7 @@ function ResourceDetails(props) {
         let review = {
             userId : id,
             username : username,
-            resourceId : item._id,
+            resourceId : resource._id,
             rating : rating,
             comment : comment,
         }
@@ -275,7 +275,7 @@ function ResourceDetails(props) {
         }
         let interaction = {
             userId : id,
-            resourceId : item._id,
+            resourceId : resource._id,
             interactionType : "reviewed",
             timestamp : new Date().toISOString().replace(/\.\d+Z$/, "Z"),
         }
@@ -311,7 +311,7 @@ function ResourceDetails(props) {
     const handleLike = async () => {
         let data = {
             userId : id,
-            resourceId : item._id,
+            resourceId : resource._id,
             interactionType : "like" ,
             timestamp : new Date().toISOString().replace(/\.\d+Z$/, "Z"),
         }
