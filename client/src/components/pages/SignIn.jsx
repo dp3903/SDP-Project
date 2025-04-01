@@ -4,12 +4,14 @@ import { Input } from "@/components/ui/input"
 import { useNavigate } from 'react-router-dom'
 import AuthContext from './AuthContext'
 import { toast } from 'sonner'
-
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import { GoogleLogin } from '@react-oauth/google'
+const CLIENT_ID = '485441786516-encet8kq56q4dfrf823remojodgjhtj0.apps.googleusercontent.com'
  
 export function SignIn(props) {
 
   const navigate = useNavigate();
-  const { setUsername, setToken, setId } = useContext(AuthContext);
+  const { setUsername, setToken, setId} = useContext(AuthContext);
 
   function onSubmit(values) {
     console.log(values)
@@ -19,7 +21,41 @@ export function SignIn(props) {
     e.preventDefault();
     props.signUpClick(e)
   }
-
+  const handleFailure = (error) => {
+    console.error("Login Error", error);
+  };
+ async function handleSuccess(response){
+    try {
+      console.log(response)
+      const { credential } =response 
+      const res = await fetch(`http://localhost:8000/auth/callback?code=${credential}`)
+      const data = await res.json()
+      console.log("User Info : ",data)
+      if (data.isNew == false) {
+        setUsername(data.username);
+        setToken(data.access_token);
+        setId(data.userId);
+        navigate("/home")
+      }
+      else {
+        setUsername(data.username);
+        setToken(data.access_token);
+        setId(data.userId);
+        console.log(data.username)
+        console.log(data.email)
+        navigate('/userReview',{
+          state : { 
+          username: data.username, 
+          email: data.email, 
+          password:"",
+          isGoogleUser:true}
+        })
+      }
+    }
+    catch (error) {
+      console.log("Error : ", error)
+    }
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     let username = document.getElementById('username').value;
@@ -59,7 +95,7 @@ export function SignIn(props) {
           else {
             navigate("/home")
           }
-       
+          
         }
       }
       catch (error) {
@@ -93,12 +129,12 @@ export function SignIn(props) {
           Or
         </b>
         <div className='w-full rounded-md'>
-            <button className="w-full bg-black text-white rounded-md p-2 flex flex-row flex-nowrap justify-center gap-0">
-              <div className="font-semibold h-[30px]">
-                Sign in with Google
-              </div>
-              <div className="bg-google bg-contain bg-no-repeat h-[30px] w-[30px]"></div>
-            </button>
+           
+        <GoogleOAuthProvider clientId={CLIENT_ID}>
+                  <div>
+                    <GoogleLogin onSuccess={handleSuccess} onError={handleFailure} />
+                  </div>
+                </GoogleOAuthProvider>
         </div>
     </div>
   );

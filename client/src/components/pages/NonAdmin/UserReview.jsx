@@ -23,12 +23,13 @@ import { TagSelector } from '@/components/ui/TagSelector';
 function UserReview() {
     const { setUsername, setToken, setEmail , setId , token , id} = useContext(AuthContext);
     const location = useLocation();
-    const { username , email , password} = location.state || {}
+    const { username , email , password , isGoogleUser} = location.state || {}
+    console.log(location.state)
     const navigate = useNavigate();
     const [dummy,setDummy] = useState();
 
     useEffect(()=>{
-        if(!username || !email || !password){
+        if(!username || !email){
             console.log("User data not present.")
             navigate('/error',{state:{error: {status:300, message:"Invalid Action.", redirect:"/"}}})
             return;
@@ -71,7 +72,7 @@ function UserReview() {
         console.log(data);
         console.log(username,email,password)
         // post request to backend api 
-        const postdata = async ( ) => {
+        const postdata = async () => {
             data = {
                 name : username,
                 email : email,
@@ -85,6 +86,51 @@ function UserReview() {
             
             }
             console.log(data)
+            if(isGoogleUser)
+            {
+                console.log("Updating google user form details...")
+                data._id = id
+                try {
+                    console.log(id)
+                    console.log(data._id)
+                    const response = await fetch("http://localhost:8000/api/users/"+id,{
+                        method : 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                        body: JSON.stringify(
+                            data
+                        )
+                    })
+                    if (!response.ok)
+                    {
+                        console.log(response)
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                        
+                    }
+                    else 
+                    {
+                        console.log("success creating user")
+                        const data = await response.json();
+                        console.log(data)
+                        setUsername(data.updated_user.name);
+                        setEmail(data.updated_user.email);   
+                        setId(data.updated_user._id);
+                        
+                        navigate("/home")
+                    }
+                }
+                catch (error) {
+                    console.error('Error:', error);
+                    console.log(error)
+                    navigate('/error',{state:{error: {status:500, message:"Internal Server Error."}}})
+                    return;
+                }
+            }
+            else {
+
+            
             try {
                 const response = await fetch("http://localhost:8000/auth/signup/",{
                     method : 'POST',
@@ -122,6 +168,7 @@ function UserReview() {
                 return;
             }
         }
+    }
         postdata();
        
     }
