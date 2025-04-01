@@ -8,7 +8,7 @@ USER_MATRIX_FILE = "shared_files/user_matrix.npy"
 RESOURCE_MATRIX_FILE = "shared_files/resource_matrix.npy"
 LEARNING_RATE = 0.001
 REGULARIZATION = 0.001
-LATENT_DIM = 3
+LATENT_DIM = 4
 num_epochs = 1000
 try:
     user_matrix = np.load(USER_MATRIX_FILE)
