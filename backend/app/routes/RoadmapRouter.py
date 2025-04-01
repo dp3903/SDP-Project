@@ -7,7 +7,7 @@ import uuid
 
 roadmapRouter = APIRouter()
 
-@roadmapRouter.get("/{userId}",response_model=List[RoadmapModel])
+@roadmapRouter.get("/{userId}")
 async def get_all_roadmaps_by_userId(userId : str):
 	roadmaps = await db.roadmaps.find({"userId": userId}).to_list(None) 
 	if not roadmaps:

@@ -120,7 +120,7 @@ class InteractionTypeEnum(str,Enum):
 class UserPrefrences(BaseModel):
 	skillLevel : SkillLevelEnum
 	preferredFormat : List[ResourceFormatEnum]
-	interests : List[ResourceKeyWordEnum] 
+	interests : List[ResourceKeyWordEnum]
 
 class UserModel(BaseModel):
 	id : Optional[str] = Field(None,alias="_id")

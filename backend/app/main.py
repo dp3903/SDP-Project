@@ -1,6 +1,6 @@
 from fastapi import FastAPI,Request,Depends,HTTPException
 from fastapi.responses import RedirectResponse
-import os 
+import os , httpx
 from dotenv import load_dotenv
 from passlib.context import CryptContext
 from app.helpers.JWTHelpers import create_access_token
@@ -15,14 +15,18 @@ from app.middlewares.AuthMiddleware import AuthMiddleware
 from authlib.integrations.starlette_client import OAuth
 from app.database import db
 from passlib.context import CryptContext
-from app.models import UserModel
+from app.models import UserModel,UserPrefrences
 import uuid
 from fastapi.middleware.cors import CORSMiddleware
 from app.utils import add_new_user, update_user_mapping
-
+from google.oauth2 import id_token 
+from google.auth.transport import requests  
+import datetime
 pswd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
 app = FastAPI()
-
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+REDIRECT_URL= os.getenv("REDIRECT_URL")
 @app.post("/auth/login/")
 async def user_login(request:Request):
 	try:
@@ -80,19 +84,31 @@ oauth.register(
 	server_metadata_url = "https://accounts.google.com/well-known/openid-configuration",
 	client_kwargs = {"scope":"openid email profile"}
 )
-@app.get("/auth/google")
-async def google_login():
-	redirect_url = "http://localhost:8000/auth/google/callback"
-	return await oauth.google.authorize_redirect(redirect_url)
 
-@app.get("/auth/google/callback")
-async def google_callback():
-		try:
-			token = await oauth.google.authorize_access_token()
-			user_info = await oauth.google.parse_id_token(token)
-			return {"token":token,"user_info":user_info}
-		except Exception as e:
-			raise HTTPException(status_code=400,detail=str(e))
+@app.get("/auth/callback")
+async def google_callback(code : str):
+	decoded_token = id_token.verify_oauth2_token(
+		code, requests.Request(),GOOGLE_CLIENT_ID
+	)
+	user_email = decoded_token.get("email")
+	user_name = decoded_token.get("name")
+
+	user = await db.users.find_one({"email": user_email})
+	if user is None:
+		prefrences = UserPrefrences(skillLevel="beginner",preferredFormat=["video"],interests=["C"])
+		id = str(uuid.uuid4())[:8]
+		print(id)
+		user = UserModel(name=user_name, email=user_email,_id=id,password="",prefrences=prefrences,joinedat=datetime.datetime.now())
+		result = await db.users.insert_one(user.dict(by_alias=True))
+		new_user = await db.users.find_one({ "_id" : result.inserted_id})
+		add_new_user()
+		update_user_mapping(new_user["_id"])
+		token = create_access_token(data={"sub":new_user["name"]}) 
+		return {"access_token": token, "token_type": "bearer", "username": new_user["name"], "email": new_user["email"], "userId": new_user["_id"],"isNew":True}
+	token = create_access_token(data={"sub":user["name"]})
+	return {"access_token": token, "token_type": "bearer", "username": user["name"], "email": user["email"], "userId": user["_id"],"isNew":False}
+
+
 
 origins = [
     "http://localhost:5173",  
