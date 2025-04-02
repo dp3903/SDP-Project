@@ -28,7 +28,7 @@ export function SignIn(props) {
     try {
       console.log(response)
       const { credential } =response 
-      const res = await fetch(`http://localhost:8000/auth/callback?code=${credential}`)
+      const res = await fetch(import.meta.env.VITE_BACKEND+`/auth/callback?code=${credential}`)
       const data = await res.json()
       console.log("User Info : ",data)
       if (data.isNew == false) {
@@ -63,7 +63,7 @@ export function SignIn(props) {
     console.log(username, password)
     const authResponse = async () => {
       try {
-        const response = await fetch('http://localhost:8000/auth/login/', {
+        const response = await fetch(import.meta.env.VITE_BACKEND+'/auth/login/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

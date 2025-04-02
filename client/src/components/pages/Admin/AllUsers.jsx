@@ -127,7 +127,7 @@ const delete_user = (row) => {
   const deleteUser = async ( ) => { 
     try { 
       // delete user from server
-      const response = await fetch('http://localhost:8000/api/admin/user/'+row.original._id, {
+      const response = await fetch(import.meta.env.VITE_BACKEND+'/api/admin/user/'+row.original._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ function AllUsers() {
   useEffect(()=>{
        const fetchUsers =  async ()=>{
           try {
-              const response = await fetch('http://localhost:8000/api/admin/userList', {
+              const response = await fetch(import.meta.env.VITE_BACKEND+'/api/admin/userList', {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',

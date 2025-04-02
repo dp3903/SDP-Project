@@ -60,7 +60,7 @@ const delete_resource =async (row) => {
   const deleteResource = async ( ) => { 
     try { 
       // delete user from server
-      const response = await fetch('http://localhost:8000/api/admin/resource/'+row.original._id, {
+      const response = await fetch(import.meta.env.VITE_BACKEND+"/api/admin/resource/"+row.original._id, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ function AllItems() {
       averageRating : 0,
       no_of_reviews : 0,
     }
-    const respone = await fetch("http://localhost:8000/api/admin/resource/",{
+    const respone = await fetch("import.meta.env.VITE_BACKEND/api/admin/resource/",{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -232,7 +232,7 @@ function AllItems() {
   useEffect(()=>{
     const fetchResources = async () => { 
       try {
-        const response = await fetch('http://localhost:8000/api/admin/resourceList', {
+        const response = await fetch(import.meta.env.VITE_BACKEND+'/api/admin/resourceList', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -114,7 +114,7 @@ function Dashboard() {
         }
         // add like interaction to the database 
         try {
-            const response = await fetch("http://localhost:8000/api/interactions/",{
+            const response = await fetch(import.meta.env.VITE_BACKEND+'/api/interactions/',{
                 method : 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, 
@@ -148,7 +148,7 @@ function Dashboard() {
             // get recommendations 
             let user_id = id 
             try {
-                const rec_response = await fetch("http://localhost:8080/api/recommendations/"+user_id,)
+                const rec_response = await fetch(import.meta.env.VITE_REC+"/api/recommendations/"+user_id,)
                 if(rec_response.ok)
                 {
                     let recommendations = await rec_response.json();
@@ -169,7 +169,7 @@ function Dashboard() {
         else{
             // search from all
             try {
-                const search_res = await fetch("http://localhost:8000/api/resources/search?q="+searchValue,{
+                const search_res = await fetch(import.meta.env.VITE_BACKEND+"/api/resources/search?q="+searchValue,{
                     method : "GET",
                     headers : {
                         "Authorization": `Bearer ${token}`,  // Set Bearer token here
@@ -200,7 +200,8 @@ function Dashboard() {
         let user_id = id 
         const recResponse = async () => {
             try {
-                const rec_response = await fetch("http://localhost:8080/api/recommendations/"+user_id,)
+                console.log(import.meta.env.VITE_REC)
+                const rec_response = await fetch(import.meta.env.VITE_REC+"/api/recommendations/"+user_id,)
                 if(rec_response.ok)
                 {
                     let recommendations = await rec_response.json();

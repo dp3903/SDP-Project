@@ -98,7 +98,7 @@ function Roadmaps() {
       createdAt : new Date().toISOString().replace(/\.\d+Z$/, "Z"),
       progress : 0.0
     }
-    const res = await fetch("http://localhost:8000/api/roadmaps/",{
+    const res = await fetch(import.meta.env.VITE_BACKEND+"/api/roadmaps/",{
       method : "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`, 
@@ -123,7 +123,7 @@ function Roadmaps() {
     const fetchData = async () => {
       try{
 
-        const response = await fetch(`http://localhost:8000/api/roadmaps/${id}`,{
+        const response = await fetch(import.meta.env.VITE_BACKEND+`/api/roadmaps/${id}`,{
           headers: {
             'Authorization': `Bearer ${token}`, 
           }

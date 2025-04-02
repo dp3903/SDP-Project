@@ -75,7 +75,7 @@ function Trending() {
     useEffect(()=>{
         async function fetchData() {
             try {
-                const response = await fetch('http://localhost:8080/api/trending/', {
+                const response = await fetch(import.meta.env.VITE_REC+'/api/trending/', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'

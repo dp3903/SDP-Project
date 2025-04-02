@@ -134,7 +134,7 @@ function AddToRoadmap({ roadmaps , resource}) {
       // adding the resource to the roadmap 
       selectedRoadmap.remaining.push(resource)
       console.log(selectedRoadmap)
-      const res = await fetch("http://localhost:8000/api/roadmaps/"+selectedRoadmap._id,{
+      const res = await fetch(import.meta.env.VITE_BACKEND+"/api/roadmaps/"+selectedRoadmap._id,{
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -252,7 +252,7 @@ function ResourceDetails(props) {
             comment : comment,
         }
         try {
-                const review_res = await fetch("http://localhost:8000/api/reviews/",{
+                const review_res = await fetch(import.meta.env.VITE_BACKEND+"/api/reviews/",{
                 method : 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, 
@@ -280,7 +280,7 @@ function ResourceDetails(props) {
             timestamp : new Date().toISOString().replace(/\.\d+Z$/, "Z"),
         }
         try {
-            const interaction_res = await fetch("http://localhost:8000/api/interactions/",{
+            const interaction_res = await fetch(import.meta.env.VITE_BACKEND+"/api/interactions/",{
                 method : 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, 
@@ -317,7 +317,7 @@ function ResourceDetails(props) {
         }
         // add like interaction to the database 
         try {
-            const response = await fetch("http://localhost:8000/api/interactions/",{
+            const response = await fetch(import.meta.env.VITE_BACKEND+"/api/interactions/",{
                 method : 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, 
@@ -354,7 +354,7 @@ function ResourceDetails(props) {
         console.log(resource)
         const fetchReviews = async ()=>{
             try {
-                const response = await fetch(`http://localhost:8000/api/reviews/resources/${resource._id}`,{
+                const response = await fetch(import.meta.env.VITE_BACKEND`/api/reviews/resources/${resource._id}`,{
                     headers: {
                         'Authorization': `Bearer ${token}`, 
                     },
@@ -373,7 +373,7 @@ function ResourceDetails(props) {
         }
         const fetchRoadmaps = async ()=>{
             try {
-                const response = await fetch(`http://localhost:8000/api/roadmaps/`+id,{
+                const response = await fetch(import.meta.env.VITE_BACKEND+`/api/roadmaps/`+id,{
                     headers: {
                         'Authorization': `Bearer ${token}`, 
                     },

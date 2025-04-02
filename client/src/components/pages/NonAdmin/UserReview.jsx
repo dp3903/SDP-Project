@@ -93,7 +93,7 @@ function UserReview() {
                 try {
                     console.log(id)
                     console.log(data._id)
-                    const response = await fetch("http://localhost:8000/api/users/"+id,{
+                    const response = await fetch(import.meta.env.VITE_BACKEND+"/api/users/"+id,{
                         method : 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ function UserReview() {
 
             
             try {
-                const response = await fetch("http://localhost:8000/auth/signup/",{
+                const response = await fetch(import.meta.env.VITE_BACKEND+"/auth/signup/",{
                     method : 'POST',
                     headers: {
                         'Content-Type': 'application/json'

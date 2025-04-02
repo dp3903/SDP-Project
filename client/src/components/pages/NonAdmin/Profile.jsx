@@ -48,7 +48,7 @@ function EditProfile({ username, setUsername, token, email, setEmail }) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
   async function updateUser(user){
-    const res = await fetch("http://localhost:8000/api/users/"+id,{
+    const res = await fetch(import.meta.env.VITE_BACKEND+"/api/users/"+id,{
       method : "PUT",
       headers : {
         "Content-Type": "application/json",
@@ -91,7 +91,7 @@ function EditProfile({ username, setUsername, token, email, setEmail }) {
     // toast.success('Profile updated successfully');
     console.log('Updated Data:', formData);
 
-    const auth_res = await fetch("http://localhost:8000/api/users/"+id, {
+    const auth_res = await fetch(import.meta.env.VITE_BACKEND+"/api/users/"+id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -118,7 +118,7 @@ function EditProfile({ username, setUsername, token, email, setEmail }) {
   };
   async function handleDeleteAccount()
   {
-      // const res = await fetch("http://localhost:8000/api/users/"+id,)
+      // const res = await fetch("import.meta.env.VITE_BACKEND/api/users/"+id,)
       // logic for deleting mappings removing the interactions of the users etc... 
       toast.success("account deleted successfully")
       navigate("/")
@@ -203,7 +203,7 @@ export default function ProfilePage() {
     }
     const getLikedResources = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/resources/like/${id}`, {
+        const response = await fetch(import.meta.env.VITE_BACKEND+`/api/resources/like/${id}`, {
           method: 'GET', 
           headers: {
             'Content-Type': 'application/json',
@@ -228,7 +228,7 @@ export default function ProfilePage() {
     };
     const getReviewedResources = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/resources/review/${id}`, {
+        const response = await fetch(import.meta.env.VITE_BACKEND+`/api/resources/review/${id}`, {
           method: 'GET', 
           headers: {
             'Content-Type': 'application/json',
