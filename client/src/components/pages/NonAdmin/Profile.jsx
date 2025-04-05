@@ -187,13 +187,6 @@ export default function ProfilePage() {
   const { username, setUsername, token, email, setEmail , id } = useContext(AuthContext);
   const [resourcesLiked,setResourceLiked] = React.useState([])
   const [resourceReviewed,setResourceReviewed] = React.useState([])
-  // const [userStats,setUserStats] = React.useState({}) 
-  const userStats = {
-    averageRating: 4.7,
-    resourcesLiked: 10,
-    roadmapsCompleted: 2,
-    roadmapsOngoing: 1,
-  }
 
 
     const handleResourceClick = (item) => {
@@ -211,10 +204,10 @@ export default function ProfilePage() {
           }
         });
     
-        // if (!response.ok) {
-        //   navigate('/error',{state:{error: {status:response.status, message:response.message||"Internal Server Error."}}})
-        //   return;
-        // }
+        if (!response.ok) {
+          navigate('/error',{state:{error: {status:response.status, message:response.statusText||"Internal Server Error."}}})
+          return;
+        }
     
         const data = await response.json();
         console.log("Liked Resources:", data);
@@ -267,7 +260,7 @@ export default function ProfilePage() {
             </Avatar>
             <div className="flex-1 text-center md:text-left">
               <h1 className="text-3xl font-semibold mb-2">{username}</h1>
-              <p className="text-gray-600 mb-4">Resource Curator & Tech Enthusiast</p>
+              <p className="text-gray-600 mb-4">{email}</p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
 
                 <div className="text-center">
@@ -276,22 +269,10 @@ export default function ProfilePage() {
                 </div>
                 
                 <div className="text-center">
-                  <div className="font-semibold">{userStats.roadmapsCompleted}</div>
-                  <div className="text-sm text-gray-600">Roadmaps Completed</div>
+                  <div className="font-semibold">{resourceReviewed?.length || 0}</div>
+                  <div className="text-sm text-gray-600">Commented/Reviewed Resources</div>
                 </div>
                 
-                <div className="text-center">
-                  <div className="font-semibold">{userStats.roadmapsOngoing}</div>
-                  <div className="text-sm text-gray-600">Ongoing Roadmaps</div>
-                </div>
-                
-                {/* <div className="text-center">
-                  <div className="font-semibold flex items-center justify-center gap-1">
-                    {userStats.averageRating}
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  </div>
-                  <div className="text-sm text-gray-600">Avg. Rating</div>
-                </div> */}
               </div>
             </div>
             
@@ -318,8 +299,8 @@ export default function ProfilePage() {
           <TabsContent value="liked">
             <div className="flex flex-row flex-wrap gap-2 mt-2">
             {resourcesLiked.length > 0 ? (
-  resourcesLiked.map((item) => (
-    <CustomCard key={item.id} item={item} onClick={() => handleResourceClick(item)} />
+              resourcesLiked.map((item) => (
+                <CustomCard key={item.id} item={item} onClick={() => handleResourceClick(item)} />
   ))
 ) : (
   <p className="text-center text-black-500">No likes yet </p>
@@ -327,6 +308,7 @@ export default function ProfilePage() {
             </div>
           </TabsContent>
           <TabsContent value="commented">
+            <div className="flex flex-row flex-wrap gap-2 mt-2">
           {resourceReviewed?.length > 0 ? (
   resourceReviewed.map((item) => (
     <CustomCard key={item.id} item={item} onClick={() => handleResourceClick(item)} />
@@ -334,6 +316,7 @@ export default function ProfilePage() {
 ) : (
   <p className="text-center text-black-500">No Reviews yet </p>
 )}
+            </div>
           </TabsContent>
           
           

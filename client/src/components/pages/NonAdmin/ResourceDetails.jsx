@@ -230,14 +230,14 @@ function ResourceDetails(props) {
     const [liked, setLiked] = useState(false);
     const { id , token , username} = useContext(AuthContext)
     const [resource, setResource] = useState({
-        _id : '',
-        title : '', 
-        type : '',
-        url : '',
-        platform : '', 
-        tags : [],
-        averageRating : 0,
-        no_of_reviews : 0,
+        _id : location.state?.item?._id || '',
+        title : location.state?.item?.title || '', 
+        type : location.state?.item?.type || '',
+        url : location.state?.item?.url || '',
+        platform : location.state?.item?.platform || '', 
+        tags : location.state?.item?.tags || [],
+        averageRating : location.state?.item?.averageRating || 0,
+        no_of_reviews : location.state?.item?.no_of_reviews || 0,
     })
    
 
@@ -354,7 +354,7 @@ function ResourceDetails(props) {
         console.log(resource)
         const fetchReviews = async ()=>{
             try {
-                const response = await fetch(import.meta.env.VITE_BACKEND`/api/reviews/resources/${resource._id}`,{
+                const response = await fetch(import.meta.env.VITE_BACKEND+`/api/reviews/resources/${resource._id}`,{
                     headers: {
                         'Authorization': `Bearer ${token}`, 
                     },
@@ -413,32 +413,29 @@ function ResourceDetails(props) {
                         halfIcon={<i className="fa fa-star-half-alt"></i>}
                         fullIcon={<i className="fa fa-star"></i>}
                         // activeColor="rgba(96, 165, 250,1)"
-                        color={"rgba(255,255,255,.5)"}
+                        // color={"rgba(255,255,255,.5)"}
                     />
-                    <span>{resource.averageRating.toFixed(2)} / 5 ({resource.numberOfRatings || 10})</span>
+                    <span>{resource.averageRating.toFixed(2)} / 5 ({resource.no_of_reviews || 10})</span>
                 </div>
 
-                <div className="text-2xl">
-                    Category: {resource.category}
-                </div>
-
-                <div className="text-lg mt-10">
+                <div className="text-lg mt-5">
                     Platform: {resource.platform}
                     <br/>
-                    <span>
-                    <a 
-  href={resource.url}  
-  target="_blank" 
-  rel="noopener noreferrer" 
-  className="underline italic font-bold inline hover:underline mb-4"
->
-  {resource.url}
-</a>
-                    </span>
+                    <div className=''>
+                        <a 
+                            href={resource.url}  
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="underline italic font-bold inline hover:underline"
+                        >
+                            {resource.url}
+                        </a>
+                    </div>
                     <br/>
                     Type: {resource.type}
                 </div>
 
+                <span className='text-lg'>Tags</span>
                 <div className="text-md flex flex-row gap-1">
                     {resource.tags.map(tag => 
                         <Badge key={tag} className="py-1 px-2">{tag}</Badge>

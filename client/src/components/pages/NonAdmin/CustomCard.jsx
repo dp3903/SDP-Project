@@ -34,7 +34,7 @@ function CustomCard({ item, onClick }) {
                     // activeColor="rgba(96, 165, 250,1)"
                     color={"rgba(255,255,255,.5)"}
                 />
-                <span>{item.averageRating.toFixed(2)} / 5 ({item.numberOfRatings || 10})</span>
+                <span>{item.averageRating.toFixed(2)} / 5 ({item.no_of_reviews || 10})</span>
             </CardDescription>
         </CardFooter>
     </Card>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Progress } from "@/components/ui/progress"
 import confetti from "canvas-confetti"
 import {
@@ -15,8 +15,12 @@ import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable"
 import { useDroppable } from "@dnd-kit/core"
 import { CSS } from "@dnd-kit/utilities"
 import { useSortable } from "@dnd-kit/sortable"
+import AuthContext from "../AuthContext"
 
 function Roadmap(props) {
+
+  const {token} = useContext(AuthContext)
+
   const [roadmap, setRoadmap] = useState(props.roadmap)
   const [columns, setColumns] = useState([
     { id: "remaining", title: "Remaining", cards: props.roadmap.remaining },
@@ -28,10 +32,7 @@ function Roadmap(props) {
 
   // console.log(columns)
 
-  useEffect(() => {
-    setProgress((columns.find((col) => col.id == "completed").cards.length / noOfResources) * 100)
-  }, [columns])
-
+  
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(TouchSensor),
@@ -40,6 +41,51 @@ function Roadmap(props) {
     }),
   )
 
+  // update the final result on dismounting
+  useEffect(()=>{
+    return async ()=>{
+      let updated_roadmap = {
+        ...roadmap,
+        'remaining': columns.find((col) => col.id == "remaining").cards,
+        'ongoing': columns.find((col) => col.id == "ongoing").cards,
+        'completed': columns.find((col) => col.id == "completed").cards,
+        'progress': ((columns.find((col) => col.id == "completed").cards.length / noOfResources) * 100) || 0,
+      }
+      console.log(updated_roadmap,roadmap)
+      const res = await fetch(import.meta.env.VITE_BACKEND+"/api/roadmaps/"+roadmap._id,{
+        method : "PUT",
+                  headers: {
+                      'Authorization': `Bearer ${token}`, 
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(
+                    updated_roadmap 
+                  )
+      })
+      if(!res.ok)
+      {
+        navigate("/error",{state:{error:{status:res.status, message:res.message||"Server Error."}}})
+      }
+      else{
+        let data = await res.json();
+        updated_roadmap = data.updated_roadmap
+        console.log("Roadmap updated:",updated_roadmap)
+        props.setRoadmaps(roadmaps => {
+          let index = roadmaps.findIndex(r => r._id == updated_roadmap._id)
+          let new_roadmaps = [...roadmaps]
+          new_roadmaps[index] = updated_roadmap
+          console.log(new_roadmaps)
+          return new_roadmaps
+        })
+      }
+    }
+  },[])
+
+  useEffect(() => {
+    setProgress(((columns.find((col) => col.id == "completed").cards.length / noOfResources) * 100) || 0)
+    // console.log(columns)
+  }, [columns])
+  
   useEffect(() => {
     if (progress == 100) {
       const duration = 5 * 1000

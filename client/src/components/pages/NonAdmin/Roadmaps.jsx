@@ -131,10 +131,14 @@ function Roadmaps() {
         if(response.status == 404){
           return
         }
+        if (!response.ok) {
+          navigate('/error',{state:{error: {status:response.status, message:response.statusText||"Internal Server Error."}}})
+          return;
+        }
         const data = await response.json()
         setRoadmaps([...data])
         // setRoadmaps(test_roadmaps)
-        console.log(roadmaps)
+        console.log(data)
       }
       catch(error){
         console.log(error)
@@ -219,7 +223,7 @@ function Roadmaps() {
             </TabsContent>
             {roadmaps.map(roadmap => 
               <TabsContent key={roadmap._id} value={roadmap._id} className="h-5/6">
-                  <Roadmap roadmap={roadmap} />
+                  <Roadmap roadmap={roadmap} setRoadmaps={setRoadmaps} />
               </TabsContent>
             )}
           </div>

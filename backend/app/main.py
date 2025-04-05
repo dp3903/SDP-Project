@@ -112,6 +112,7 @@ async def google_callback(code : str):
 
 origins = [
     "http://localhost:5173",  
+    "http://localhost:3000",  
 ]
 app.add_middleware(AuthMiddleware)
 app.add_middleware(
