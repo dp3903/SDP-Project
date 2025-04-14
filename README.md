@@ -15,6 +15,7 @@ A smart, personalized learning recommendation system that helps students find th
 - [Performance & Testing](#performance--testing)
 - [Future Improvements](#future-improvements)
 - [Detailed Project Report](https://docs.google.com/document/d/1Wk8Hguq3Nv0TKDjVvt3qmy88_iRDB8uhZGq21S8BFVE/edit?usp=sharing)
+- [Live Link](http://tinyurl.com/resource-rec)
 ---
 
 ## 📖 Overview
