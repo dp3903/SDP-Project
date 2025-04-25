@@ -12,19 +12,19 @@ A smart, personalized learning recommendation system that helps students find th
 - [Tech Stack](#tech-stack)
 - [Implemented Algorithms](#implemented-algorithms)
 - [How It Works](#how-it-works)
-- [Performance & Testing](#performance--testing)
+- [Performance & Testing](#performance-and-testing)
 - [Future Improvements](#future-improvements)
 - [Detailed Project Report](https://docs.google.com/document/d/1Wk8Hguq3Nv0TKDjVvt3qmy88_iRDB8uhZGq21S8BFVE/edit?usp=sharing)
 - [Live Link](http://tinyurl.com/resource-rec)
 ---
 
-## 📖 Overview
+## <a id="overview"></a>📖 Overview
 
 In today's digital age, students are overwhelmed with countless online learning resources. This project solves that problem by using AI-driven techniques to **recommend the most relevant courses and tutorials** to users — making learning more personalized and efficient.
 
 ---
 
-## ✨ Features
+## <a id="features"></a>✨ Features
 
 - ✅ Content-Based Filtering using NLP (TF-IDF + Cosine Similarity)
 - ✅ Collaborative Filtering via Matrix Factorization
@@ -38,7 +38,7 @@ In today's digital age, students are overwhelmed with countless online learning 
 
 ---
 
-## 🛠 Tech Stack
+## <a id="tech-stack"></a>🛠 Tech Stack
 
 | Category       | Tools/Frameworks                 |
 |----------------|----------------------------------|
@@ -51,7 +51,7 @@ In today's digital age, students are overwhelmed with countless online learning 
 
 ---
 
-## 📊 Implemented Algorithms
+## <a id="implemented-algorithms"></a>📊 Implemented Algorithms
 
 ### 🔹 1. Content-Based Filtering
 - TF-IDF vectorization of resource metadata (titles + tags)
@@ -66,14 +66,14 @@ In today's digital age, students are overwhelmed with countless online learning 
 ### 🔹 3. Hybrid System
 - Dynamic blending of both methods using:
 - Final Recommendation = (1 - α) * Content-Based + α * Collaborative
-- `α` calculated using sigmoid based on number of user interactions
+- α calculated using sigmoid based on number of user interactions
 
 ### 🔹 4. Trending Resources
 - Analyzes recent global user interactions to recommend hot/trending topics
 
   ---
 
-## 🔄 How It Works
+## <a id="how-it-works"></a>🔄 How It Works
 
 1. User logs in and gets a JWT token
 2. Token is used to fetch personalized recommendations
@@ -86,10 +86,12 @@ In today's digital age, students are overwhelmed with countless online learning 
 
 ---
 
+## <a id="performance-and-testing"></a>📈 Performance and Testing
+
 **Metrics Used:**
-- `Precision@K`
-- `Recall@K`
-- `F1-score`
+- Precision@K
+- Recall@K
+- F1-score
 
 **Key Observations:**
 - Hybrid model outperformed individual models
@@ -98,9 +100,8 @@ In today's digital age, students are overwhelmed with countless online learning 
 
 ---
 
-## 🚀 Future Improvements
+## <a id="future-improvements"></a>🚀 Future Improvements
 
 - 🔄 Implement Approximate Nearest Neighbors (ANN) for faster similarity checks
 - 🤝 Add real-time user feedback for active learning
 - 🧠 Use user profile metadata for better cold start handling
-
