@@ -280,7 +280,11 @@ async def get_collaborative(userId, top_n = 10):
         raise HTTPException("Invalid user ID")
     resource_score_list = await asyncio.to_thread(np.dot,user_matrix[idx],resource_matrix.T)
     resource_intIds = await asyncio.to_thread(lambda: np.argsort(resource_score_list)[-1*top_n:][::-1].tolist())
-    resource_ids = [resource_map[i] for i in resource_intIds]
+    # print(resource_intIds)
+    # print(resource_matrix.shape)
+    # for i in resource_intIds:
+    #     print(i,resource_map[str(i+1)])
+    resource_ids = [resource_map[str(i+1)] for i in resource_intIds]
     return resource_ids
 
 async def get_content_based(userId,top_n = 10):
